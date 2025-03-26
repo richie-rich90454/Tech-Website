@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../database');
-const Fuse = require('fuse.js');
+const Fuse = require('fuse.js/dist/node/mustache');
 const { tags } = require("fuse/lib/mustache");
 
 let q = ""
