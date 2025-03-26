@@ -1,5 +1,5 @@
-const mysql=require('mysql2/promise')
-module.exports=mysql.createConnection({
+const mysql=require('mysql2/promise');
+const pool=mysql.createPool({
     host: '175.178.17.67',
     port: 3306,
     user: '175_178_17_67',
@@ -7,18 +7,15 @@ module.exports=mysql.createConnection({
     database: '175_178_17_67',
     waitForConnections: true,
     connectionLimit: 10,
-    connectTimeout: 60000,
-    ssl: {
-        rejectUnauthorized: false
-    }
-})
+    queueLimit: 0
+});
 pool.getConnection()
     .then(conn=>{
-        console.log('Connected to database!');
+        console.log('Successfully connected to database');
         conn.release();
     })
     .catch(err=>{
-        console.error('Database connection failed:', err);
+        console.error('DATABASE CONNECTION ERROR:', err);
         process.exit(1);
     });
 module.exports=pool;
