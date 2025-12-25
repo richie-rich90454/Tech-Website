@@ -141,13 +141,12 @@ router.get("/", async (req, res) => {
     console.log(results[17].techname)
     console.log(reg[6].techname)
     console.log(des[15].tl1_desc)
-    // if (req.session.islogin) {
-    //             res.render('admin', {results, domains, des, reg});
-    //         }
-    //         else{
-    //             res.redirect('/login');
-    //         }
-    res.render('admin', {results, domains, des, reg});
+    if (req.session.islogin) {
+                res.render('admin', {results, domains, des, reg});
+            }
+            else{
+                res.redirect('/login');
+            }
 
 
 })
@@ -157,7 +156,8 @@ router.post('/remove', function (req, res, next) {
     var user = { id: req.body.id}
     
     db.query(
-        'UPDATE submission SET accepted = ' + 0 + ' WHERE id = ' + req.body.id
+        'UPDATE submission SET accepted = ? WHERE id = ?',
+        [0, req.body.id]
     )
     console.log("deleted tech tool: " + req.body.id)
     res.redirect('/admin')
@@ -167,10 +167,12 @@ router.post('/remove', function (req, res, next) {
     console.log("posted to admin")
     var user = { id: req.body.id}
     db.query(
-        'DELETE FROM `submission` WHERE id = ' + req.body.id
+        'DELETE FROM `submission` WHERE id = ?',
+        [req.body.id]
     )
     db.query(
-        'DELETE FROM `domains` WHERE id = ' + req.body.id
+        'DELETE FROM `domains` WHERE id = ?',
+        [req.body.id]
     )
     console.log("totally deleted tech tool: " + req.body.id)
     res.redirect('/admin')
@@ -179,7 +181,8 @@ router.post('/remove', function (req, res, next) {
 router.post('/add', (req, res) => {
     var user = {id: req.body.id}
   
-    db.query('UPDATE submission SET accepted = ' + 1 + ' WHERE id = ' + req.body.id)
+    db.query('UPDATE submission SET accepted = ? WHERE id = ?',
+        [1, req.body.id])
     console.log("accepted tech tool: " + req.body.id)
     res.redirect('/admin')
 })
@@ -326,21 +329,21 @@ router.post('/edit', (req, res) => {
      console.log(response)
 
 
-    db.query('UPDATE domains SET R = '+   response[0] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET TP = '+   response[1] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET MT = '+   response[2] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET AR = '+   response[3] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET U = '+   response[4] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET MDL = '+   response[5] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET RA = '+   response[6] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET RoTech = '+   response[7] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET LS = '+   response[8] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET RoThink = '+   response[9] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET EoST = '+   response[10] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET EF = '+  response[11] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET RTE = '+  response[12] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET DLoI = '+   response[13] + '  WHERE id = ' + req.body.id1);
-    db.query('UPDATE domains SET RaAoC = '+   response[14] + '  WHERE id = ' + req.body.id1);
+    db.query('UPDATE domains SET R = ? WHERE id = ?', [response[0], req.body.id1]);
+    db.query('UPDATE domains SET TP = ? WHERE id = ?', [response[1], req.body.id1]);
+    db.query('UPDATE domains SET MT = ? WHERE id = ?', [response[2], req.body.id1]);
+    db.query('UPDATE domains SET AR = ? WHERE id = ?', [response[3], req.body.id1]);
+    db.query('UPDATE domains SET U = ? WHERE id = ?', [response[4], req.body.id1]);
+    db.query('UPDATE domains SET MDL = ? WHERE id = ?', [response[5], req.body.id1]);
+    db.query('UPDATE domains SET RA = ? WHERE id = ?', [response[6], req.body.id1]);
+    db.query('UPDATE domains SET RoTech = ? WHERE id = ?', [response[7], req.body.id1]);
+    db.query('UPDATE domains SET LS = ? WHERE id = ?', [response[8], req.body.id1]);
+    db.query('UPDATE domains SET RoThink = ? WHERE id = ?', [response[9], req.body.id1]);
+    db.query('UPDATE domains SET EoST = ? WHERE id = ?', [response[10], req.body.id1]);
+    db.query('UPDATE domains SET EF = ? WHERE id = ?', [response[11], req.body.id1]);
+    db.query('UPDATE domains SET RTE = ? WHERE id = ?', [response[12], req.body.id1]);
+    db.query('UPDATE domains SET DLoI = ? WHERE id = ?', [response[13], req.body.id1]);
+    db.query('UPDATE domains SET RaAoC = ? WHERE id = ?', [response[14], req.body.id1]);
 
 
     
@@ -356,7 +359,7 @@ router.post('/edit', (req, res) => {
 // delete
 router.post('/2', (req, res) => {
     var user = {id: req.body.id}
-    db.query('DELETE FROM submission WHERE id = ' + req.body.id)
+    db.query('DELETE FROM submission WHERE id = ?', [req.body.id])
     console.log("rejected tech tool: " + req.body.id)
 })
 

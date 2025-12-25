@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../database');
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 
 router.get("/", async (req,res)=>{
-    const workbook = XLSX.readFile('./tools3_beardwood_edit.xlsx');
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile('./tools3_beardwood_edit.xlsx');
+    const worksheet = workbook.getWorksheet(1);
     // Convert the worksheet data to JSON
-    const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const data = [];
+    worksheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+        data.push(row.values);
+    });
 
     // Get the header row (first row)
     const header = data[0];
@@ -93,8 +97,10 @@ router.get("/", async (req,res)=>{
         }
         
         // console.log(description.substring(0,1)+"\""+description.substring(1))
-        await db.promise().query(`insert into submission values(${i+1}, "${obj['techname']}", "${tl1final}", "${tl2final}", "${tl3final}", "${tl4final}", "${obj['link']}", "${obj['displaytext']}", "${obj['accepted']}", "default", "default")`)
-        await db.promise().query(`insert into domains values(${i+1}, ${obj['R']}, ${obj['TP']}, ${obj['MT']}, ${obj['AR']}, ${obj['U']}, ${obj['MDL']}, ${obj['RA']}, ${obj['RoTech']}, ${obj['LS']}, ${obj['RoThink']}, ${obj['EoST']}, ${obj['EF']}, ${obj['RTE']}, ${obj['DLoI']}, ${obj['RaAoC']})`)
+        await db.promise().query('INSERT INTO submission VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "default", "default")', 
+            [i+1, obj['techname'], tl1final, tl2final, tl3final, tl4final, obj['link'], obj['displaytext'], obj['accepted']])
+        await db.promise().query('INSERT INTO domains VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [i+1, obj['R'], obj['TP'], obj['MT'], obj['AR'], obj['U'], obj['MDL'], obj['RA'], obj['RoTech'], obj['LS'], obj['RoThink'], obj['EoST'], obj['EF'], obj['RTE'], obj['DLoI'], obj['RaAoC']])
     
         result[i+1] = obj;
     }

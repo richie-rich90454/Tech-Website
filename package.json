@@ -22,15 +22,11 @@
     "mysql2": "^3.1.0",
     "node-gyp": "^9.3.1",
     "nodemon": "^3.1.9",
-    "pm2": "^5.2.2",
+    "pm2": "^6.0.14",
     "string-width": "^7.2.0",
     "winston": "^3.8.2",
-    "xlsx": "^0.18.5",
     "yargs": "^17.6.2",
     "yarn": "^1.22.19"
-  },
-  "devDependencies": {
-    "node-xlsx": "^0.4.0"
   },
   "overrides": {
     "pwuid": "1.1.1"

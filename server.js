@@ -8,13 +8,17 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(upload())
 
-const session=require('express-session')
- app.use(
+const session = require('express-session')
+app.use(
     session({
-        secret:'myself',//secrect属性的值可以为任意字符串
-        resave:false,//固定写法
-        saveUninitialized:true,//固定写法
-        cookie: {maxAge: 1800000},  //设置maxAge是1800000ms，即30分钟后session和相应的cookie失效过期
+        secret: process.env.SESSION_SECRET || 'your-secret-key-should-be-long-and-random',
+        resave: false,
+        saveUninitialized: false, // Changed to false for security
+        cookie: {
+            maxAge: 1800000,
+            httpOnly: true, // Added for security
+            secure: process.env.NODE_ENV === 'production' // Use secure cookies in production
+        },
         rolling: true
     }))
 

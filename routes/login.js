@@ -26,8 +26,8 @@ router.post('/', function (req, res, next) {
     //     req.session.islogin=false
     //     res.send({ status:0, msg:'fails'})     
     // }    
-    const sqlstr = 'SELECT PW, User from login'
-    db.query(sqlstr, (err, results) => {
+    const sqlstr = 'SELECT PW, User from login WHERE PW = ? AND User = ?'
+    db.query(sqlstr, [pw, us], (err, results) => {
         if (err) return res.cc(err)
 
         console.log(results);
