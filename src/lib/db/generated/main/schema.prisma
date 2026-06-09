@@ -1,0 +1,53 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_MAIN")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/lib/db/generated/main"
+}
+
+model submission {
+  id          Int     @id
+  techname    String  @db.VarChar(255)
+  tl1_desc    String  @db.Text
+  tl2_desc    String  @db.Text
+  tl3_desc    String  @db.Text
+  tl4_desc    String  @db.Text
+  link        String  @db.VarChar(255)
+  displaytext String  @db.VarChar(255)
+  accepted    Boolean
+  username    String  @db.VarChar(255)
+  contact     String  @db.VarChar(255)
+
+  @@map("submission")
+}
+
+model domains {
+  id      Int     @id
+  R       Boolean
+  TP      Boolean
+  MT      Boolean
+  AR      Boolean
+  U       Boolean
+  MDL     Boolean
+  RA      Boolean
+  RoTech  Boolean
+  LS      Boolean
+  RoThink Boolean
+  EoST    Boolean
+  EF      Boolean
+  RTE     Boolean
+  DLoI    Boolean
+  RaAoC   Boolean
+
+  @@map("domains")
+}
+
+model login {
+  User String @id @db.VarChar(255)
+  PW   String @db.VarChar(255)
+
+  @@map("login")
+}

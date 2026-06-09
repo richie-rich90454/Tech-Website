@@ -1,0 +1,280 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_WEB")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/lib/db/generated/web"
+}
+
+model twoauthsettings {
+  secret String @id @db.VarChar(255)
+  @@map("2authsettings")
+}
+
+model actions {
+  id     Int    @id @default(autoincrement())
+  admin  String @db.VarChar(64)
+  client String @db.VarChar(64)
+  action String @db.VarChar(6444)
+  date   Int
+  @@map("actions")
+}
+
+model affiliateWithdraws {
+  ID             Int    @id @default(autoincrement())
+  userID         Int
+  withdrawAmount String @db.VarChar(255)
+  paymentMethod  String @db.VarChar(255)
+  paymentAddress String @db.VarChar(255)
+  status         Int    @default(0)
+  date           Int
+  @@map("affiliateWithdraws")
+}
+
+model api {
+  id      Int    @id @default(autoincrement())
+  name    String @db.VarChar(50)
+  api     String @db.VarChar(1024)
+  slots   Int
+  methods String @db.VarChar(100)
+  vip     Int
+  @@map("api")
+}
+
+model bans {
+  username String @id @db.VarChar(15)
+  reason   String @db.VarChar(1024)
+  @@map("bans")
+}
+
+model blacklist {
+  ID   Int    @id @default(autoincrement())
+  data String @db.VarChar(50)
+  type String @db.VarChar(10)
+  @@map("blacklist")
+}
+
+model cark {
+  id   Int     @id @default(autoincrement())
+  plan Int     @default(0)
+  sans String? @db.Text
+  @@map("cark")
+}
+
+model faq {
+  id       Int    @id @default(autoincrement())
+  question String @db.VarChar(1024)
+  answer   String @db.VarChar(5000)
+  @@map("faq")
+}
+
+model fe {
+  ID     Int    @id @default(autoincrement())
+  userID Int
+  type   String @db.VarChar(1)
+  ip     String @db.VarChar(15)
+  @@map("fe")
+}
+
+model giftcards {
+  ID          Int     @id @default(autoincrement())
+  code        String  @db.VarChar(255)
+  planID      Int
+  claimedby   Int
+  dateClaimed Int
+  date        Int
+  user        String? @db.Text
+  @@map("giftcards")
+}
+
+model iplogs {
+  ID     Int    @id @default(autoincrement())
+  userID Int
+  logged String @db.VarChar(15)
+  date   Int
+  @@map("iplogs")
+}
+
+model loginlogs {
+  id       Int    @id @default(autoincrement())
+  username String @db.VarChar(200)
+  ip       String @db.VarChar(200)
+  date     Int
+  country  String @db.VarChar(200)
+  @@map("loginlogs")
+}
+
+model logs {
+  id        Int    @id @default(autoincrement())
+  user      String @db.VarChar(15)
+  ip        String @db.VarChar(1024)
+  time      Int
+  method    String @db.VarChar(10)
+  postdata  String @db.VarChar(10)
+  mode      String @db.VarChar(20)
+  ratelimit String @db.VarChar(10)
+  cookie    String @db.VarChar(10)
+  date      Int
+  chart     String @db.VarChar(255)
+  stopped   Int    @default(0)
+  handler   String @db.VarChar(1000)
+  origin    String @db.VarChar(11)
+  @@map("logs")
+}
+
+model messages {
+  messageid Int    @id @default(autoincrement())
+  ticketid  Int
+  content   String @db.MediumText
+  sender    String @db.VarChar(30)
+  date      Int
+  @@map("messages")
+}
+
+model methods {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(30)
+  fullname String @db.VarChar(20)
+  type     String @db.VarChar(6)
+  command  String @db.VarChar(1000)
+  @@map("methods")
+}
+
+model news {
+  ID      Int    @id @default(autoincrement())
+  title   String @db.VarChar(1024)
+  content String @db.VarChar(1000)
+  date    String @db.VarChar(55)
+  @@map("news")
+}
+
+model payments {
+  ID    Int   @id @default(autoincrement())
+  paid  Float
+  plan  Int
+  user  Int
+  email String @db.VarChar(60)
+  tid   String @db.VarChar(30)
+  date  Int
+  @@map("payments")
+}
+
+model ping_sessions {
+  ID        Int    @id @default(autoincrement())
+  ping_key  String @db.VarChar(255)
+  user_id   Int
+  ping_ip   String @db.VarChar(25)
+  ping_port String @db.VarChar(255)
+  @@map("ping_sessions")
+}
+
+model plans {
+  ID          Int    @id @default(autoincrement())
+  name        String @db.VarChar(50)
+  vip         Int
+  mbt         Int
+  unit        String @db.VarChar(10)
+  length      Int
+  price       Float
+  concurrents Int
+  private     Int
+  @@map("plans")
+}
+
+model reports {
+  id       Int    @id @default(autoincrement())
+  username String @db.VarChar(64)
+  report   String @db.VarChar(644)
+  date     Int
+  @@map("reports")
+}
+
+model servers {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(50)
+  ip       String @db.VarChar(15)
+  password String @db.VarChar(100)
+  slots    Int
+  methods  String @db.VarChar(100)
+  @@map("servers")
+}
+
+model settings {
+  sitename        String @id @db.VarChar(1024)
+  stripePubKey    String @db.VarChar(255)
+  url             String @db.VarChar(255)
+  description     String @db.MediumText
+  cooldown        Int
+  cooldownTime    Int
+  paypal          String @db.VarChar(50)
+  bitcoin         String @db.VarChar(50)
+  stripe          Int
+  maintaince      String @db.VarChar(100)
+  rotation        Int    @default(0)
+  system          String @db.VarChar(7)
+  maxattacks      Int
+  testboots       Int
+  cloudflare      Int
+  skype           String @db.VarChar(200)
+  key             String @db.VarChar(100)
+  issuerId        String @db.VarChar(50)
+  coinpayments    String @db.VarChar(50)
+  ipnSecret       String @db.VarChar(100)
+  google_site     String @db.VarChar(644)
+  google_secret   String @db.VarChar(644)
+  btc_address     String @db.VarChar(64)
+  secretKey       String @db.VarChar(50)
+  cbp             Int
+  paypal_email    String @db.VarChar(64)
+  theme           String @db.VarChar(64)
+  logo            String @db.VarChar(64)
+  stripeSecretKey String @db.VarChar(255)
+  @@map("settings")
+}
+
+model smtpsettings {
+  host     String @id @db.VarChar(255)
+  auth     String @db.VarChar(255)
+  username String @db.VarChar(255)
+  password String @db.VarChar(255)
+  port     Int
+  @@map("smtpsettings")
+}
+
+model tickets {
+  id       Int    @id @default(autoincrement())
+  subject  String @db.VarChar(1024)
+  content  String @db.MediumText
+  status   String @db.VarChar(30)
+  username String @db.VarChar(15)
+  date     Int
+  @@map("tickets")
+}
+
+model tos {
+  archive String @db.LongText
+  @@ignore
+}
+
+model users {
+  ID              Int     @id @default(autoincrement())
+  username        String  @db.VarChar(200)
+  password        String  @db.VarChar(200)
+  rank            Int     @default(0)
+  membership      Int
+  expire          Int
+  status          Int
+  referral        String  @db.VarChar(50)
+  referralbalance Int     @default(0)
+  testattack      Int
+  activity        Int     @default(0)
+  twoauth         Int     @map("2auth")
+  referedBy       Int
+  login_ip        String? @db.Text
+  login_useragent String? @db.Text
+  cark            String? @db.Text
+  ban_sbp         String? @db.Text
+  @@map("users")
+}
