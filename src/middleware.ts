@@ -33,6 +33,18 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/web/dashboard') ||
     pathname.startsWith('/web/hub') ||
+    pathname.startsWith('/web/tickets') ||
+    pathname.startsWith('/web/giftcards') ||
+    pathname.startsWith('/web/affiliate') ||
+    pathname.startsWith('/web/wheel') ||
+    pathname.startsWith('/web/profile') ||
+    pathname.startsWith('/web/plan') ||
+    pathname.startsWith('/web/api/tickets') ||
+    pathname.startsWith('/web/api/giftcards') ||
+    pathname.startsWith('/web/api/affiliate') ||
+    pathname.startsWith('/web/api/wheel') ||
+    pathname.startsWith('/web/api/hub') ||
+    pathname.startsWith('/web/api/profile') ||
     pathname.startsWith('/web/api/protected')
   ) {
     const response = NextResponse.next();
@@ -56,6 +68,18 @@ export const config = {
     '/api/admin/:path*',
     '/web/dashboard/:path*',
     '/web/hub/:path*',
+    '/web/tickets/:path*',
+    '/web/giftcards/:path*',
+    '/web/affiliate/:path*',
+    '/web/wheel/:path*',
+    '/web/profile/:path*',
+    '/web/plan/:path*',
+    '/web/api/tickets/:path*',
+    '/web/api/giftcards/:path*',
+    '/web/api/affiliate/:path*',
+    '/web/api/wheel/:path*',
+    '/web/api/hub/:path*',
+    '/web/api/profile/:path*',
     '/web/api/protected/:path*',
   ],
 };
