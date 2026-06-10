@@ -61,3 +61,9 @@ prisma/*.db-journal
 /npminstall-debug.log
 /tools2.xlsx
 /tools3_beardwood_edit.xlsx
+
+# legacy cleanup confirmations
+/web/
+/data/
+/docker/
+/tools.xlsx
