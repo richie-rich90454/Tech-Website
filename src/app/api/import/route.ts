@@ -9,6 +9,9 @@ export async function GET() {
     const filePath = path.join(process.cwd(), 'tools.xlsx');
     await workbook.xlsx.readFile(filePath);
     const worksheet = workbook.getWorksheet(1);
+    if (!worksheet) {
+      return NextResponse.json({ error: 'Worksheet not found' }, { status: 400 });
+    }
     
     const data: any[][] = [];
     worksheet.eachRow({ includeEmpty: true }, (row) => {
@@ -71,9 +74,13 @@ export async function GET() {
         });
         
         const domainFields = ['R','TP','MT','AR','U','MDL','RA','RoTech','LS','RoThink','EoST','EF','RTE','DLoI','RaAoC'];
-        const domainData: Record<string, boolean> = {};
+        const domainData = {
+          R: false, TP: false, MT: false, AR: false, U: false, MDL: false, RA: false,
+          RoTech: false, LS: false, RoThink: false, EoST: false, EF: false, RTE: false,
+          DLoI: false, RaAoC: false,
+        };
         for (const field of domainFields) {
-          domainData[field] = obj[field] === true || obj[field] === 'true' || obj[field] === 1 || obj[field] === '1';
+          (domainData as Record<string, boolean>)[field] = obj[field] === true || obj[field] === 'true' || obj[field] === 1 || obj[field] === '1';
         }
         
         await mainDb.domains.create({

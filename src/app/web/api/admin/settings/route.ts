@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
           maintaince, rotation, paypal, paypal_email, bitcoin,
           stripePubKey, stripeSecretKey, stripe, coinpayments, ipnSecret,
           key, secretKey, issuerId, google_site, google_secret, skype, cloudflare,
+          system: 'basic', btc_address: '', cbp: 0, theme: '', logo: '',
         },
       });
     }
