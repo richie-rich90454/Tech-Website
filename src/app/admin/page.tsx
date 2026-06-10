@@ -3,6 +3,8 @@ import { getMainSession } from '@/lib/auth/main';
 import { mainDb } from '@/lib/db/main';
 import AdminTable from './AdminTable';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPage() {
   const session = await getMainSession();
   if (!session.islogin) redirect('/login');

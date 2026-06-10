@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPlansPage() {
   const plans = await webDb.plans.findMany({ orderBy: { ID: 'asc' } });
 

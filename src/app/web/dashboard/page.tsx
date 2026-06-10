@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   const now = Math.floor(Date.now() / 1000);
 

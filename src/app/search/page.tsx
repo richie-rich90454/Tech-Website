@@ -5,6 +5,8 @@ import { mainDb } from '@/lib/db/main';
 import { createFuse } from '@/lib/search';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   searchParams: Promise<{ query?: string }>;
 }

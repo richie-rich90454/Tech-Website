@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminMethodsPage() {
   const methods = await webDb.methods.findMany({ orderBy: { type: 'asc' } });
 

@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 async function getUserData(userId: number) {
   const user = await webDb.users.findUnique({
     where: { ID: userId },

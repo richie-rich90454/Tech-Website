@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminHubPage() {
   const methods = await webDb.methods.findMany({
     select: { id: true, name: true, fullname: true, type: true },

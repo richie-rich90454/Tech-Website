@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function MaintenancePage() {
   const settings = await webDb.settings.findFirst();
   const message = settings?.description || 'We are currently performing maintenance. Please check back later.';

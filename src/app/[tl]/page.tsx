@@ -3,6 +3,8 @@ import { tlConfigs } from '@/lib/tl-config';
 import { mainDb } from '@/lib/db/main';
 import TLPageClient from './TLPageClient';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ tl: string }>;
   searchParams: Promise<Record<string, string>>;

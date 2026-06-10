@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminGiftCardsPage() {
   const giftcards = await webDb.giftcards.findMany({
     orderBy: { date: 'desc' },

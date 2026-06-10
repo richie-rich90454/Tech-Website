@@ -1,5 +1,7 @@
 import { webDb } from '@/lib/db/web';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminSettingsPage() {
   const [settings, smtp] = await Promise.all([
     webDb.settings.findFirst(),
