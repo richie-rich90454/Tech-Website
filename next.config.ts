@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  turbopack: {
+    rules: {
+      '*.node': ['raw'],
+    },
+  },
 };
 
 export default nextConfig;
