@@ -14,7 +14,7 @@ const webSessionOptions = {
   cookieName: 'web-session',
 };
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect /admin and /api/admin routes (main app)
