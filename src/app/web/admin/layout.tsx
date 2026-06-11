@@ -4,6 +4,7 @@ import Link from 'next/link';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* web admin · richie-rich90454 · June 2026 */}
       <div className="preloader">
         <div className="lds-ripple">
           <div className="spinner-grow" role="status">
