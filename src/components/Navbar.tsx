@@ -3,6 +3,7 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <div id="cover">
+      {/* nav · richie-rich90454 · 2026/06 */}
       <div id="topbar">
         <h1>BIBS·C Tech Tools</h1>
       </div>
