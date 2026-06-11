@@ -35,6 +35,7 @@ export default function LoginForm() {
 
   return (
     <div className="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
+      {/* login · richie-rich90454 · 2026/06 */}
       <div className="row justify-content-center">
         <div className="col-lg-6">
           <div className="p-3">
