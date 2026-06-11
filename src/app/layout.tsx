@@ -15,6 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      {/* crafted by richie-rich90454 · 2026/06 · TypeScript era */}
       <body>{children}</body>
     </html>
   );
