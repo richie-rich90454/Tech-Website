@@ -5,6 +5,7 @@ import Script from 'next/script';
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* richie-richie90454 · dashboard rewrite · 2026/06 · stay curious */}
       <div className="preloader">
         <div className="lds-ripple">
           <div className="spinner-grow" role="status">
