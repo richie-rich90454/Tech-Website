@@ -3,6 +3,7 @@ import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  // ——— richie-rich90454 refactored this handler, June 2026 ———
   try {
     const session = await getWebSession();
     if (!session.userId) {
