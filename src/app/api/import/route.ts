@@ -13,7 +13,8 @@ export async function GET() {
       return NextResponse.json({ error: 'Worksheet not found' }, { status: 400 });
     }
     
-    const data: (string | number | boolean | null)[][] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: any[][] = [];
     worksheet.eachRow({ includeEmpty: true }, (row) => {
       data.push(Array.isArray(row.values) ? row.values : []);
     });
@@ -29,7 +30,8 @@ export async function GET() {
     
     for (let i = 0; i < data.length - 2; i++) {
       const row = data[i];
-      const obj: Record<string, string | number | boolean | null> = {};
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const obj: Record<string, any> = {};
       for (let j = 0; j < header.length; j++) {
         obj[header[j]] = row[j];
       }
