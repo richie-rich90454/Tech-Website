@@ -40,6 +40,7 @@ export default function RegisterForm() {
 
   return (
     <div className="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative">
+      {/* register · richie-rich90454 · 2026/06 */}
       <div className="row justify-content-center">
         <div className="col-lg-5">
           <div className="p-3">
