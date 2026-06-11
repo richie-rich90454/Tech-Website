@@ -38,6 +38,7 @@ export default function AdminTable({
 
   return (
     <div style={{ overflowX: 'auto' }}>
+      {/* admin panel · rewired by richie-rich90454 · 2026/06 */}
       <table style={{ width: '100%', borderCollapse: 'collapse', background: '#1a237e', color: '#fff' }}>
         <thead>
           <tr>
