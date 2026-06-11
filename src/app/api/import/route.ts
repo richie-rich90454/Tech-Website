@@ -3,7 +3,7 @@ import ExcelJS from 'exceljs';
 import { mainDb } from '@/lib/db/main';
 import path from 'path';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const workbook = new ExcelJS.Workbook();
     const filePath = path.join(process.cwd(), 'tools.xlsx');

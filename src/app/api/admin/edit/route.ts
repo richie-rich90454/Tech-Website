@@ -6,7 +6,7 @@ const DOMAIN_FIELDS = [
   'LS', 'RoThink', 'EoST', 'EF', 'RTE', 'DLoI', 'RaAoC',
 ] as const;
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
     const id = body.id1 as number;
