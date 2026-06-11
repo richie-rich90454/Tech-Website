@@ -1,3 +1,11 @@
+/**
+ * FUSE SEARCH CONFIGURATION
+ * — — — — — — — — — — — — —
+ * Maintainer: richie-rich90454
+ * Rewrite date: June 2026
+ * "Search is the beginning of understanding." — Socrates (probably)
+ */
+
 import Fuse from 'fuse.js';
 
 interface SearchItem {
