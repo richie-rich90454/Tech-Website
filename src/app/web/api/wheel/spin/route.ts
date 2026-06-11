@@ -13,7 +13,7 @@ const PRIZES = [
   { id: 7, name: 'No Prize', points: 0 },
 ];
 
-export async function POST() {
+export async function POST(): Promise<NextResponse> {
   try {
     const session = await getWebSession();
     if (!session.userId) {

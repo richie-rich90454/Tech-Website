@@ -6,7 +6,7 @@ export async function GET() {
   return NextResponse.json({ servers });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const action = formData.get('action') as string;
 

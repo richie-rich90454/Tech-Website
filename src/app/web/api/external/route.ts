@@ -136,7 +136,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     let key: string | null = null;
     let params: Record<string, string> = {};

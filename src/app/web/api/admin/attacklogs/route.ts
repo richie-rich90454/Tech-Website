@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
   const perPage = 20;
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ logs, total, page, totalPages: Math.ceil(total / perPage) });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const action = formData.get('action') as string;
 

@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ tickets, total, page, totalPages: Math.ceil(total / perPage) });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const action = formData.get('action') as string;
   const id = parseInt(formData.get('id') as string);

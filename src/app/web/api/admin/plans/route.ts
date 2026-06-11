@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   const plans = await webDb.plans.findMany({ orderBy: { ID: 'asc' } });
   return NextResponse.json({ plans });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const action = formData.get('action') as string;
 

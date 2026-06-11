@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const now = Math.floor(Date.now() / 1000);
 

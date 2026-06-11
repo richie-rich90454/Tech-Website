@@ -5,7 +5,7 @@ import { getWebSession } from '@/lib/auth/web';
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+): Promise<NextResponse> {
   try {
     const session = await getWebSession();
     if (!session.userId) {
@@ -37,7 +37,7 @@ export async function GET(
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+): Promise<NextResponse> {
   try {
     const session = await getWebSession();
     if (!session.userId) {

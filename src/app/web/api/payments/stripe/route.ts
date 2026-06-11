@@ -13,7 +13,7 @@ interface StripeWebhookBody {
   };
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const webhook = searchParams.get('webhook');

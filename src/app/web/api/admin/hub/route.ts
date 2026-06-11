@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   const methods = await webDb.methods.findMany({
     select: { id: true, name: true, fullname: true, type: true },
     orderBy: { type: 'asc' },
@@ -9,7 +9,7 @@ export async function GET() {
   return NextResponse.json({ methods });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const host = formData.get('host') as string;
   const port = formData.get('port') as string;

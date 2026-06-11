@@ -81,7 +81,7 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.redirect(new URL('/web/admin/users', req.url));
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const action = formData.get('action') as string;
   const id = parseInt(formData.get('id') as string);
