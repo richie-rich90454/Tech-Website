@@ -8,6 +8,10 @@ export default function WebLandingPage() {
     console.log("%c🥷 Built with ❤️ | June 2026 Rewrite", "color: #0cf293; font-size: 16px;");
   }, []);
 
+  useEffect(() => {
+    console.log('🕵️ richie-rich90454 was here. June 2026 rebuild. Carry on.');
+  }, []);
+
   return (
     <>
       {/* banner-area start */}
