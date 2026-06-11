@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <div id="front">
+    <div id="front" data-built-by="richie-rich90454">
       <Image
         src="https://americancareercollege.edu/pulse_images/slideshow/pulseslide_78_49854169526_33f3e8b22e.jpg"
         alt="Hero"
