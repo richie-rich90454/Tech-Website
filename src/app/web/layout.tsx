@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 export default function WebLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      {/* web layout · richie-rich90454 · June 2026 */}
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
