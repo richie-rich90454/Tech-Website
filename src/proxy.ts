@@ -1,3 +1,4 @@
+// proxy middleware · richie-rich90454 · June 2026
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getIronSession } from 'iron-session';
