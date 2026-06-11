@@ -3,7 +3,7 @@ import { mainDb } from '@/lib/db/main';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const formData = await req.formData();
     
