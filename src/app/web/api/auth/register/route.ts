@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { webRegisterSchema } from '@/lib/validations/web-auth';
 import { loginWebSession } from '@/lib/auth/web';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const formData = await req.formData();
     const username = formData.get('username') as string;
