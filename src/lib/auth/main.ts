@@ -15,19 +15,19 @@ const sessionOptions: SessionOptions = {
   },
 };
 
-export async function getMainSession() {
+export async function getMainSession(): Promise<MainSession> {
   const cookieStore = await cookies();
   const session = await getIronSession<MainSession>(cookieStore, sessionOptions);
   return session;
 }
 
-export async function loginMainSession() {
+export async function loginMainSession(): Promise<void> {
   const session = await getMainSession();
   session.islogin = true;
   await session.save();
 }
 
-export async function logoutMainSession() {
+export async function logoutMainSession(): Promise<void> {
   const session = await getMainSession();
   session.destroy();
 }
