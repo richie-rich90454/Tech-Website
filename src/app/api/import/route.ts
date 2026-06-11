@@ -13,7 +13,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Worksheet not found' }, { status: 400 });
     }
     
-    const data: any[][] = [];
+    const data: (string | number | boolean | null)[][] = [];
     worksheet.eachRow({ includeEmpty: true }, (row) => {
       data.push(Array.isArray(row.values) ? row.values : []);
     });
@@ -29,7 +29,7 @@ export async function GET() {
     
     for (let i = 0; i < data.length - 2; i++) {
       const row = data[i];
-      const obj: Record<string, any> = {};
+      const obj: Record<string, string | number | boolean | null> = {};
       for (let j = 0; j < header.length; j++) {
         obj[header[j]] = row[j];
       }
