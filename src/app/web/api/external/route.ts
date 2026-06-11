@@ -106,7 +106,7 @@ async function handleAttack(req: NextRequest, params: Record<string, string>) {
   });
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const key = searchParams.get('key')?.trim();

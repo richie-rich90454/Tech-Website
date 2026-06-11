@@ -3,7 +3,7 @@ import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
 import bcrypt from 'bcryptjs';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const session = await getWebSession();
     if (!session.userId) {

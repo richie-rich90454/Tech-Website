@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ users, total, page, totalPages: Math.ceil(total / perPage) });
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest): Promise<NextResponse> {
   const formData = await req.formData();
   const id = parseInt(formData.get('id') as string);
   const action = formData.get('action') as string;

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const session = await getWebSession();
     if (!session.userId) {

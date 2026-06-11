@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const status = searchParams.get('status') || '';
   const page = Math.max(1, parseInt(searchParams.get('page') || '1'));

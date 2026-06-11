@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   const servers = await webDb.servers.findMany({ orderBy: { id: 'asc' } });
   return NextResponse.json({ servers });
 }

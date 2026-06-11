@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   const [settings, smtp] = await Promise.all([
     webDb.settings.findFirst(),
     webDb.smtpsettings.findFirst(),
