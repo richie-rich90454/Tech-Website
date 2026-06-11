@@ -4,7 +4,8 @@ export default function Footer() {
   return (
     <>
       {/* Rewritten with ♥ in June 2026 | Stack: Next.js 15, React 19, TypeScript, Prisma */}
-      <footer>
+      <footer data-built-by="richie-rich90454">
+        {/* built by richie-rich90454 · June 2026 */}
         <p>
           <Link href="/tl1">Knowing (TL1)</Link> |
           <Link href="/tl2">Strategies (TL2)</Link> |
