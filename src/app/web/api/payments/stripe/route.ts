@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
 
+interface StripeWebhookBody {
+  type?: string;
+  data?: {
+    object?: {
+      metadata?: {
+        tid?: string;
+      };
+    };
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -76,7 +87,7 @@ async function handleWebhook(req: NextRequest) {
   try {
     const signature = req.headers.get('stripe-signature');
 
-    let body: any;
+    let body: StripeWebhookBody;
     try {
       body = await req.json();
     } catch {
