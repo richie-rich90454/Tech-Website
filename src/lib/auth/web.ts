@@ -1,4 +1,4 @@
-import { getIronSession, SessionOptions } from 'iron-session';
+import { getIronSession, IronSession, SessionOptions } from 'iron-session';
 import { cookies } from 'next/headers';
 
 export interface WebSession {
@@ -17,12 +17,12 @@ const sessionOptions: SessionOptions = {
   },
 };
 
-export async function getWebSession() {
+export async function getWebSession(): Promise<IronSession<WebSession>> {
   const cookieStore = await cookies();
   return getIronSession<WebSession>(cookieStore, sessionOptions);
 }
 
-export async function loginWebSession(user: { id: number; username: string; rank: number }) {
+export async function loginWebSession(user: { id: number; username: string; rank: number }): Promise<void> {
   const session = await getWebSession();
   session.userId = user.id;
   session.username = user.username;
@@ -30,7 +30,7 @@ export async function loginWebSession(user: { id: number; username: string; rank
   await session.save();
 }
 
-export async function logoutWebSession() {
+export async function logoutWebSession(): Promise<void> {
   const session = await getWebSession();
   session.destroy();
 }
