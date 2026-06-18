@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import DashHeader from '@/components/web/DashHeader';
+import './dash.css';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   useEffect(() => {

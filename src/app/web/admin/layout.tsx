@@ -1,7 +1,38 @@
 'use client';
 import Link from 'next/link';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: React.ReactNode }): React.ReactElement {
+  useEffect(() => {
+    // Vanilla dropdown toggle (replaces Bootstrap data-toggle="dropdown")
+    document.querySelectorAll('[data-toggle="dropdown"]').forEach(el => {
+      el.addEventListener('click', (e: Event) => {
+        e.preventDefault();
+        const parent = el.closest('.dropdown');
+        if (!parent) return;
+        const menu = parent.querySelector('.dropdown-menu') as HTMLElement;
+        if (menu) {
+          menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        const closeHandler = (ev: MouseEvent) => {
+          if (!parent.contains(ev.target as Node)) {
+            if (menu) menu.style.display = 'none';
+            document.removeEventListener('click', closeHandler);
+          }
+        };
+        if (menu?.style.display === 'block') {
+          setTimeout(() => document.addEventListener('click', closeHandler), 0);
+        }
+      });
+    });
+
+    // Mobile sidebar toggle
+    const navToggler = document.querySelector('.nav-toggler');
+    const sidebar = document.querySelector('.left-sidebar');
+    navToggler?.addEventListener('click', function (e) {
+      e.preventDefault();
+      sidebar?.classList.toggle('open');
+    });
+  }, []);
   return (
     <>
       {/* web admin · richie-rich90454 · June 2026 */}
