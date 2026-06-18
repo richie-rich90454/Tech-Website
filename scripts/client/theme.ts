@@ -325,7 +325,7 @@
    */
   function gallery_isotope(): void {
     if (document.querySelector('.grid_gallery_area')) {
-      // Activate isotope in container (wait for images)
+      // Activate grid filter (replaces isotope)
       const images: HTMLImageElement[] = Array.from(document.querySelectorAll('.grid_gallery_item_inner img'));
       const imagePromises: Promise<void>[] = images.map(function (img: HTMLImageElement): Promise<void> {
         if (img.complete) return Promise.resolve();
@@ -335,13 +335,13 @@
         });
       });
       Promise.all(imagePromises).then(function (): void {
-        $('.grid_gallery_item_inner').isotope({
-          layoutMode: 'fitRows',
-        });
+        // Show all items initially
+        const allItems: HTMLElement[] = Array.from(document.querySelectorAll('.grid_gallery_item_inner > *'));
+        allItems.forEach(function (item: HTMLElement): void { item.style.display = ''; });
       });
 
-      // Add isotope click function
-      const filterLis = document.querySelectorAll('.gallery_filter li');
+      // Add grid filter click function
+      const filterLis: NodeListOf<Element> = document.querySelectorAll('.gallery_filter li');
       filterLis.forEach(function (li: Element): void {
         li.addEventListener('click', function (e: Event): void {
           filterLis.forEach(function (l: Element): void {
@@ -350,13 +350,14 @@
           li.classList.add('active');
           const selector: string | undefined =
             (li as HTMLElement).dataset.filter || (li as HTMLElement).getAttribute('data-filter') || undefined;
-          $('.grid_gallery_item_inner').isotope({
-            filter: selector,
-            animationOptions: {
-              duration: 450,
-              easing: 'linear',
-              queue: false,
-            },
+          const allItems: HTMLElement[] = Array.from(document.querySelectorAll('.grid_gallery_item_inner > *'));
+          allItems.forEach(function (item: HTMLElement): void {
+            if (!selector || selector === '*') {
+              item.style.display = '';
+            } else {
+              // selector is a CSS class selector like '.web' — use matches()
+              item.style.display = item.matches(selector) ? '' : 'none';
+            }
           });
           e.preventDefault();
         });
