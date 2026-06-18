@@ -19,7 +19,10 @@ const {
   skip,
   Decimal,
   Debug,
-  objectEnumValues,
+  DbNull,
+  JsonNull,
+  AnyNull,
+  NullTypes,
   makeStrictEnum,
   Extensions,
   warnOnce,
@@ -27,7 +30,7 @@ const {
   Public,
   getRuntime,
   createParam,
-} = require('./runtime/edge.js')
+} = require('./runtime/wasm-compiler-edge.js')
 
 
 const Prisma = {}
@@ -36,12 +39,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.19.3
- * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 Prisma.prismaVersion = {
-  client: "6.19.3",
-  engine: "c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -69,15 +72,11 @@ Prisma.defineExtension = Extensions.defineExtension
 /**
  * Shorthand utilities for JSON filtering
  */
-Prisma.DbNull = objectEnumValues.instances.DbNull
-Prisma.JsonNull = objectEnumValues.instances.JsonNull
-Prisma.AnyNull = objectEnumValues.instances.AnyNull
+Prisma.DbNull = DbNull
+Prisma.JsonNull = JsonNull
+Prisma.AnyNull = AnyNull
 
-Prisma.NullTypes = {
-  DbNull: objectEnumValues.classes.DbNull,
-  JsonNull: objectEnumValues.classes.JsonNull,
-  AnyNull: objectEnumValues.classes.AnyNull
-}
+Prisma.NullTypes = NullTypes
 
 
 
@@ -87,9 +86,6 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -136,23 +132,6 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.submissionOrderByRelevanceFieldEnum = {
-  techname: 'techname',
-  tl1_desc: 'tl1_desc',
-  tl2_desc: 'tl2_desc',
-  tl3_desc: 'tl3_desc',
-  tl4_desc: 'tl4_desc',
-  link: 'link',
-  displaytext: 'displaytext',
-  username: 'username',
-  contact: 'contact'
-};
-
-exports.Prisma.loginOrderByRelevanceFieldEnum = {
-  User: 'User',
-  PW: 'PW'
-};
-
 
 exports.Prisma.ModelName = {
   submission: 'submission',
@@ -163,72 +142,32 @@ exports.Prisma.ModelName = {
  * Create the Client
  */
 const config = {
-  "generator": {
-    "name": "client",
-    "provider": {
-      "fromEnvVar": null,
-      "value": "prisma-client-js"
-    },
-    "output": {
-      "value": "C:\\Users\\rjian\\Desktop\\Tech-Website\\src\\lib\\db\\generated\\main",
-      "fromEnvVar": null
-    },
-    "config": {
-      "engineType": "library"
-    },
-    "binaryTargets": [
-      {
-        "fromEnvVar": null,
-        "value": "windows",
-        "native": true
-      }
-    ],
-    "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\rjian\\Desktop\\Tech-Website\\prisma\\schema-main.prisma",
-    "isCustomOutput": true
-  },
-  "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../../../.env"
-  },
-  "relativePath": "../../../../../prisma",
-  "clientVersion": "6.19.3",
-  "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
-  "datasourceNames": [
-    "db"
-  ],
-  "activeProvider": "mysql",
-  "postinstall": false,
-  "inlineDatasources": {
-    "db": {
-      "url": {
-        "fromEnvVar": "DATABASE_URL_MAIN",
-        "value": null
-      }
-    }
-  },
-  "inlineSchema": "datasource db {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL_MAIN\")\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/lib/db/generated/main\"\n}\n\nmodel submission {\n  id          Int     @id\n  techname    String  @db.VarChar(255)\n  tl1_desc    String  @db.Text\n  tl2_desc    String  @db.Text\n  tl3_desc    String  @db.Text\n  tl4_desc    String  @db.Text\n  link        String  @db.VarChar(255)\n  displaytext String  @db.VarChar(255)\n  accepted    Boolean\n  username    String  @db.VarChar(255)\n  contact     String  @db.VarChar(255)\n\n  @@map(\"submission\")\n}\n\nmodel domains {\n  id      Int     @id\n  R       Boolean\n  TP      Boolean\n  MT      Boolean\n  AR      Boolean\n  U       Boolean\n  MDL     Boolean\n  RA      Boolean\n  RoTech  Boolean\n  LS      Boolean\n  RoThink Boolean\n  EoST    Boolean\n  EF      Boolean\n  RTE     Boolean\n  DLoI    Boolean\n  RaAoC   Boolean\n\n  @@map(\"domains\")\n}\n\nmodel login {\n  User String @id @db.VarChar(255)\n  PW   String @db.VarChar(255)\n\n  @@map(\"login\")\n}\n",
-  "inlineSchemaHash": "3d7d12006efb558253b0446ed0ee9ce9fed70a0e24f0deddb75cf91bb70492ec",
-  "copyEngine": true
+  "previewFeatures": [],
+  "clientVersion": "7.8.0",
+  "engineVersion": "3c6e192761c0362d496ed980de936e2f3cebcd3a",
+  "activeProvider": "sqlite",
+  "inlineSchema": "datasource db {\n  provider = \"sqlite\"\n}\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/lib/db/generated/main\"\n}\n\nmodel submission {\n  id          Int     @id\n  techname    String\n  tl1_desc    String\n  tl2_desc    String\n  tl3_desc    String\n  tl4_desc    String\n  link        String\n  displaytext String\n  accepted    Boolean\n  username    String\n  contact     String\n\n  @@map(\"submission\")\n}\n\nmodel domains {\n  id      Int     @id\n  R       Boolean\n  TP      Boolean\n  MT      Boolean\n  AR      Boolean\n  U       Boolean\n  MDL     Boolean\n  RA      Boolean\n  RoTech  Boolean\n  LS      Boolean\n  RoThink Boolean\n  EoST    Boolean\n  EF      Boolean\n  RTE     Boolean\n  DLoI    Boolean\n  RaAoC   Boolean\n\n  @@map(\"domains\")\n}\n\nmodel login {\n  User String @id\n  PW   String\n\n  @@map(\"login\")\n}\n"
 }
-config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"submission\":{\"dbName\":\"submission\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"techname\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tl1_desc\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"Text\",[]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tl2_desc\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"Text\",[]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tl3_desc\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"Text\",[]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tl4_desc\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"Text\",[]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"link\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"displaytext\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"accepted\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"contact\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"domains\":{\"dbName\":\"domains\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"R\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"TP\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"MT\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"AR\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"U\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"MDL\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"RA\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"RoTech\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"LS\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"RoThink\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"EoST\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"EF\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"RTE\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"DLoI\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"RaAoC\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"login\":{\"dbName\":\"login\",\"schema\":null,\"fields\":[{\"name\":\"User\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"PW\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":[\"VarChar\",[\"255\"]],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"submission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"techname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tl1_desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tl2_desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tl3_desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tl4_desc\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"link\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"displaytext\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"accepted\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"username\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"submission\"},\"domains\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"R\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"TP\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"MT\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"AR\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"U\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"MDL\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"RA\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"RoTech\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"LS\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"RoThink\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"EoST\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"EF\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"RTE\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"DLoI\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"RaAoC\",\"kind\":\"scalar\",\"type\":\"Boolean\"}],\"dbName\":\"domains\"},\"login\":{\"fields\":[{\"name\":\"User\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"PW\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"login\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
-config.engineWasm = undefined
-config.compilerWasm = undefined
-
-config.injectableEdgeEnv = () => ({
-  parsed: {
-    DATABASE_URL_MAIN: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL_MAIN'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL_MAIN || undefined
-  }
-})
-
-if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {
-  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined)
+config.parameterizationSchema = {
+  strings: JSON.parse("[\"where\",\"submission.findUnique\",\"submission.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"submission.findFirst\",\"submission.findFirstOrThrow\",\"submission.findMany\",\"data\",\"submission.createOne\",\"submission.createMany\",\"submission.createManyAndReturn\",\"submission.updateOne\",\"submission.updateMany\",\"submission.updateManyAndReturn\",\"create\",\"update\",\"submission.upsertOne\",\"submission.deleteOne\",\"submission.deleteMany\",\"having\",\"_count\",\"_avg\",\"_sum\",\"_min\",\"_max\",\"submission.groupBy\",\"submission.aggregate\",\"domains.findUnique\",\"domains.findUniqueOrThrow\",\"domains.findFirst\",\"domains.findFirstOrThrow\",\"domains.findMany\",\"domains.createOne\",\"domains.createMany\",\"domains.createManyAndReturn\",\"domains.updateOne\",\"domains.updateMany\",\"domains.updateManyAndReturn\",\"domains.upsertOne\",\"domains.deleteOne\",\"domains.deleteMany\",\"domains.groupBy\",\"domains.aggregate\",\"login.findUnique\",\"login.findUniqueOrThrow\",\"login.findFirst\",\"login.findFirstOrThrow\",\"login.findMany\",\"login.createOne\",\"login.createMany\",\"login.createManyAndReturn\",\"login.updateOne\",\"login.updateMany\",\"login.updateManyAndReturn\",\"login.upsertOne\",\"login.deleteOne\",\"login.deleteMany\",\"login.groupBy\",\"login.aggregate\",\"AND\",\"OR\",\"NOT\",\"User\",\"PW\",\"equals\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"contains\",\"startsWith\",\"endsWith\",\"not\",\"id\",\"R\",\"TP\",\"MT\",\"AR\",\"U\",\"MDL\",\"RA\",\"RoTech\",\"LS\",\"RoThink\",\"EoST\",\"EF\",\"RTE\",\"DLoI\",\"RaAoC\",\"techname\",\"tl1_desc\",\"tl2_desc\",\"tl3_desc\",\"tl4_desc\",\"link\",\"displaytext\",\"accepted\",\"username\",\"contact\",\"set\",\"increment\",\"decrement\",\"multiply\",\"divide\"]"),
+  graph: "bh0wDjwAAF4AMD0AAAQAED4AAF4AMEwCAAAAAVwBAFIAIV0BAFIAIV4BAFIAIV8BAFIAIWABAFIAIWEBAFIAIWIBAFIAIWMgAFwAIWQBAFIAIWUBAFIAIQEAAAABACABAAAAAQAgDjwAAF4AMD0AAAQAED4AAF4AMEwCAFsAIVwBAFIAIV0BAFIAIV4BAFIAIV8BAFIAIWABAFIAIWEBAFIAIWIBAFIAIWMgAFwAIWQBAFIAIWUBAFIAIQADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACALTAIAAAABXAEAAAABXQEAAAABXgEAAAABXwEAAAABYAEAAAABYQEAAAABYgEAAAABYyAAAAABZAEAAAABZQEAAAABAQgAAAkAIAtMAgAAAAFcAQAAAAFdAQAAAAFeAQAAAAFfAQAAAAFgAQAAAAFhAQAAAAFiAQAAAAFjIAAAAAFkAQAAAAFlAQAAAAEBCAAACwAwAQgAAAsAMAtMAgBoACFcAQBiACFdAQBiACFeAQBiACFfAQBiACFgAQBiACFhAQBiACFiAQBiACFjIABpACFkAQBiACFlAQBiACECAAAAAQAgCAAADgAgC0wCAGgAIVwBAGIAIV0BAGIAIV4BAGIAIV8BAGIAIWABAGIAIWEBAGIAIWIBAGIAIWMgAGkAIWQBAGIAIWUBAGIAIQIAAAAEACAIAAAQACACAAAABAAgCAAAEAAgAwAAAAEAIA8AAAkAIBAAAA4AIAEAAAABACABAAAABAAgBRUAAGoAIBYAAGsAIBcAAG4AIBgAAG0AIBkAAGwAIA48AABdADA9AAAXABA-AABdADBMAgBUACFcAQBNACFdAQBNACFeAQBNACFfAQBNACFgAQBNACFhAQBNACFiAQBNACFjIABVACFkAQBNACFlAQBNACEDAAAABAAgAwAAFgAwFAAAFwAgAwAAAAQAIAMAAAUAMAQAAAEAIBM8AABaADA9AAAdABA-AABaADBMAgAAAAFNIABcACFOIABcACFPIABcACFQIABcACFRIABcACFSIABcACFTIABcACFUIABcACFVIABcACFWIABcACFXIABcACFYIABcACFZIABcACFaIABcACFbIABcACEBAAAAGgAgAQAAABoAIBM8AABaADA9AAAdABA-AABaADBMAgBbACFNIABcACFOIABcACFPIABcACFQIABcACFRIABcACFSIABcACFTIABcACFUIABcACFVIABcACFWIABcACFXIABcACFYIABcACFZIABcACFaIABcACFbIABcACEAAwAAAB0AIAMAAB4AMAQAABoAIAMAAAAdACADAAAeADAEAAAaACADAAAAHQAgAwAAHgAwBAAAGgAgEEwCAAAAAU0gAAAAAU4gAAAAAU8gAAAAAVAgAAAAAVEgAAAAAVIgAAAAAVMgAAAAAVQgAAAAAVUgAAAAAVYgAAAAAVcgAAAAAVggAAAAAVkgAAAAAVogAAAAAVsgAAAAAQEIAAAiACAQTAIAAAABTSAAAAABTiAAAAABTyAAAAABUCAAAAABUSAAAAABUiAAAAABUyAAAAABVCAAAAABVSAAAAABViAAAAABVyAAAAABWCAAAAABWSAAAAABWiAAAAABWyAAAAABAQgAACQAMAEIAAAkADAQTAIAaAAhTSAAaQAhTiAAaQAhTyAAaQAhUCAAaQAhUSAAaQAhUiAAaQAhUyAAaQAhVCAAaQAhVSAAaQAhViAAaQAhVyAAaQAhWCAAaQAhWSAAaQAhWiAAaQAhWyAAaQAhAgAAABoAIAgAACcAIBBMAgBoACFNIABpACFOIABpACFPIABpACFQIABpACFRIABpACFSIABpACFTIABpACFUIABpACFVIABpACFWIABpACFXIABpACFYIABpACFZIABpACFaIABpACFbIABpACECAAAAHQAgCAAAKQAgAgAAAB0AIAgAACkAIAMAAAAaACAPAAAiACAQAAAnACABAAAAGgAgAQAAAB0AIAUVAABjACAWAABkACAXAABnACAYAABmACAZAABlACATPAAAUwAwPQAAMAAQPgAAUwAwTAIAVAAhTSAAVQAhTiAAVQAhTyAAVQAhUCAAVQAhUSAAVQAhUiAAVQAhUyAAVQAhVCAAVQAhVSAAVQAhViAAVQAhVyAAVQAhWCAAVQAhWSAAVQAhWiAAVQAhWyAAVQAhAwAAAB0AIAMAAC8AMBQAADAAIAMAAAAdACADAAAeADAEAAAaACAFPAAAUQAwPQAANgAQPgAAUQAwPwEAAAABQAEAUgAhAQAAADMAIAEAAAAzACAFPAAAUQAwPQAANgAQPgAAUQAwPwEAUgAhQAEAUgAhAAMAAAA2ACADAAA3ADAEAAAzACADAAAANgAgAwAANwAwBAAAMwAgAwAAADYAIAMAADcAMAQAADMAIAI_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-AjM_FzRBFjVDAjZEGDdFFjhGFjlHAjpKGTtLHQ"
+}
+config.compilerWasm = {
+  getRuntime: async () => require('./query_compiler_fast_bg.js'),
+  getQueryCompilerWasmModule: async () => {
+    const loader = (await import('#wasm-compiler-loader')).default
+    const compiler = (await loader).default
+    return compiler
+  },
+  importName: './query_compiler_fast_bg.js',
+}
+if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || (typeof process !== 'undefined' && process.env && process.env.DEBUG) || undefined) {
+  Debug.enable(typeof globalThis !== 'undefined' && globalThis['DEBUG'] || (typeof process !== 'undefined' && process.env && process.env.DEBUG) || undefined)
 }
 
 const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
-

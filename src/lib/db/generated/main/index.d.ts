@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library.js';
+import * as runtime from './runtime/client.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -35,13 +35,15 @@ export type login = $Result.DefaultSelection<Prisma.$loginPayload>
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Submissions
  * const submissions = await prisma.submission.findMany()
  * ```
  *
  *
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
@@ -56,13 +58,15 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Submissions
    * const submissions = await prisma.submission.findMany()
    * ```
    *
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   * Read more in our [docs](https://pris.ly/d/client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
@@ -85,7 +89,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -97,7 +101,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -108,7 +112,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -120,7 +124,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -136,12 +140,11 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
-
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
@@ -216,14 +219,6 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
-   */
-  export type Metrics = runtime.Metrics
-  export type Metric<T> = runtime.Metric<T>
-  export type MetricHistogram = runtime.MetricHistogram
-  export type MetricHistogramBucket = runtime.MetricHistogramBucket
-
-  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -234,11 +229,12 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.3
-   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
+   * Prisma Client JS version: 7.8.0
+   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
    */
   export type PrismaVersion = {
     client: string
+    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -625,9 +621,6 @@ export namespace Prisma {
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
-  export type Datasources = {
-    db?: Datasource
-  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -674,6 +667,10 @@ export namespace Prisma {
             args: Prisma.submissionCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
+          createManyAndReturn: {
+            args: Prisma.submissionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$submissionPayload>[]
+          }
           delete: {
             args: Prisma.submissionDeleteArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$submissionPayload>
@@ -689,6 +686,10 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.submissionUpdateManyArgs<ExtArgs>
             result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.submissionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$submissionPayload>[]
           }
           upsert: {
             args: Prisma.submissionUpsertArgs<ExtArgs>
@@ -740,6 +741,10 @@ export namespace Prisma {
             args: Prisma.domainsCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
+          createManyAndReturn: {
+            args: Prisma.domainsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$domainsPayload>[]
+          }
           delete: {
             args: Prisma.domainsDeleteArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$domainsPayload>
@@ -755,6 +760,10 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.domainsUpdateManyArgs<ExtArgs>
             result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.domainsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$domainsPayload>[]
           }
           upsert: {
             args: Prisma.domainsUpsertArgs<ExtArgs>
@@ -806,6 +815,10 @@ export namespace Prisma {
             args: Prisma.loginCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
+          createManyAndReturn: {
+            args: Prisma.loginCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$loginPayload>[]
+          }
           delete: {
             args: Prisma.loginDeleteArgs<ExtArgs>
             result: $Utils.PayloadToResult<Prisma.$loginPayload>
@@ -821,6 +834,10 @@ export namespace Prisma {
           updateMany: {
             args: Prisma.loginUpdateManyArgs<ExtArgs>
             result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.loginUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$loginPayload>[]
           }
           upsert: {
             args: Prisma.loginUpsertArgs<ExtArgs>
@@ -869,14 +886,6 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasources?: Datasources
-    /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasourceUrl?: string
-    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
@@ -902,7 +911,7 @@ export namespace Prisma {
      *  { emit: 'stdout', level: 'error' }
      * 
      * ```
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
+     * Read more in our [docs](https://pris.ly/d/logging).
      */
     log?: (LogLevel | LogDefinition)[]
     /**
@@ -918,7 +927,11 @@ export namespace Prisma {
     /**
      * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
      */
-    adapter?: runtime.SqlDriverAdapterFactory | null
+    adapter?: runtime.SqlDriverAdapterFactory
+    /**
+     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     */
+    accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -934,6 +947,22 @@ export namespace Prisma {
      * ```
      */
     omit?: Prisma.GlobalOmitConfig
+    /**
+     * SQL commenter plugins that add metadata to SQL queries as comments.
+     * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
+     * 
+     * @example
+     * ```
+     * const prisma = new PrismaClient({
+     *   adapter,
+     *   comments: [
+     *     traceContext(),
+     *     queryInsights(),
+     *   ],
+     * })
+     * ```
+     */
+    comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
     submission?: submissionOmit
@@ -1267,7 +1296,33 @@ export namespace Prisma {
     contact?: boolean
   }, ExtArgs["result"]["submission"]>
 
+  export type submissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    techname?: boolean
+    tl1_desc?: boolean
+    tl2_desc?: boolean
+    tl3_desc?: boolean
+    tl4_desc?: boolean
+    link?: boolean
+    displaytext?: boolean
+    accepted?: boolean
+    username?: boolean
+    contact?: boolean
+  }, ExtArgs["result"]["submission"]>
 
+  export type submissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    techname?: boolean
+    tl1_desc?: boolean
+    tl2_desc?: boolean
+    tl3_desc?: boolean
+    tl4_desc?: boolean
+    link?: boolean
+    displaytext?: boolean
+    accepted?: boolean
+    username?: boolean
+    contact?: boolean
+  }, ExtArgs["result"]["submission"]>
 
   export type submissionSelectScalar = {
     id?: boolean
@@ -1418,6 +1473,30 @@ export namespace Prisma {
     createMany<T extends submissionCreateManyArgs>(args?: SelectSubset<T, submissionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
+     * Create many Submissions and returns the data saved in the database.
+     * @param {submissionCreateManyAndReturnArgs} args - Arguments to create many Submissions.
+     * @example
+     * // Create many Submissions
+     * const submission = await prisma.submission.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends submissionCreateManyAndReturnArgs>(args?: SelectSubset<T, submissionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
      * Delete a Submission.
      * @param {submissionDeleteArgs} args - Arguments to delete one Submission.
      * @example
@@ -1480,6 +1559,36 @@ export namespace Prisma {
      * 
      */
     updateMany<T extends submissionUpdateManyArgs>(args: SelectSubset<T, submissionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Submissions and returns the data updated in the database.
+     * @param {submissionUpdateManyAndReturnArgs} args - Arguments to update many Submissions.
+     * @example
+     * // Update many Submissions
+     * const submission = await prisma.submission.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Submissions and only return the `id`
+     * const submissionWithIdOnly = await prisma.submission.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends submissionUpdateManyAndReturnArgs>(args: SelectSubset<T, submissionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Create or update one Submission.
@@ -1856,6 +1965,11 @@ export namespace Prisma {
      * Skip the first `n` submissions.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of submissions.
+     */
     distinct?: SubmissionScalarFieldEnum | SubmissionScalarFieldEnum[]
   }
 
@@ -1885,7 +1999,24 @@ export namespace Prisma {
      * The data used to create many submissions.
      */
     data: submissionCreateManyInput | submissionCreateManyInput[]
-    skipDuplicates?: boolean
+  }
+
+  /**
+   * submission createManyAndReturn
+   */
+  export type submissionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the submission
+     */
+    select?: submissionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the submission
+     */
+    omit?: submissionOmit<ExtArgs> | null
+    /**
+     * The data used to create many submissions.
+     */
+    data: submissionCreateManyInput | submissionCreateManyInput[]
   }
 
   /**
@@ -1914,6 +2045,32 @@ export namespace Prisma {
    * submission updateMany
    */
   export type submissionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update submissions.
+     */
+    data: XOR<submissionUpdateManyMutationInput, submissionUncheckedUpdateManyInput>
+    /**
+     * Filter which submissions to update
+     */
+    where?: submissionWhereInput
+    /**
+     * Limit how many submissions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * submission updateManyAndReturn
+   */
+  export type submissionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the submission
+     */
+    select?: submissionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the submission
+     */
+    omit?: submissionOmit<ExtArgs> | null
     /**
      * The data used to update submissions.
      */
@@ -2289,7 +2446,43 @@ export namespace Prisma {
     RaAoC?: boolean
   }, ExtArgs["result"]["domains"]>
 
+  export type domainsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    R?: boolean
+    TP?: boolean
+    MT?: boolean
+    AR?: boolean
+    U?: boolean
+    MDL?: boolean
+    RA?: boolean
+    RoTech?: boolean
+    LS?: boolean
+    RoThink?: boolean
+    EoST?: boolean
+    EF?: boolean
+    RTE?: boolean
+    DLoI?: boolean
+    RaAoC?: boolean
+  }, ExtArgs["result"]["domains"]>
 
+  export type domainsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    R?: boolean
+    TP?: boolean
+    MT?: boolean
+    AR?: boolean
+    U?: boolean
+    MDL?: boolean
+    RA?: boolean
+    RoTech?: boolean
+    LS?: boolean
+    RoThink?: boolean
+    EoST?: boolean
+    EF?: boolean
+    RTE?: boolean
+    DLoI?: boolean
+    RaAoC?: boolean
+  }, ExtArgs["result"]["domains"]>
 
   export type domainsSelectScalar = {
     id?: boolean
@@ -2450,6 +2643,30 @@ export namespace Prisma {
     createMany<T extends domainsCreateManyArgs>(args?: SelectSubset<T, domainsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
+     * Create many Domains and returns the data saved in the database.
+     * @param {domainsCreateManyAndReturnArgs} args - Arguments to create many Domains.
+     * @example
+     * // Create many Domains
+     * const domains = await prisma.domains.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Domains and only return the `id`
+     * const domainsWithIdOnly = await prisma.domains.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends domainsCreateManyAndReturnArgs>(args?: SelectSubset<T, domainsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$domainsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
      * Delete a Domains.
      * @param {domainsDeleteArgs} args - Arguments to delete one Domains.
      * @example
@@ -2512,6 +2729,36 @@ export namespace Prisma {
      * 
      */
     updateMany<T extends domainsUpdateManyArgs>(args: SelectSubset<T, domainsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Domains and returns the data updated in the database.
+     * @param {domainsUpdateManyAndReturnArgs} args - Arguments to update many Domains.
+     * @example
+     * // Update many Domains
+     * const domains = await prisma.domains.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Domains and only return the `id`
+     * const domainsWithIdOnly = await prisma.domains.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends domainsUpdateManyAndReturnArgs>(args: SelectSubset<T, domainsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$domainsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Create or update one Domains.
@@ -2893,6 +3140,11 @@ export namespace Prisma {
      * Skip the first `n` domains.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of domains.
+     */
     distinct?: DomainsScalarFieldEnum | DomainsScalarFieldEnum[]
   }
 
@@ -2922,7 +3174,24 @@ export namespace Prisma {
      * The data used to create many domains.
      */
     data: domainsCreateManyInput | domainsCreateManyInput[]
-    skipDuplicates?: boolean
+  }
+
+  /**
+   * domains createManyAndReturn
+   */
+  export type domainsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the domains
+     */
+    select?: domainsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the domains
+     */
+    omit?: domainsOmit<ExtArgs> | null
+    /**
+     * The data used to create many domains.
+     */
+    data: domainsCreateManyInput | domainsCreateManyInput[]
   }
 
   /**
@@ -2951,6 +3220,32 @@ export namespace Prisma {
    * domains updateMany
    */
   export type domainsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update domains.
+     */
+    data: XOR<domainsUpdateManyMutationInput, domainsUncheckedUpdateManyInput>
+    /**
+     * Filter which domains to update
+     */
+    where?: domainsWhereInput
+    /**
+     * Limit how many domains to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * domains updateManyAndReturn
+   */
+  export type domainsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the domains
+     */
+    select?: domainsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the domains
+     */
+    omit?: domainsOmit<ExtArgs> | null
     /**
      * The data used to update domains.
      */
@@ -3180,7 +3475,15 @@ export namespace Prisma {
     PW?: boolean
   }, ExtArgs["result"]["login"]>
 
+  export type loginSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    User?: boolean
+    PW?: boolean
+  }, ExtArgs["result"]["login"]>
 
+  export type loginSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    User?: boolean
+    PW?: boolean
+  }, ExtArgs["result"]["login"]>
 
   export type loginSelectScalar = {
     User?: boolean
@@ -3313,6 +3616,30 @@ export namespace Prisma {
     createMany<T extends loginCreateManyArgs>(args?: SelectSubset<T, loginCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
+     * Create many Logins and returns the data saved in the database.
+     * @param {loginCreateManyAndReturnArgs} args - Arguments to create many Logins.
+     * @example
+     * // Create many Logins
+     * const login = await prisma.login.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Logins and only return the `User`
+     * const loginWithUserOnly = await prisma.login.createManyAndReturn({
+     *   select: { User: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends loginCreateManyAndReturnArgs>(args?: SelectSubset<T, loginCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$loginPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
      * Delete a Login.
      * @param {loginDeleteArgs} args - Arguments to delete one Login.
      * @example
@@ -3375,6 +3702,36 @@ export namespace Prisma {
      * 
      */
     updateMany<T extends loginUpdateManyArgs>(args: SelectSubset<T, loginUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Logins and returns the data updated in the database.
+     * @param {loginUpdateManyAndReturnArgs} args - Arguments to update many Logins.
+     * @example
+     * // Update many Logins
+     * const login = await prisma.login.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Logins and only return the `User`
+     * const loginWithUserOnly = await prisma.login.updateManyAndReturn({
+     *   select: { User: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends loginUpdateManyAndReturnArgs>(args: SelectSubset<T, loginUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$loginPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
      * Create or update one Login.
@@ -3742,6 +4099,11 @@ export namespace Prisma {
      * Skip the first `n` logins.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of logins.
+     */
     distinct?: LoginScalarFieldEnum | LoginScalarFieldEnum[]
   }
 
@@ -3771,7 +4133,24 @@ export namespace Prisma {
      * The data used to create many logins.
      */
     data: loginCreateManyInput | loginCreateManyInput[]
-    skipDuplicates?: boolean
+  }
+
+  /**
+   * login createManyAndReturn
+   */
+  export type loginCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the login
+     */
+    select?: loginSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the login
+     */
+    omit?: loginOmit<ExtArgs> | null
+    /**
+     * The data used to create many logins.
+     */
+    data: loginCreateManyInput | loginCreateManyInput[]
   }
 
   /**
@@ -3800,6 +4179,32 @@ export namespace Prisma {
    * login updateMany
    */
   export type loginUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update logins.
+     */
+    data: XOR<loginUpdateManyMutationInput, loginUncheckedUpdateManyInput>
+    /**
+     * Filter which logins to update
+     */
+    where?: loginWhereInput
+    /**
+     * Limit how many logins to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * login updateManyAndReturn
+   */
+  export type loginUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the login
+     */
+    select?: loginSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the login
+     */
+    omit?: loginOmit<ExtArgs> | null
     /**
      * The data used to update logins.
      */
@@ -3892,9 +4297,6 @@ export namespace Prisma {
    */
 
   export const TransactionIsolationLevel: {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -3954,29 +4356,6 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-  export const submissionOrderByRelevanceFieldEnum: {
-    techname: 'techname',
-    tl1_desc: 'tl1_desc',
-    tl2_desc: 'tl2_desc',
-    tl3_desc: 'tl3_desc',
-    tl4_desc: 'tl4_desc',
-    link: 'link',
-    displaytext: 'displaytext',
-    username: 'username',
-    contact: 'contact'
-  };
-
-  export type submissionOrderByRelevanceFieldEnum = (typeof submissionOrderByRelevanceFieldEnum)[keyof typeof submissionOrderByRelevanceFieldEnum]
-
-
-  export const loginOrderByRelevanceFieldEnum: {
-    User: 'User',
-    PW: 'PW'
-  };
-
-  export type loginOrderByRelevanceFieldEnum = (typeof loginOrderByRelevanceFieldEnum)[keyof typeof loginOrderByRelevanceFieldEnum]
 
 
   /**
@@ -4044,7 +4423,6 @@ export namespace Prisma {
     accepted?: SortOrder
     username?: SortOrder
     contact?: SortOrder
-    _relevance?: submissionOrderByRelevanceInput
   }
 
   export type submissionWhereUniqueInput = Prisma.AtLeast<{
@@ -4220,7 +4598,6 @@ export namespace Prisma {
   export type loginOrderByWithRelationInput = {
     User?: SortOrder
     PW?: SortOrder
-    _relevance?: loginOrderByRelevanceInput
   }
 
   export type loginWhereUniqueInput = Prisma.AtLeast<{
@@ -4535,19 +4912,12 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type submissionOrderByRelevanceInput = {
-    fields: submissionOrderByRelevanceFieldEnum | submissionOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
   }
 
   export type submissionCountOrderByAggregateInput = {
@@ -4627,7 +4997,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -4707,12 +5076,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type loginOrderByRelevanceInput = {
-    fields: loginOrderByRelevanceFieldEnum | loginOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
   export type loginCountOrderByAggregateInput = {
     User?: SortOrder
     PW?: SortOrder
@@ -4766,7 +5129,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
@@ -4813,7 +5175,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
