@@ -511,15 +511,16 @@ footer a:hover { color: var(--color-accent); }
 
 /* --- Tech tip list ------------------------------------ */
 .techtip-wrap {
-  width: 95%;
-  margin: 0 auto var(--space-5);
+  width: 100%;
+  max-width: 1040px;
+  margin: var(--space-3) auto;
   background: #fff;
-  padding: var(--space-5);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-1);
-  opacity: 1;
   background-color: #f9fdff;
   border: 1px solid var(--color-border);
+  scroll-margin-top: var(--nav-offset);
 }
 .techtip .info { display: flex; margin-top: 10px; }
 .techtip .img,
