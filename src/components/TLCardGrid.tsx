@@ -4,11 +4,17 @@ interface CardProps {
   href: string;
   title: string;
   strands: string[];
+  id?: string;
 }
 
-function TLCard({ href, title, strands }: CardProps): React.ReactElement {
+function TLCard({ href, title, strands, id }: CardProps): React.ReactElement {
   return (
-    <Link href={href} className="tlx">
+    <Link
+      href={href}
+      className="tlx"
+      id={id}
+      style={id ? { scrollMarginTop: 'var(--nav-offset)' } : undefined}
+    >
       <div className="tlhead">{title}</div>
       <div className="tlx__strands-label">Includes the strands</div>
       <ul className="tlx__strands">
@@ -23,10 +29,11 @@ function TLCard({ href, title, strands }: CardProps): React.ReactElement {
 export default function TLCardGrid(): React.ReactElement {
   return (
     <>
-      <div className="tl-section">
+      <div className="tl-section" id="domains" style={{ scrollMarginTop: 'var(--nav-offset)' }}>
         <TLCard
           href="/tl1"
           title="TL1: Knowing Our Students"
+          id="tl1"
           strands={[
             'Relationships',
             'Teacher planning',
@@ -37,6 +44,7 @@ export default function TLCardGrid(): React.ReactElement {
         <TLCard
           href="/tl2"
           title="TL2: Strategies for Learning"
+          id="tl2"
           strands={[
             'Understanding',
             'Multi-dimensional learning',
@@ -48,6 +56,7 @@ export default function TLCardGrid(): React.ReactElement {
         <TLCard
           href="/tl3"
           title="TL3: Evidence for Learning"
+          id="tl3"
           strands={[
             'Reflect on thinking',
             'Evidence of student learning',
@@ -57,6 +66,7 @@ export default function TLCardGrid(): React.ReactElement {
         <TLCard
           href="/tl4"
           title="TL4: Crafting the Curriculum"
+          id="tl4"
           strands={[
             'Risk-taking environment',
             'Deepening lines of inquiry',
@@ -64,7 +74,7 @@ export default function TLCardGrid(): React.ReactElement {
           ]}
         />
       </div>
-      <p className="tl-submit-cta">
+      <p className="tl-submit-cta" id="submit-cta" style={{ scrollMarginTop: 'var(--nav-offset)' }}>
         In addition, if you know of any tech tools not already on this site, you may submit them here:{' '}
         <Link href="/submission">
           <button className="submit-link">Submit New Tech Tool</button>
