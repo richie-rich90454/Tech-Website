@@ -169,99 +169,127 @@
     });
   }
 
-  //* clientLogo Js
+  //* Carousel helper (replaces owlCarousel)
   /**
-   * Client logo carousel
+   * Initialize CSS scroll-snap carousel
    */
-  function clientLogo(): void {
-    if (document.querySelector('.client_logo')) {
-      //client_logo
-      $('.client_logo').owlCarousel({
-        loop: false,
-        margin: 0,
-        autoplay: true,
-        infintite: true,
-        items: 5,
-        responsiveClass: true,
-        responsive: {
-          0: {
-            items: 1,
-          },
-          500: {
-            items: 2,
-          },
-          800: {
-            items: 3,
-          },
-          1000: {
-            items: 4,
-          },
-          1199: {
-            items: 5,
-          },
-        },
+  function initCarousel(
+    containerSelector: string,
+    opts: {
+      items?: number;
+      responsive?: Record<number, { items: number }>;
+      autoplay?: boolean;
+      autoplaySpeed?: number;
+      margin?: number;
+    }
+  ): void {
+    const container: HTMLElement | null = document.querySelector(containerSelector);
+    if (!container) return;
+    // Build track wrapper
+    let track: HTMLElement | null = container.querySelector('.carousel-track');
+    if (!track) {
+      track = document.createElement('div');
+      track.className = 'carousel-track';
+      while (container.firstChild) track.appendChild(container.firstChild);
+      container.appendChild(track);
+    }
+    // Container styles
+    container.style.position = 'relative';
+    // Track styles
+    track.style.display = 'flex';
+    track.style.overflowX = 'auto';
+    track.style.scrollSnapType = 'x mandatory';
+    track.style.scrollBehavior = 'smooth';
+    track.style.scrollbarWidth = 'none';
+    (track.style as any).msOverflowStyle = 'none';
+    // Hide webkit scrollbar
+    const styleId: string = 'cs-' + containerSelector.replace(/[.#\s]/g, '-');
+    if (!document.getElementById(styleId)) {
+      const s: HTMLStyleElement = document.createElement('style');
+      s.id = styleId;
+      s.textContent = containerSelector + ' .carousel-track::-webkit-scrollbar { display:none; }';
+      document.head.appendChild(s);
+    }
+    const margin: number = opts.margin || 0;
+    function applyLayout(): void {
+      const w: number = window.innerWidth;
+      let show: number = opts.items || 1;
+      if (opts.responsive) {
+        const bps: number[] = Object.keys(opts.responsive).map(Number).sort(function (a: number, b: number): number { return a - b; });
+        for (let i: number = bps.length - 1; i >= 0; i--) {
+          if (w >= bps[i]) { show = opts.responsive[bps[i]].items; break; }
+        }
+      }
+      const pct: number = 100 / show;
+      Array.from(track!.children).forEach(function (child: Element, idx: number): void {
+        const el: HTMLElement = child as HTMLElement;
+        el.style.flex = '0 0 calc(' + pct + '% - ' + (margin * (show - 1) / show) + 'px)';
+        el.style.marginRight = (idx < track!.children.length - 1 ? margin : 0) + 'px';
+        el.style.scrollSnapAlign = 'start';
+        el.style.boxSizing = 'border-box';
       });
     }
-  }
-  //* road_active Js
-  /**
-   * Road active carousel
-   */
-  function road_active(): void {
-    if (document.querySelector('.road_active')) {
-      //road_active
-      $('.road_active').owlCarousel({
-        loop: false,
-        margin: 0,
-        autoplay: false,
-        autoplaySpeed: 2000,
-        infintite: false,
-        mouseDrag: true,
-        dragEndSpeed: true,
-        items: 1,
-        responsiveClass: true,
-        responsive: {
-          0: {
-            items: 1,
-          },
-          500: {
-            items: 1,
-          },
-          800: {
-            items: 1,
-          },
-          1000: {
-            items: 1,
-          },
-          1199: {
-            items: 1,
-          },
-        },
-      });
+    applyLayout();
+    window.addEventListener('resize', applyLayout);
+    // Prev / Next buttons
+    const prevBtn: HTMLButtonElement = document.createElement('button');
+    prevBtn.className = 'carousel-prev';
+    prevBtn.innerHTML = '&#10094;';
+    prevBtn.style.cssText = 'position:absolute;top:50%;left:0;transform:translateY(-50%);z-index:2;background:rgba(0,0,0,0.3);color:#fff;border:none;padding:8px 14px;font-size:18px;cursor:pointer;line-height:1;';
+    const nextBtn: HTMLButtonElement = document.createElement('button');
+    nextBtn.className = 'carousel-next';
+    nextBtn.innerHTML = '&#10095;';
+    nextBtn.style.cssText = 'position:absolute;top:50%;right:0;transform:translateY(-50%);z-index:2;background:rgba(0,0,0,0.3);color:#fff;border:none;padding:8px 14px;font-size:18px;cursor:pointer;line-height:1;';
+    prevBtn.addEventListener('click', function (): void { track!.scrollBy({ left: -track!.clientWidth, behavior: 'smooth' }); });
+    nextBtn.addEventListener('click', function (): void { track!.scrollBy({ left: track!.clientWidth, behavior: 'smooth' }); });
+    container.appendChild(prevBtn);
+    container.appendChild(nextBtn);
+    // Autoplay
+    if (opts.autoplay) {
+      const speed: number = opts.autoplaySpeed || 3000;
+      let timer: ReturnType<typeof setInterval> | undefined;
+      function startAutoplay(): void {
+        timer = setInterval(function (): void {
+          const max: number = track!.scrollWidth - track!.clientWidth;
+          if (track!.scrollLeft >= max) {
+            track!.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            track!.scrollBy({ left: track!.clientWidth, behavior: 'smooth' });
+          }
+        }, speed);
+      }
+      function stopAutoplay(): void { if (timer) { clearInterval(timer); timer = undefined; } }
+      startAutoplay();
+      container.addEventListener('mouseenter', stopAutoplay);
+      container.addEventListener('mouseleave', startAutoplay);
     }
   }
 
-  //feature
-  $('.feat_active').owlCarousel({
-    loop: true,
+  //* clientLogo Js
+  function clientLogo(): void {
+    initCarousel('.client_logo', {
+      items: 5,
+      margin: 0,
+      autoplay: true,
+      responsive: { 0: { items: 1 }, 500: { items: 2 }, 800: { items: 3 }, 1000: { items: 4 }, 1199: { items: 5 } },
+    });
+  }
+  //* road_active Js
+  function road_active(): void {
+    initCarousel('.road_active', {
+      items: 1,
+      margin: 0,
+      autoplay: false,
+      responsive: { 0: { items: 1 }, 500: { items: 1 }, 800: { items: 1 }, 1000: { items: 1 }, 1199: { items: 1 } },
+    });
+  }
+  //* feat_active Js
+  initCarousel('.feat_active', {
+    items: 4,
     margin: 10,
-    infintite: true,
-    nav: false,
-    dots: true,
     autoplay: true,
     autoplaySpeed: 2000,
-    items: 4,
-    responsive: {
-      0: {
-        items: 1,
-      },
-      600: {
-        items: 2,
-      },
-      1000: {
-        items: 4,
-      },
-    },
+    responsive: { 0: { items: 1 }, 600: { items: 2 }, 1000: { items: 4 } },
   });
 
   //* CounDown Js
