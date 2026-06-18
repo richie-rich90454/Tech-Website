@@ -67,82 +67,106 @@ export default async function SearchPage({ searchParams }: Props) {
   ];
 
   function getActiveTags(tags: Record<string, boolean>): typeof domTags {
-    return domTags.filter(dt => tags[dt.col]);
+    return domTags.filter((dt) => tags[dt.col]);
   }
 
   return (
     <>
       <Navbar />
 
-      {!query.trim() ? (
-        <>
-          <div id="subhead">
-            <h1>Search Tech Tools</h1>
-          </div>
-          <div id="bar">&nbsp;</div>
-          <div id="all">
-            <br />
-            <div className="techtip-wrap">
-              <div><h4>There is nothing here.</h4></div>
+      <div id="search" />
+      <div id="subhead">
+        <h1 id="search-results">{query ? `Results for: ${query}` : 'Search Tech Tools'}</h1>
+        <form id="search-form" method="get" action="/search" className="search-form">
+          <input
+            type="text"
+            name="query"
+            id="search-input"
+            defaultValue={query}
+            placeholder="Search tech tools by name, description, or tag…"
+            aria-label="Search tech tools"
+          />
+          <button type="submit" id="search-submit">Search</button>
+        </form>
+        {query && (
+          <p className="search-meta">
+            {results.length} {results.length === 1 ? 'result' : 'results'}
+          </p>
+        )}
+        <p className="jump-menu">
+          Jump to:{' '}
+          <a href="#search-results">Results</a>
+          {query && results.length > 0 && (
+            <>
+              {' · '}
+              {results.slice(0, 5).map(({ item }, i) => (
+                <span key={item.id}>
+                  {i > 0 && ' · '}
+                  <a href={`#tool-${item.id}`}>{item.techname}</a>
+                </span>
+              ))}
+            </>
+          )}
+          {' · '}
+          <Link href="/#front">Home</Link>
+        </p>
+      </div>
+      <div id="bar">&nbsp;</div>
+      <div id="all">
+        <div className="techtip-wrap" id="results">
+          {!query ? (
+            <div>
+              <h4>Type a search term above to look up a tool.</h4>
             </div>
-            <br />
-          </div>
-        </>
-      ) : (
-        <>
-          <div id="subhead">
-            <h1>Results for: {query}</h1>
-          </div>
-          <div id="bar">&nbsp;</div>
-          <div id="all">
-            <br />
-            <div className="techtip-wrap">
-              {results.length === 0 ? (
-                <div><h4>There is nothing here.</h4></div>
-              ) : (
-                results.map(({ item }, i) => {
-                  const tags = getActiveTags(domainTags[item.id] || {});
-                  const displayTags = tags.slice(0, 5);
-                  const hiddenTags = tags.slice(5);
-                  return (
-                    <div className="techtip" id={`${i}`} key={item.id}>
-                      <div className="line" id={`${item.id}`}></div>
-                      <h3 className="name">{item.techname}</h3>
-                      <div className="tags">
-                        {displayTags.map(t => (
-                          <Link key={t.col} href={`/${t.tl}#${t.col}`}>
-                            <span className={t.css}>{t.label}</span>
-                          </Link>
-                        ))}
-                        {hiddenTags.length > 0 && (
-                          <span>and {hiddenTags.length} more...</span>
-                        )}
-                      </div>
-                      <div className="info">
-                        <div className="img">
-                          <ImageWithFallback src={`/testuploads/${item.id}.png`} alt={item.techname} />
-                        </div>
-                        <div className="desc">
-                          {item.tl1_desc && <p>TL1: {item.tl1_desc}</p>}
-                          {item.tl2_desc && <p>TL2: {item.tl2_desc}</p>}
-                          {item.tl3_desc && <p>TL3: {item.tl3_desc}</p>}
-                          {item.tl4_desc && <p>TL4: {item.tl4_desc}</p>}
-                          <div className="link">
-                            <ul>
-                              <li><a href={item.link} target="_blank">{item.displaytext}</a></li>
-                            </ul>
-                          </div>
-                        </div>
+          ) : results.length === 0 ? (
+            <div>
+              <h4>No tools match &ldquo;{query}&rdquo;.</h4>
+            </div>
+          ) : (
+            results.map(({ item }) => {
+              const tags = getActiveTags(domainTags[item.id] ?? {});
+              const displayTags = tags.slice(0, 5);
+              const hiddenTags = tags.slice(5);
+              return (
+                <div className="techtip" id={`tool-${item.id}`} key={item.id}>
+                  <div className="line" id={`line-${item.id}`}></div>
+                  <h3 className="name">{item.techname}</h3>
+                  <div className="tags">
+                    {displayTags.map((t) => (
+                      <Link key={t.col} href={`/${t.tl}#${t.col}`}>
+                        <span className={t.css}>{t.label}</span>
+                      </Link>
+                    ))}
+                    {hiddenTags.length > 0 && (
+                      <span className="tags-more">and {hiddenTags.length} more&hellip;</span>
+                    )}
+                  </div>
+                  <div className="info">
+                    <div className="img">
+                      <ImageWithFallback src={`/testuploads/${item.id}.png`} alt={item.techname} />
+                    </div>
+                    <div className="desc">
+                      {item.tl1_desc && <p><b>TL1:</b> {item.tl1_desc}</p>}
+                      {item.tl2_desc && <p><b>TL2:</b> {item.tl2_desc}</p>}
+                      {item.tl3_desc && <p><b>TL3:</b> {item.tl3_desc}</p>}
+                      {item.tl4_desc && <p><b>TL4:</b> {item.tl4_desc}</p>}
+                      <div className="link">
+                        <ul>
+                          <li>
+                            <a href={item.link} target="_blank" rel="noreferrer">
+                              {item.displaytext}
+                            </a>
+                          </li>
+                        </ul>
                       </div>
                     </div>
-                  );
-                })
-              )}
-            </div>
-            <br />
-          </div>
-        </>
-      )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
 
       <ScrollToTopButton />
       <Footer />
