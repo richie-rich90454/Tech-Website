@@ -48,7 +48,9 @@ export default async function SearchPage({ searchParams }: Props) {
     }
   }
 
-  const domTags = [
+  // Build the list of tag pills displayed under each result, in the same
+  // fixed order the strand navigation uses, so lookups are O(1).
+  const domTags: ReadonlyArray<{ col: string; label: string; tl: string; css: string }> = [
     { col: 'R', label: 'Relationships', tl: 'tl1', css: 'n1' },
     { col: 'TP', label: 'Teacher Planning', tl: 'tl1', css: 'n2' },
     { col: 'MT', label: 'Modify Teaching', tl: 'tl1', css: 'n3' },
@@ -66,7 +68,7 @@ export default async function SearchPage({ searchParams }: Props) {
     { col: 'RaAoC', label: 'Responsibility', tl: 'tl4', css: 'n3' },
   ];
 
-  function getActiveTags(tags: Record<string, boolean>): typeof domTags {
+  function getActiveTags(tags: Record<string, boolean>) {
     return domTags.filter((dt) => tags[dt.col]);
   }
 
