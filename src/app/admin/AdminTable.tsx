@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import styles from './AdminTable.module.css';
+import type { DomainRow } from '@/types/db';
 
 type Submission = {
   id: number;
@@ -17,7 +18,7 @@ type Submission = {
   contact: string;
 };
 
-type Domain = Record<string, boolean | number> & { id: number };
+type Domain = DomainRow;
 
 export default function AdminTable({
   subs,
