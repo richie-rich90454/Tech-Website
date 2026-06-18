@@ -1,4 +1,5 @@
 import 'server-only';
+import { unstable_cache } from 'next/cache';
 import { mainDb } from '@/lib/db/main';
 import type { domains } from '@/lib/db/generated/main';
 import type { SubmissionRow, DomainRow } from '@/types/db';
@@ -16,21 +17,64 @@ export interface SubmissionUpdateInput {
   contact?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Cached read paths. Submissions and domains are read on every page render,
+// but they only change when an admin approves/edits. Wrapping the reads in
+// unstable_cache gives us free per-tag invalidation on writes.
+// ---------------------------------------------------------------------------
+const TAGS = ['submissions', 'domains'] as const;
+
+const getAcceptedSubmissionsCached = unstable_cache(
+  async (): Promise<SubmissionRow[]> =>
+    mainDb.submission.findMany({
+      where: { accepted: true },
+      orderBy: { id: 'asc' },
+    }),
+  ['submissions', 'accepted'],
+  { revalidate: 3600, tags: ['submissions'] },
+);
+
+const getAllSubmissionsCached = unstable_cache(
+  async (): Promise<SubmissionRow[]> =>
+    mainDb.submission.findMany({ orderBy: { id: 'desc' } }),
+  ['submissions', 'all'],
+  { revalidate: 3600, tags: ['submissions'] },
+);
+
+const getAllDomainsCached = unstable_cache(
+  async (): Promise<DomainRow[]> =>
+    mainDb.domains.findMany({ orderBy: { id: 'asc' } }),
+  ['domains', 'all'],
+  { revalidate: 3600, tags: ['domains'] },
+);
+
 export async function getAcceptedSubmissions(): Promise<SubmissionRow[]> {
-  return mainDb.submission.findMany({ where: { accepted: true } });
+  return getAcceptedSubmissionsCached();
 }
 
 export async function getAllSubmissions(): Promise<SubmissionRow[]> {
-  return mainDb.submission.findMany({ orderBy: { id: 'desc' } });
+  return getAllSubmissionsCached();
 }
 
 export async function getDomainsByColumns(columns: string[]): Promise<domains[]> {
-  const conditions = columns.map((col) => ({ [col]: true }));
-  return mainDb.domains.findMany({ where: { OR: conditions } });
+  // Cache the full domain map once, filter in memory — the dataset is tiny
+  // (one row per tool) and this avoids cache-key explosion.
+  const all = await getAllDomainsCached();
+  return all.filter((row) => columns.some((c) => (row as unknown as Record<string, unknown>)[c] === true));
 }
 
 export async function getAllDomains(): Promise<DomainRow[]> {
-  return mainDb.domains.findMany();
+  return getAllDomainsCached();
+}
+
+// ---------------------------------------------------------------------------
+// Cache invalidation. Next.js 16 splits the API: `revalidateTag` now requires
+// a cache-life profile, while `updateTag` is the simple "bust this tag" call
+// we use here.
+// ---------------------------------------------------------------------------
+async function invalidateSubmissionCaches(): Promise<void> {
+  const { updateTag } = await import('next/cache');
+  for (const tag of TAGS) updateTag(tag);
 }
 
 export async function getSubmissionById(id: number): Promise<SubmissionRow | null> {
@@ -56,26 +100,35 @@ export interface CreateSubmissionInput {
 }
 
 export async function createSubmission(data: CreateSubmissionInput): Promise<SubmissionRow> {
-  return mainDb.submission.create({ data });
+  const row = await mainDb.submission.create({ data });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function updateSubmission(
   id: number,
   data: SubmissionUpdateInput,
 ): Promise<SubmissionRow> {
-  return mainDb.submission.update({ where: { id }, data });
+  const row = await mainDb.submission.update({ where: { id }, data });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function acceptSubmission(id: number): Promise<SubmissionRow> {
-  return mainDb.submission.update({ where: { id }, data: { accepted: true } });
+  const row = await mainDb.submission.update({ where: { id }, data: { accepted: true } });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function rejectSubmission(id: number): Promise<SubmissionRow> {
-  return mainDb.submission.update({ where: { id }, data: { accepted: false } });
+  const row = await mainDb.submission.update({ where: { id }, data: { accepted: false } });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function deleteSubmission(id: number): Promise<void> {
   await mainDb.submission.delete({ where: { id } });
+  await invalidateSubmissionCaches();
 }
 
 export interface CreateDomainInput {
@@ -98,18 +151,23 @@ export interface CreateDomainInput {
 }
 
 export async function createDomain(data: CreateDomainInput): Promise<DomainRow> {
-  return mainDb.domains.create({ data });
+  const row = await mainDb.domains.create({ data });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function updateDomain(
   id: number,
   data: Partial<Omit<CreateDomainInput, 'id'>>,
 ): Promise<DomainRow> {
-  return mainDb.domains.update({ where: { id }, data });
+  const row = await mainDb.domains.update({ where: { id }, data });
+  await invalidateSubmissionCaches();
+  return row;
 }
 
 export async function deleteDomain(id: number): Promise<void> {
   await mainDb.domains.delete({ where: { id } });
+  await invalidateSubmissionCaches();
 }
 
 export async function getNextSubmissionId(): Promise<number> {
