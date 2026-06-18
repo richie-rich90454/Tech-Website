@@ -605,7 +605,8 @@ footer a:hover { color: var(--color-accent); }
   .techtip .img,
   .techtip .desc,
   .techtip .link { display: block; width: 100%; }
-  .techtip .link { padding-left: 0; padding-top: 20px; }
+  .techtip .link { padding-left: 0; padding-top: 12px; }
+  .techtip .img img { width: 64px; height: 64px; }
 
   .topnav a, .topnav input[type=text] {
     float: none;
