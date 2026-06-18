@@ -37,20 +37,21 @@ export default function LoginForm() {
   return (
     <div id="main">
       <div id="big">
-        <h1>Login</h1>
+        <h1 id="login-heading">Login</h1>
         <div id="login">
-          <h2>
-            You have reached an admin-only access site.<br />
+          <h2 id="login-info">
+            You have reached an admin-only access site.
+            <br />
             If you&apos;re an admin, log in with your credentials.
           </h2>
-          <form method="post" onSubmit={handleSubmit}>
+          <form id="login-form" method="post" onSubmit={handleSubmit}>
             <p>
               <input type="text" name="username" placeholder="Username" required />
             </p>
             <p>
               <input type="password" name="password" placeholder="Password" required />
             </p>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p id="login-error" style={{ color: 'red' }}>{error}</p>}
             <button type="submit" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
