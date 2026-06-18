@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "db:init": "node -e \"require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
-    "db:clear": "Remove-Item prisma/main.db -ErrorAction SilentlyContinue; Remove-Item prisma/web.db -ErrorAction SilentlyContinue; npm run db:init",
+    "db:init": "node -e \"const{join}=require('path');const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
+    "db:clear": "node -e \"const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});\" && npm run db:init",
     "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
     "db:reset": "npm run db:clear && npm run db:seed"
   },
