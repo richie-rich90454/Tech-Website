@@ -121,20 +121,52 @@
 
   //* Magnificpopup js
   /**
-   * Magnific popup for videos
+   * Custom iframe modal (replaces magnificPopup)
    */
   function magnificPopup(): void {
-    if (document.querySelector('.popup-youtube')) {
-      //Video Popup
-      $('.popup-youtube').magnificPopup({
-        disableOn: 700,
-        type: 'iframe',
-        mainClass: 'mfp-fade',
-        removalDelay: 160,
-        preloader: false,
-        fixedContentPos: false,
+    const popupLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('.popup-youtube');
+    if (popupLinks.length === 0) return;
+    let modalOverlay: HTMLElement | null = null;
+    function createModal(href: string): void {
+      removeModal();
+      modalOverlay = document.createElement('div');
+      modalOverlay.className = 'custom-modal-overlay';
+      modalOverlay.addEventListener('click', function (e: Event): void {
+        if (e.target === modalOverlay) removeModal();
       });
+      const modalContent: HTMLDivElement = document.createElement('div');
+      modalContent.className = 'custom-modal-content';
+      const closeBtn: HTMLButtonElement = document.createElement('button');
+      closeBtn.className = 'custom-modal-close';
+      closeBtn.innerHTML = '&times;';
+      closeBtn.addEventListener('click', removeModal);
+      const iframe: HTMLIFrameElement = document.createElement('iframe');
+      iframe.src = href;
+      iframe.className = 'custom-modal-iframe';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('allow', 'autoplay');
+      modalContent.appendChild(closeBtn);
+      modalContent.appendChild(iframe);
+      modalOverlay.appendChild(modalContent);
+      document.body.appendChild(modalOverlay);
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
     }
+    function removeModal(): void {
+      if (modalOverlay) {
+        document.body.removeChild(modalOverlay);
+        modalOverlay = null;
+        document.body.style.overflow = '';
+      }
+    }
+    popupLinks.forEach(function (link: HTMLAnchorElement): void {
+      link.addEventListener('click', function (e: Event): void {
+        e.preventDefault();
+        if (window.innerWidth >= 700) {
+          createModal(link.href);
+        }
+      });
+    });
   }
 
   //* clientLogo Js
