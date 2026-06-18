@@ -1,9 +1,8 @@
 'use client';
-import Link from 'next/link';
-import Script from 'next/script';
 import { useEffect } from 'react';
+import DashHeader from '@/components/web/DashHeader';
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }): React.ReactElement {
   useEffect(() => {
     // Vanilla dropdown toggle (replaces Bootstrap data-toggle="dropdown")
     document.querySelectorAll('[data-toggle="dropdown"]').forEach(el => {
@@ -53,73 +52,48 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </div>
-      <div id="main-wrapper" data-theme="dark" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
-        {/* Header */}
-        <header className="topbar" data-navbarbg="skin6">
-          <nav className="navbar top-navbar navbar-dark">
-            <div className="navbar-header" data-logobg="skin6">
-              <a className="nav-toggler waves-effect waves-dark d-block d-md-none" href="javascript:void(0)">
-                <i className="ti-menu ti-close"></i>
-              </a>
-              <div className="navbar-brand">
-                <b className="logo-icon text-center">
-                  <img src="/images/logo-icon.png" alt="homepage" className="dark-logo" />
-                </b>
-                <b className="text-center text-white" style={{paddingTop:'3px',paddingRight:'50px'}}>IPstress</b>
-              </div>
-            </div>
-            <div className="navbar-collapse collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav float-left mr-auto ml-3 pl-1"></ul>
-              <ul className="navbar-nav float-right">
-                <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">
-                    <img src="/images/logo-icon.png" alt="homepage" className="dark-logo" width="29" />
-                    <span className="ml-2 d-none d-lg-inline-block">
-                      <span className="text-dark">Hello, User!</span>
-                    </span>
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                    <a className="dropdown-item" href="/web/tickets">Inbox</a>
-                    <a className="dropdown-item" href="/web/profile">Profile</a>
-                    <div className="dropdown-divider"></div>
-                    <a className="dropdown-item" href="/web/api/auth/logout">Logout</a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </header>
+      <div
+        id="main-wrapper"
+        data-theme="dark"
+        data-layout="vertical"
+        data-navbarbg="skin6"
+        data-sidebartype="full"
+        data-sidebar-position="fixed"
+        data-header-position="fixed"
+        data-boxed-layout="full"
+      >
+        <DashHeader userName="User" />
         {/* Sidebar */}
         <aside className="left-sidebar" data-sidebarbg="skin5">
           <div className="scroll-sidebar">
             <nav className="sidebar-nav">
               <ul id="sidebarnav">
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/dashboard">Dashboard</Link>
+                  <a className="sidebar-link" href="/web/dashboard">Dashboard</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/hub">Hub</Link>
+                  <a className="sidebar-link" href="/web/hub">Hub</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/plan">Plans</Link>
+                  <a className="sidebar-link" href="/web/plan">Plans</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/tickets">Tickets</Link>
+                  <a className="sidebar-link" href="/web/tickets">Tickets</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/giftcards">Gift Cards</Link>
+                  <a className="sidebar-link" href="/web/giftcards">Gift Cards</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/affiliate">Affiliate</Link>
+                  <a className="sidebar-link" href="/web/affiliate">Affiliate</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/profile">Profile</Link>
+                  <a className="sidebar-link" href="/web/profile">Profile</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/wheel">Wheel</Link>
+                  <a className="sidebar-link" href="/web/wheel">Wheel</a>
                 </li>
                 <li className="sidebar-item">
-                  <Link className="sidebar-link" href="/web/logout">Logout</Link>
+                  <a className="sidebar-link" href="/web/logout">Logout</a>
                 </li>
               </ul>
             </nav>
@@ -129,7 +103,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {children}
           {/* Footer */}
           {/* IPstress Dashboard | Rewritten June 2026 | Next.js 15 + Prisma */}
-          <footer className="footer">© 2023 IPstress</footer>
+          <footer className="footer">© 2026 IPstress</footer>
         </div>
       </div>
     </>

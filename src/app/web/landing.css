@@ -1,4 +1,112 @@
 /* ------------------------------------------------------
+* WebHeader — shared landing-page top nav
+* ------------------------------------------------------ */
+.web-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(6, 9, 44, 0.85);
+  backdrop-filter: saturate(160%) blur(8px);
+  -webkit-backdrop-filter: saturate(160%) blur(8px);
+  border-bottom: 1px solid rgba(229, 244, 255, 0.08);
+}
+.web-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.web-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #e5f4ff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+.web-header__brand:hover { color: #17d984; }
+.web-header__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #17d984 0%, #19c3d9 100%);
+  color: #06092c;
+}
+.web-header__nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.web-header__nav ul {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.web-header__nav a {
+  display: inline-block;
+  padding: 8px 14px;
+  color: rgba(229, 244, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: color 200ms ease, background 200ms ease;
+}
+.web-header__nav a:hover {
+  color: #17d984;
+  background: rgba(229, 244, 255, 0.05);
+}
+.web-header__cta {
+  display: flex;
+  gap: 8px;
+}
+.web-header__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  white-space: nowrap;
+}
+.web-header__btn--ghost {
+  color: #e5f4ff;
+  border: 1px solid rgba(229, 244, 255, 0.25);
+  background: transparent;
+}
+.web-header__btn--ghost:hover {
+  border-color: #17d984;
+  color: #17d984;
+}
+.web-header__btn--solid {
+  background: #17d984;
+  color: #06092c;
+  border: 1px solid #17d984;
+}
+.web-header__btn--solid:hover {
+  background: #0bb87a;
+  border-color: #0bb87a;
+}
+@media (max-width: 720px) {
+  .web-header__nav { display: none; }
+  .web-header__inner { padding: 10px 16px; }
+  .web-header__btn--ghost { display: none; }
+}
+
+/* ------------------------------------------------------
 @File: Default Styles
 @Template Name: DigitMin - Bitcoin & Cryptocurrency HTML Template
 @Author: kitket

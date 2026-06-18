@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import WebHeader from '@/components/web/WebHeader';
 import './landing.css';
 
 export const metadata: Metadata = {
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function WebLayout({ children }: { children: React.ReactNode }): React.ReactElement {
-  return <>{children}</>;
+  return (
+    <>
+      <WebHeader />
+      {children}
+    </>
+  );
 }
