@@ -10,7 +10,7 @@ export default function Navbar(): React.ReactElement {
       <nav id="navbar" aria-label="Primary">
         <ul id="nav">
           <li>
-            <Link href="/"><span>Home</span><span className="nav-underline" aria-hidden /></Link>
+            <Link href="/#front"><span>Home</span><span className="nav-underline" aria-hidden /></Link>
           </li>
           <li>
             <Link href="/tl1"><span>Knowing (TL1)</span><span className="nav-underline" aria-hidden /></Link>
@@ -23,6 +23,9 @@ export default function Navbar(): React.ReactElement {
           </li>
           <li>
             <Link href="/tl4"><span>Crafting (TL4)</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
+          <li>
+            <Link href="/search"><span>Search</span><span className="nav-underline" aria-hidden /></Link>
           </li>
         </ul>
       </nav>
