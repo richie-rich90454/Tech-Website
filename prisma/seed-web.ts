@@ -49,7 +49,7 @@ async function main() {
       cbp: 0,
       paypal_email: '',
       theme: 'default',
-      logo: '/web/dash/assets/images/logo.png',
+      logo: '/images/logo-icon.png',
       stripeSecretKey: '',
     },
   });

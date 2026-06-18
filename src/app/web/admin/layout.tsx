@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </a>
               <div className="navbar-brand">
                 <b className="logo-icon text-center">
-                  <img src="/web/dash/assets/images/logo-icon.png" alt="homepage" className="dark-logo" />
+                  <img src="/images/logo-icon.png" alt="homepage" className="dark-logo" />
                 </b>
                 <b className="text-center text-white" style={{paddingTop:'3px',paddingRight:'50px'}}>IPstress</b>
               </div>
@@ -32,7 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <ul className="navbar-nav float-right">
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">
-                    <img src="/web/dash/assets/images/logo-icon.png" alt="homepage" className="dark-logo" width="29" />
+                    <img src="/images/logo-icon.png" alt="homepage" className="dark-logo" width="29" />
                     <span className="ml-2 d-none d-lg-inline-block">
                       <span className="text-dark">Hello, Admin!</span>
                     </span>
