@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Hind+Guntur:wght@300;400;500;600;700&amp;display=swap");
+
 /* ------------------------------------------------------
 * WebHeader — shared landing-page top nav
 * ------------------------------------------------------ */
@@ -137,7 +139,7 @@ Table of Content:
 /*font Variables*/
 /*Color Variables*/
 /* Button Style */
-@import url("https://fonts.googleapis.com/css2?family=Hind+Guntur:wght@300;400;500;600;700&amp;display=swap");
+
 .theme_btn {
   color: #0d2841;
   text-align: center;
