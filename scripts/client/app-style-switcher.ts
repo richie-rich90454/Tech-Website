@@ -1,11 +1,13 @@
 (function (): void {
   'use strict';
 
-  $(function () {
+  document.addEventListener('DOMContentLoaded', function () {
     function handlelogobg(): void {
-      $('.theme-color .theme-item .theme-link').on('click', function (this: HTMLElement): void {
-        const logobgskin: string | undefined = $(this).attr('data-logobg');
-        $('.topbar .top-navbar .navbar-header').attr('data-logobg', logobgskin ?? '');
+      document.querySelectorAll<HTMLElement>('.theme-color .theme-item .theme-link').forEach(function (el: HTMLElement): void {
+        el.addEventListener('click', function (this: HTMLElement): void {
+          const logobgskin: string | undefined = this.getAttribute('data-logobg') ?? undefined;
+          document.querySelector<HTMLElement>('.topbar .top-navbar .navbar-header')?.setAttribute('data-logobg', logobgskin ?? '');
+        });
       });
     }
     handlelogobg();
@@ -14,26 +16,28 @@
     /* Top navbar Theme Change function Start */
     //****************************
     function handlenavbarbg(): void {
-      if ($('#main-wrapper').attr('data-navbarbg') == 'skin6') {
+      if (document.querySelector<HTMLElement>('#main-wrapper')?.getAttribute('data-navbarbg') == 'skin6') {
         // do this
-        $('.topbar .navbar').addClass('navbar-light');
-        $('.topbar .navbar').removeClass('navbar-dark');
+        document.querySelector<HTMLElement>('.topbar .navbar')?.classList.add('navbar-light');
+        document.querySelector<HTMLElement>('.topbar .navbar')?.classList.remove('navbar-dark');
       } else {
         // do that
       }
-      $('.theme-color .theme-item .theme-link').on('click', function (this: HTMLElement): void {
-        const navbarbgskin: string | undefined = $(this).attr('data-navbarbg');
-        $('#main-wrapper').attr('data-navbarbg', navbarbgskin ?? '');
-        $('.topbar .navbar-collapse').attr('data-navbarbg', navbarbgskin ?? '');
-        if ($('#main-wrapper').attr('data-navbarbg') == 'skin6') {
-          // do this
-          $('.topbar .navbar').addClass('navbar-light');
-          $('.topbar .navbar').removeClass('navbar-dark');
-        } else {
-          // do that
-          $('.topbar .navbar').removeClass('navbar-light');
-          $('.topbar .navbar').addClass('navbar-dark');
-        }
+      document.querySelectorAll<HTMLElement>('.theme-color .theme-item .theme-link').forEach(function (el: HTMLElement): void {
+        el.addEventListener('click', function (this: HTMLElement): void {
+          const navbarbgskin: string | undefined = this.getAttribute('data-navbarbg') ?? undefined;
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-navbarbg', navbarbgskin ?? '');
+          document.querySelector<HTMLElement>('.topbar .navbar-collapse')?.setAttribute('data-navbarbg', navbarbgskin ?? '');
+          if (document.querySelector<HTMLElement>('#main-wrapper')?.getAttribute('data-navbarbg') == 'skin6') {
+            // do this
+            document.querySelector<HTMLElement>('.topbar .navbar')?.classList.add('navbar-light');
+            document.querySelector<HTMLElement>('.topbar .navbar')?.classList.remove('navbar-dark');
+          } else {
+            // do that
+            document.querySelector<HTMLElement>('.topbar .navbar')?.classList.remove('navbar-light');
+            document.querySelector<HTMLElement>('.topbar .navbar')?.classList.add('navbar-dark');
+          }
+        });
       });
     }
     handlenavbarbg();
@@ -42,10 +46,12 @@
     /* Manage sidebar bg color */
     //****************************
     function handlesidebarbg(): void {
-      $('.theme-color .theme-item .theme-link').on('click', function (this: HTMLElement): void {
-        const sidebarbgskin: string | undefined = $(this).attr('data-sidebarbg');
-        $('.left-sidebar').attr('data-sidebarbg', sidebarbgskin ?? '');
-        $('.scroll-sidebar').attr('data-sidebarbg', sidebarbgskin ?? '');
+      document.querySelectorAll<HTMLElement>('.theme-color .theme-item .theme-link').forEach(function (el: HTMLElement): void {
+        el.addEventListener('click', function (this: HTMLElement): void {
+          const sidebarbgskin: string | undefined = this.getAttribute('data-sidebarbg') ?? undefined;
+          document.querySelector<HTMLElement>('.left-sidebar')?.setAttribute('data-sidebarbg', sidebarbgskin ?? '');
+          document.querySelector<HTMLElement>('.scroll-sidebar')?.setAttribute('data-sidebarbg', sidebarbgskin ?? '');
+        });
       });
     }
     handlesidebarbg();
@@ -54,13 +60,13 @@
     /* sidebar position */
     //****************************
     function handlesidebarposition(): void {
-      $('#sidebar-position').change(function (this: HTMLElement): void {
-        if ($(this).is(':checked')) {
-          $('#main-wrapper').attr('data-sidebar-position', 'fixed');
-          $('.topbar .top-navbar .navbar-header').attr('data-navheader', 'fixed');
+      document.querySelector<HTMLInputElement>('#sidebar-position')?.addEventListener('change', function (this: HTMLElement): void {
+        if ((this as HTMLInputElement).checked) {
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-sidebar-position', 'fixed');
+          document.querySelector<HTMLElement>('.topbar .top-navbar .navbar-header')?.setAttribute('data-navheader', 'fixed');
         } else {
-          $('#main-wrapper').attr('data-sidebar-position', 'absolute');
-          $('.topbar .top-navbar .navbar-header').attr('data-navheader', 'relative');
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-sidebar-position', 'absolute');
+          document.querySelector<HTMLElement>('.topbar .top-navbar .navbar-header')?.setAttribute('data-navheader', 'relative');
         }
       });
     }
@@ -70,11 +76,11 @@
     /* Header position */
     //****************************
     function handleheaderposition(): void {
-      $('#header-position').change(function (this: HTMLElement): void {
-        if ($(this).is(':checked')) {
-          $('#main-wrapper').attr('data-header-position', 'fixed');
+      document.querySelector<HTMLInputElement>('#header-position')?.addEventListener('change', function (this: HTMLElement): void {
+        if ((this as HTMLInputElement).checked) {
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-header-position', 'fixed');
         } else {
-          $('#main-wrapper').attr('data-header-position', 'relative');
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-header-position', 'relative');
         }
       });
     }
@@ -84,11 +90,11 @@
     /* sidebar position */
     //****************************
     function handleboxedlayout(): void {
-      $('#boxed-layout').change(function (this: HTMLElement): void {
-        if ($(this).is(':checked')) {
-          $('#main-wrapper').attr('data-boxed-layout', 'boxed');
+      document.querySelector<HTMLInputElement>('#boxed-layout')?.addEventListener('change', function (this: HTMLElement): void {
+        if ((this as HTMLInputElement).checked) {
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-boxed-layout', 'boxed');
         } else {
-          $('#main-wrapper').attr('data-boxed-layout', 'full');
+          document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-boxed-layout', 'full');
         }
       });
     }
@@ -98,27 +104,27 @@
     /* Header position */
     //****************************
     function handlethemeview(): void {
-      $('#theme-view').change(function (this: HTMLElement): void {
-        if ($(this).is(':checked')) {
-          $('body').attr('data-theme', 'dark');
+      document.querySelector<HTMLInputElement>('#theme-view')?.addEventListener('change', function (this: HTMLElement): void {
+        if ((this as HTMLInputElement).checked) {
+          document.body.setAttribute('data-theme', 'dark');
         } else {
-          $('body').attr('data-theme', 'light');
+          document.body.setAttribute('data-theme', 'light');
         }
       });
     }
     handlethemeview();
 
-    const setsidebartype = function (this: Window): void {
-      const width = window.innerWidth > 0 ? window.innerWidth : this.screen.width;
+    const setsidebartype = function (): void {
+      const width = window.innerWidth > 0 ? window.innerWidth : window.screen.width;
       if (width < 1170) {
-        $('#main-wrapper').attr('data-sidebartype', 'mini-sidebar');
-        $('#main-wrapper').addClass('mini-sidebar');
+        document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-sidebartype', 'mini-sidebar');
+        document.querySelector<HTMLElement>('#main-wrapper')?.classList.add('mini-sidebar');
       } else {
-        $('#main-wrapper').attr('data-sidebartype', 'full');
-        $('#main-wrapper').removeClass('mini-sidebar');
+        document.querySelector<HTMLElement>('#main-wrapper')?.setAttribute('data-sidebartype', 'full');
+        document.querySelector<HTMLElement>('#main-wrapper')?.classList.remove('mini-sidebar');
       }
     };
-    $(window).ready(setsidebartype);
-    $(window).on('resize', setsidebartype);
+    setsidebartype();
+    window.addEventListener('resize', setsidebartype);
   });
 })();
