@@ -75,6 +75,20 @@ export default function SubmissionForm() {
       {/* submission form · richie-rich90454 · June 2026 */}
       <div id="subhead">
         <h1 id="submission-heading">Submit A New Tech Tool</h1>
+        <p className="jump-menu">
+          Jump to:{' '}
+          <a href="#tool-name">Tool Name</a>
+          {' · '}
+          <a href="#tool-link">Link</a>
+          {' · '}
+          <a href="#descriptions">Descriptions</a>
+          {' · '}
+          <a href="#domains">Domains</a>
+          {' · '}
+          <a href="#screenshot">Screenshot</a>
+          {' · '}
+          <Link href="/#front">Home</Link>
+        </p>
       </div>
       <div id="bar">&nbsp;</div>
       <div id="all">
