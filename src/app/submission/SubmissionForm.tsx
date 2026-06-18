@@ -150,7 +150,6 @@ export default function SubmissionForm() {
           
           <input type="submit" value={submitting ? 'Submitting...' : 'Submit'} disabled={submitting} className="submit-btn"/>
         </form>
-        <br />
       </div>
     </>
   );
