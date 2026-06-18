@@ -4,7 +4,8 @@
   'use strict';
 
   //* Navbar Fixed
-  const top_offset: number = $('.sticky-menu').height()! - 10;
+  const stickyMenuEl: HTMLElement | null = document.querySelector('.sticky-menu');
+  const top_offset: number = stickyMenuEl ? stickyMenuEl.offsetHeight - 10 : 0;
   $('.main-menu nav ul').onePageNav({
     currentClass: 'active',
     scrollOffset: top_offset,
@@ -14,13 +15,16 @@
    * Fixed navbar on scroll
    */
   function navbarFixed(): void {
-    if ($('.sticky-menu').length) {
-      $(window).on('scroll', function (): void {
-        const scroll: number = $(window).scrollTop()!;
-        if (scroll >= 295) {
-          $('.sticky-menu').addClass('navbar_fixed');
-        } else {
-          $('.sticky-menu').removeClass('navbar_fixed');
+    if (document.querySelector('.sticky-menu')) {
+      window.addEventListener('scroll', function (): void {
+        const scroll: number = window.scrollY || document.documentElement.scrollTop;
+        const stickyMenu = document.querySelector('.sticky-menu') as HTMLElement;
+        if (stickyMenu) {
+          if (scroll >= 295) {
+            stickyMenu.classList.add('navbar_fixed');
+          } else {
+            stickyMenu.classList.remove('navbar_fixed');
+          }
         }
       });
     }
@@ -35,7 +39,7 @@
    * Counter up animation
    */
   function counterUp(): void {
-    if ($('.counter_area, .software_count').length) {
+    if (document.querySelector('.counter_area, .software_count')) {
       $('.counter').counterUp({
         delay: 10,
         time: 400,
@@ -48,7 +52,7 @@
    * Magnific popup for videos
    */
   function magnificPopup(): void {
-    if ($('.popup-youtube').length) {
+    if (document.querySelector('.popup-youtube')) {
       //Video Popup
       $('.popup-youtube').magnificPopup({
         disableOn: 700,
@@ -66,7 +70,7 @@
    * Client logo carousel
    */
   function clientLogo(): void {
-    if ($('.client_logo').length) {
+    if (document.querySelector('.client_logo')) {
       //client_logo
       $('.client_logo').owlCarousel({
         loop: false,
@@ -100,7 +104,7 @@
    * Road active carousel
    */
   function road_active(): void {
-    if ($('.road_active').length) {
+    if (document.querySelector('.road_active')) {
       //road_active
       $('.road_active').owlCarousel({
         loop: false,
@@ -161,7 +165,7 @@
    * Countdown timer
    */
   function counDown(): void {
-    if ($('.donations_details').length) {
+    if (document.querySelector('.donations_details')) {
       $('.timer').dsCountDown({
         endDate: new Date('December 24, 2020 23:59:00'),
       });
@@ -173,7 +177,7 @@
    * Gallery isotope filter
    */
   function gallery_isotope(): void {
-    if ($('.grid_gallery_area').length) {
+    if (document.querySelector('.grid_gallery_area')) {
       // Activate isotope in container
       $('.grid_gallery_item_inner').imagesLoaded(function (): void {
         $('.grid_gallery_item_inner').isotope({
@@ -182,19 +186,25 @@
       });
 
       // Add isotope click function
-      $('.gallery_filter li').on('click', function (this: HTMLElement): boolean {
-        $('.gallery_filter li').removeClass('active');
-        $(this).addClass('active');
-        const selector: string | undefined = $(this).attr('data-filter');
-        $('.grid_gallery_item_inner').isotope({
-          filter: selector,
-          animationOptions: {
-            duration: 450,
-            easing: 'linear',
-            queue: false,
-          },
+      const filterLis = document.querySelectorAll('.gallery_filter li');
+      filterLis.forEach(function (li: Element): void {
+        li.addEventListener('click', function (e: Event): void {
+          filterLis.forEach(function (l: Element): void {
+            l.classList.remove('active');
+          });
+          li.classList.add('active');
+          const selector: string | undefined =
+            (li as HTMLElement).dataset.filter || (li as HTMLElement).getAttribute('data-filter') || undefined;
+          $('.grid_gallery_item_inner').isotope({
+            filter: selector,
+            animationOptions: {
+              duration: 450,
+              easing: 'linear',
+              queue: false,
+            },
+          });
+          e.preventDefault();
         });
-        return false;
       });
 
       //*  Simple LightBox js
@@ -203,14 +213,15 @@
   }
 
   //*  Google map js
-  if ($('#mapBox').length) {
-    const $lat: number = $('#mapBox').data('lat');
-    const $lon: number = $('#mapBox').data('lon');
-    const $zoom: number = $('#mapBox').data('zoom');
-    const $marker: string = $('#mapBox').data('marker');
-    const $info: string = $('#mapBox').data('info');
-    const $markerLat: number = $('#mapBox').data('mlat');
-    const $markerLon: number = $('#mapBox').data('mlon');
+  const mapBoxEl: HTMLElement | null = document.querySelector('#mapBox');
+  if (mapBoxEl) {
+    const $lat: number = parseFloat(mapBoxEl.dataset.lat || '0');
+    const $lon: number = parseFloat(mapBoxEl.dataset.lon || '0');
+    const $zoom: number = parseInt(mapBoxEl.dataset.zoom || '0', 10);
+    const $marker: string = mapBoxEl.dataset.marker || '';
+    const $info: string = mapBoxEl.dataset.info || '';
+    const $markerLat: number = parseFloat(mapBoxEl.dataset.mlat || '0');
+    const $markerLon: number = parseFloat(mapBoxEl.dataset.mlon || '0');
     const map = new GMaps({
       el: '#mapBox',
       lat: $lat,
@@ -423,23 +434,20 @@
    * Scroll to top button
    */
   function scrollToTop(): void {
-    if ($('.scroll-top').length) {
-      $(window).on('scroll', function (this: Window): void {
-        if ($(this).scrollTop()! > 200) {
-          $('.scroll-top').fadeIn();
+    const scrollTopEl: HTMLElement | null = document.querySelector('.scroll-top');
+    if (scrollTopEl) {
+      window.addEventListener('scroll', function (): void {
+        const scroll: number = window.scrollY || document.documentElement.scrollTop;
+        if (scroll > 200) {
+          scrollTopEl.style.display = 'block';
         } else {
-          $('.scroll-top').fadeOut();
+          scrollTopEl.style.display = 'none';
         }
       });
       //Click event to scroll to top
-      $('.scroll-top').on('click', function (): boolean {
-        $('html, body').animate(
-          {
-            scrollTop: 0,
-          },
-          1000
-        );
-        return false;
+      scrollTopEl.addEventListener('click', function (e: Event): void {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        e.preventDefault();
       });
     }
   }
@@ -448,7 +456,7 @@
    * Nice select
    */
   function nice_Select(): void {
-    if ($('.post_select').length) {
+    if (document.querySelector('.post_select')) {
       $('select').niceSelect();
     }
   }
@@ -457,10 +465,10 @@
    * Preloader
    */
   function preloader(): void {
-    if ($('#preloader').length) {
-      $(window).on('load', function (): void {
-        $('#preloader').fadeOut();
-        $('#preloader').delay(500).fadeOut('slow');
+    const preloaderEl: HTMLElement | null = document.querySelector('#preloader');
+    if (preloaderEl) {
+      window.addEventListener('load', function (): void {
+        preloaderEl.style.display = 'none';
       });
     }
   }
