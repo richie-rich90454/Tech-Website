@@ -92,9 +92,8 @@ export default function SubmissionForm() {
       </div>
       <div id="bar">&nbsp;</div>
       <div id="all">
-        <br />
         {errors.length > 0 && (
-          <div style={{ color: 'red', marginBottom: '1rem' }}>
+          <div id="submission-errors" style={{ color: 'red', marginBottom: '1rem' }}>
             {errors.map((e, i) => <p key={i}>{e}</p>)}
           </div>
         )}
