@@ -2,8 +2,11 @@
 import Footer from '@/components/Footer';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
-import { mainDb } from '@/lib/db/main';
-import { createFuse } from '@/lib/search';
+import {
+  getAcceptedSubmissions,
+  getAllDomains,
+} from '@/server/queries/submissions';
+import { getFuse } from '@/lib/search';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
