@@ -83,16 +83,7 @@ body *{
 	padding:50px 0px;
 }
 
-#front img{
-	width: 105%;
-	filter: blur(10px);
-	position: absolute;
-	top: 0;
-	left:-10px;
-	overflow: hidden;
-	display: block;
-	z-index:-10;
-}
+
 
 #front h1{
 	position: relative;
