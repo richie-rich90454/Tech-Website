@@ -119,7 +119,7 @@ export default function SubmissionForm() {
           <h2>TL4: Crafting the Curriculum Description:</h2>
           <textarea name="tl4_desc" className="l" form="form" placeholder="TL4 Description..."/>
           
-          <h2>TL1 Domains:</h2>
+          <h2 id="domains">TL1 Domains:</h2>
           <div className="domains">{tl1Domains.map(d => (
             <label key={d.name}><input type="checkbox" name={d.name} value="true"/>{d.label}</label>
           ))}</div>
