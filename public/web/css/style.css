@@ -30,7 +30,7 @@ Table of Content:
 /*Color Variables*/
 /* Button Style */
 @import url(bootstrap.min.css);
-@import url("../../../use.fontawesome.com/releases/v5.5.0/css/all.css");
+@import url('../../../use.fontawesome.com/releases/v5.5.0/css/all.css');
 @import url(font-awesome.min.css);
 @import url(../vendors/flat-icon/flaticon.css);
 @import url(../vendors/animate-css/animate.css);
@@ -40,11 +40,13 @@ Table of Content:
 @import url(../vendors/bootstrap-selector/nice-select.css);
 @import url(../vendors/lightbox/simpleLightbox.css);
 @import url(../vendors/meanMenu/meanmenu.css);
-@import url("https://fonts.googleapis.com/css2?family=Hind+Guntur:wght@300;400;500;600;700&amp;display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Hind+Guntur:wght@300;400;500;600;700&amp;display=swap');
 .theme_btn {
   color: #0d2841;
   text-align: center;
-  font: 600 16px/1 "Hind Guntur", sans-serif;
+  font:
+    600 16px/1 'Hind Guntur',
+    sans-serif;
   display: inline-block;
   padding: 12px 25px 8px 25px;
   background: #17d984;
@@ -53,13 +55,15 @@ Table of Content:
   cursor: pointer;
   transition: all 300ms linear 0s;
 }
-.theme_btn:hover, .theme_btn:focus {
+.theme_btn:hover,
+.theme_btn:focus {
   color: #e5f4ff;
   background: transparent;
   border: 2px solid #e5f4ff;
 }
 
-.tb_2:hover, .tb_2:focus {
+.tb_2:hover,
+.tb_2:focus {
   color: #06092c;
   background: transparent;
   border: 2px solid #06092c;
@@ -72,7 +76,8 @@ Table of Content:
   padding: 15px 30px 9px 30px;
   text-align: center;
 }
-.b-btn:hover, .b-btn:focus {
+.b-btn:hover,
+.b-btn:focus {
   background: #17d984;
   color: #e5f4ff;
   border: 2px solid #17d984;
@@ -82,7 +87,8 @@ Table of Content:
   border: 2px solid #06092c;
   color: #06092c;
 }
-.btn_2:hover, .btn_2:focus {
+.btn_2:hover,
+.btn_2:focus {
   background: #17d984;
   color: #06092c;
   border: 2px solid #17d984;
@@ -101,7 +107,9 @@ Table of Content:
 }
 .title h2 {
   color: #e5f4ff;
-  font: 700 36px/50px "Hind Guntur", sans-serif;
+  font:
+    700 36px/50px 'Hind Guntur',
+    sans-serif;
   padding-bottom: 15px;
 }
 .title h2 span {
@@ -109,7 +117,9 @@ Table of Content:
 }
 .title p {
   color: #e5f4ff;
-  font: 400 16px/28px "Hind Guntur", sans-serif;
+  font:
+    400 16px/28px 'Hind Guntur',
+    sans-serif;
   margin: 0 auto;
 }
 
@@ -138,7 +148,8 @@ Table of Content:
   -ms-backface-visibility: hidden;
   animation: TopToBottom 0.3s forwards;
 }
-.scroll-top:hover i:before, .scroll-top:focus i:before {
+.scroll-top:hover i:before,
+.scroll-top:focus i:before {
   animation: BottomToTop 0.3s forwards;
 }
 
@@ -150,7 +161,7 @@ Table of Content:
   width: 100%;
   height: 100%;
   z-index: 999999;
-  background: white url("../images/preloader.html") no-repeat center;
+  background: white url('../images/preloader.html') no-repeat center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,20 +170,27 @@ Table of Content:
 /*----------------------------------------------------*/
 /*Prefix Styles*/
 body {
-  font-family: "Hind Guntur", sans-serif;
+  font-family: 'Hind Guntur', sans-serif;
   /*Section Fix*/
   /*Ancore*/
 }
-body h1, body h2, body h3, body h4, body h5, body h6 {
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
   color: #e5f4ff;
-  font-family: "Hind Guntur", sans-serif;
+  font-family: 'Hind Guntur', sans-serif;
   margin: 0;
   font-weight: 700;
 }
 body p {
   color: #e5f4ff;
   margin: 0;
-  font: 400 16px/28px "Hind Guntur", sans-serif;
+  font:
+    400 16px/28px 'Hind Guntur',
+    sans-serif;
 }
 body ul {
   margin: 0;
@@ -181,7 +199,9 @@ body ul {
 body ul li {
   list-style: none;
 }
-body section.row, body header.row, body footer.row {
+body section.row,
+body header.row,
+body footer.row {
   margin: 0;
 }
 body #success {
@@ -196,14 +216,26 @@ body iframe {
 body i:before {
   margin-left: 0px !important;
 }
-body a, body .btn, body button {
+body a,
+body .btn,
+body button {
   outline: none;
   transition: all 300ms linear 0s;
 }
-body a:before, body a:after, body .btn:before, body .btn:after, body button:before, body button:after {
+body a:before,
+body a:after,
+body .btn:before,
+body .btn:after,
+body button:before,
+body button:after {
   transition: all 300ms linear 0s;
 }
-body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus, body button:hover {
+body a:focus,
+body a:hover,
+body .btn:focus,
+body .btn:hover,
+body button:focus,
+body button:hover {
   outline: none;
   text-decoration: none;
   transition: all 300ms linear 0s;
@@ -445,7 +477,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .header_area .main-menu nav li a {
   color: #e5f4ff;
-  font: 600 14px/1 "Hind Guntur", sans-serif;
+  font:
+    600 14px/1 'Hind Guntur',
+    sans-serif;
   display: block;
   padding: 26px 0 14px 0;
 }
@@ -495,7 +529,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   background-image: -ms-linear-gradient(41deg, #0d0f2d 0%, #101230 100%);
 }
 .banner_area::before {
-  content: "";
+  content: '';
   position: absolute;
   background: url(../images/banner/ban_shap1.png) no-repeat left bottom;
   max-width: 982px;
@@ -508,7 +542,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .banner_area .banner_content h1 {
   color: #e5f4ff;
-  font: 700 60px/70px "Hind Guntur", sans-serif;
+  font:
+    700 60px/70px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 30px;
 }
 .banner_area .banner_content h1 span {
@@ -516,7 +552,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .banner_area .banner_content p {
   color: #e5f4ff;
-  font: 400 18px/28px "Hind Guntur", sans-serif;
+  font:
+    400 18px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 35px;
 }
 .banner_area .banner_content .btn_list li {
@@ -540,7 +578,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   overflow: hidden;
 }
 .ba_2::before {
-  content: "";
+  content: '';
   position: absolute;
   background: url(../images/banner/ban_shap2.png) no-repeat left bottom;
   max-width: 1152px;
@@ -567,7 +605,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   position: relative;
 }
 .our_mission_area .mission_text::before {
-  content: "";
+  content: '';
   background: url(../images/mission/mis_shap_bg1.png);
   position: absolute;
   left: 7px;
@@ -582,7 +620,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .our_mission_area .mission_text h5 {
   color: #19c3d9;
-  font: 600 22px/50px "Hind Guntur", sans-serif;
+  font:
+    600 22px/50px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 10px;
 }
 .our_mission_area .mt_1::before {
@@ -639,7 +679,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   z-index: 6;
 }
 .start_mining_area .mining_text::before {
-  content: "";
+  content: '';
   position: absolute;
   background: url(../images/start/icon1.png) no-repeat;
   width: 36px;
@@ -651,34 +691,45 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .start_mining_area .mining_text h3 {
   color: #e5f4ff;
-  font: 500 35px/28px "Hind Guntur", sans-serif;
+  font:
+    500 35px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 10px;
 }
 .start_mining_area .mining_text h3 span {
   float: right;
-  font: 500 18px/35px "Hind Guntur", sans-serif;
+  font:
+    500 18px/35px 'Hind Guntur',
+    sans-serif;
 }
 .start_mining_area .mining_text span:nth-child(2) {
   color: #e5f4ff;
-  font: 500 16px/28px "Hind Guntur", sans-serif;
+  font:
+    500 16px/28px 'Hind Guntur',
+    sans-serif;
   display: inline-block;
   margin-right: 30px;
   margin-bottom: 60px;
 }
 .start_mining_area .mining_text span:nth-child(3) {
   color: #17d984;
-  font: 400 14px/28px "Hind Guntur", sans-serif;
+  font:
+    400 14px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 60px;
 }
 .start_mining_area .mining_text a {
   color: #e5f4ff;
-  font: 700 16px/26px "Hind Guntur", sans-serif;
+  font:
+    700 16px/26px 'Hind Guntur',
+    sans-serif;
   display: block;
 }
 .start_mining_area .mining_text a i {
   font-size: 12px;
 }
-.start_mining_area .mining_text a:hover, .start_mining_area .mining_text a:focus {
+.start_mining_area .mining_text a:hover,
+.start_mining_area .mining_text a:focus {
   color: #17d984;
 }
 .start_mining_area .mt_3::before {
@@ -709,7 +760,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .make_bitcoin::before {
   position: absolute;
-  content: "";
+  content: '';
   background: url(../images/invest/round_shap2.png) no-repeat;
   left: 105px;
   width: 86px;
@@ -720,7 +771,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .make_bitcoin::after {
   position: absolute;
-  content: "";
+  content: '';
   background: url(../images/invest/round_shap3.png) no-repeat;
   right: 105px;
   width: 86px;
@@ -773,7 +824,8 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 .mia_2 .title p {
   color: #5a6d92;
 }
-.mia_2 .mining_text h3, .mia_2 .mining_text h6 {
+.mia_2 .mining_text h3,
+.mia_2 .mining_text h6 {
   color: #e9915a;
 }
 
@@ -817,7 +869,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .popular_feature_area .feature_box h5 {
   color: #19c3d9;
-  font: 500 22px/28px "Hind Guntur", sans-serif;
+  font:
+    500 22px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 15px;
 }
 .popular_feature_area .owl-dots {
@@ -844,7 +898,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   overflow: hidden;
 }
 .our_roadmap_area::before {
-  content: "";
+  content: '';
   position: absolute;
   background: url(../images/road/dot_shape.png) no-repeat;
   left: 0;
@@ -865,7 +919,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   padding-bottom: 108px;
 }
 .our_roadmap_area .road_text:before {
-  content: "";
+  content: '';
   position: absolute;
   border-radius: 50%;
   background-color: #373a6a;
@@ -876,7 +930,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   z-index: 2;
 }
 .our_roadmap_area .road_text::after {
-  content: "";
+  content: '';
   position: absolute;
   background-color: rgba(242, 249, 255, 0.2);
   left: 8px;
@@ -887,11 +941,15 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .our_roadmap_area .road_text h6 {
   color: #e5f4ff;
-  font: 700 18px/28px "Hind Guntur", sans-serif;
+  font:
+    700 18px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 5px;
 }
 .our_roadmap_area .road_text p {
-  font: 500 14px/26px "Hind Guntur", sans-serif;
+  font:
+    500 14px/26px 'Hind Guntur',
+    sans-serif;
 }
 .our_roadmap_area .road_text .border_line {
   border: 1px solid rgba(242, 249, 255, 0.2);
@@ -980,7 +1038,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   position: relative;
 }
 .what_say_area .client_box .client_img .c_img::before {
-  content: "";
+  content: '';
   position: absolute;
   background: #007aff;
   width: 100%;
@@ -1005,11 +1063,15 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .what_say_area .client_box .client_img h6 {
   color: #e5f4ff;
-  font: 700 16px/26px "Hind Guntur", sans-serif;
+  font:
+    700 16px/26px 'Hind Guntur',
+    sans-serif;
 }
 .what_say_area .client_box .client_img a {
   color: #e5f4ff;
-  font: 400 16px/26px "Hind Guntur", sans-serif;
+  font:
+    400 16px/26px 'Hind Guntur',
+    sans-serif;
   display: inline-block;
 }
 .what_say_area .client_box .client_text {
@@ -1022,7 +1084,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .what_say_area .client_box .client_text p {
   color: #06092c;
-  font: 600 16px/28px "Hind Guntur", sans-serif;
+  font:
+    600 16px/28px 'Hind Guntur',
+    sans-serif;
 }
 
 /*----------------------------------------------------*/
@@ -1044,12 +1108,16 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .team_area .img_box h5 {
   color: #e5f4ff;
-  font: 700 20px/28px "Hind Guntur", sans-serif;
+  font:
+    700 20px/28px 'Hind Guntur',
+    sans-serif;
   margin-top: 40px;
 }
 .team_area .img_box span {
   color: #697080;
-  font: 400 20px/28px "Hind Guntur", sans-serif;
+  font:
+    400 20px/28px 'Hind Guntur',
+    sans-serif;
   margin-top: 10px;
 }
 .team_area .ib_2 {
@@ -1066,7 +1134,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .faq_area::before {
   position: absolute;
-  content: "";
+  content: '';
   background: url(../images/invest/plane_shap5.png) no-repeat;
   width: 74px;
   height: 74px;
@@ -1077,7 +1145,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .faq_area::after {
   position: absolute;
-  content: "";
+  content: '';
   background: url(../images/invest/round_shap4.png) no-repeat;
   width: 74px;
   height: 74px;
@@ -1112,7 +1180,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .faq_area .faq_desc h5 {
   color: #e5f4ff;
-  font: 600 20px/28px "Hind Guntur", sans-serif;
+  font:
+    600 20px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 10px;
 }
 .faq_area .faq_desc p {
@@ -1185,7 +1255,7 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .footer_area .footer_widget .fot_list li a::before {
   position: absolute;
-  content: "";
+  content: '';
   border: 1px dashed #4a7497;
   padding: 10px 10px;
   line-height: 1;
@@ -1205,7 +1275,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .footer_area .footer_widget h5 {
   color: #e5f4ff;
-  font: 700 25px/28px "Hind Guntur", sans-serif;
+  font:
+    700 25px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 40px;
   margin-top: 23px;
 }
@@ -1232,7 +1304,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .footer_area .footer_widget .cta_list li a {
   color: #e5f4ff;
-  font: 600 16px/28px "Hind Guntur", sans-serif;
+  font:
+    600 16px/28px 'Hind Guntur',
+    sans-serif;
   margin-bottom: 20px;
   display: inline-block;
 }
@@ -1251,7 +1325,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
 }
 .footer_area .copy_right a {
   color: #e5f4ff;
-  font: 400 16px/28px "Hind Guntur", sans-serif;
+  font:
+    400 16px/28px 'Hind Guntur',
+    sans-serif;
 }
 
 .fa_2 {
@@ -1316,7 +1392,9 @@ body a:focus, body a:hover, body .btn:focus, body .btn:hover, body button:focus,
   }
 
   .title h2 {
-    font: 700 30px/50px "Hind Guntur", sans-serif;
+    font:
+      700 30px/50px 'Hind Guntur',
+      sans-serif;
   }
 
   .our_mission_area .mission_text {

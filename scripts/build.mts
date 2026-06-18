@@ -23,10 +23,11 @@ async function build(): Promise<void> {
     await esbuild.build({
       entryPoints: [entry.in],
       outfile: entry.out + '.js',
-      bundle: false,
+      bundle: true,
       minify: false,
       format: 'iife',
       target: 'es2015',
+      external: ['bootstrap', 'jquery', 'popper.js'],
     });
     console.log(`✓ Built ${entry.in} → ${entry.out}.js`);
   }
