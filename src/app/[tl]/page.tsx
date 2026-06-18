@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { tlConfigs } from '@/lib/tl-config';
-import { mainDb } from '@/lib/db/main';
+import {
+  getAcceptedSubmissions,
+  getDomainsByColumns,
+} from '@/server/queries/submissions';
 import TLPageClient from './TLPageClient';
 
 export const dynamic = 'force-dynamic';
@@ -31,23 +34,23 @@ export default async function TLPage({ params, searchParams }: Props) {
   // Parse checked state: absence or "1" means checked; "0" means unchecked
   const checked = config.strands.map((s) => sp[s.checkboxName] !== '0');
 
-  const subs = await mainDb.submission.findMany({ where: { accepted: true } });
+  // Cached reads — submissions list and domain map are both stable until an
+  // admin updates them, so the per-request cost is just a Map lookup.
+  const [subs, domainEntries] = await Promise.all([
+    getAcceptedSubmissions(),
+    getDomainsByColumns(config.domainColumns),
+  ]);
 
-  const orConditions = config.domainColumns.map((col) => ({ [col]: true }));
-  const domainEntries = await mainDb.domains.findMany({
-    where: { OR: orConditions },
-  });
-
-  const domainIds = new Set(domainEntries.map((d) => d.id));
+  const domainById = new Map(domainEntries.map((d) => [d.id, d]));
 
   const toolsWithTags = subs
-    .filter((sub) => domainIds.has(sub.id))
     .map((sub) => {
-      const { id: _id, ...tagBooleans } = domainEntries.find(
-        (d) => d.id === sub.id,
-      )!;
-      return { ...sub, tags: tagBooleans as Record<string, boolean> };
-    });
+      const entry = domainById.get(sub.id);
+      if (!entry) return null;
+      const { id: _id, ...tagBooleans } = entry as unknown as { id: number } & Record<string, boolean>;
+      return { ...sub, tags: tagBooleans };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null);
 
   return (
     <TLPageClient
