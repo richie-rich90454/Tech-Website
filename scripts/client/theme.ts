@@ -83,15 +83,40 @@
   }
   //* Counter Js
   /**
-   * Counter up animation
+   * Counter up animation with IntersectionObserver
    */
   function counterUp(): void {
-    if (document.querySelector('.counter_area, .software_count')) {
-      $('.counter').counterUp({
-        delay: 10,
-        time: 400,
-      });
-    }
+    const counters: NodeListOf<HTMLElement> = document.querySelectorAll('.counter');
+    if (counters.length === 0) return;
+    const counterObserver: IntersectionObserver = new IntersectionObserver(
+      function (entries: IntersectionObserverEntry[]): void {
+        entries.forEach(function (entry: IntersectionObserverEntry): void {
+          if (entry.isIntersecting) {
+            const el: HTMLElement = entry.target as HTMLElement;
+            const target: number = parseFloat(el.textContent || '0');
+            const duration: number = 400;
+            const delay: number = 10;
+            const steps: number = Math.floor(duration / delay);
+            let current: number = 0;
+            const increment: number = target / steps;
+            const timer: ReturnType<typeof setInterval> = setInterval(function (): void {
+              current += increment;
+              if (current >= target) {
+                el.textContent = String(Math.floor(target));
+                clearInterval(timer);
+              } else {
+                el.textContent = String(Math.floor(current));
+              }
+            }, delay);
+            counterObserver.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    counters.forEach(function (el: HTMLElement): void {
+      counterObserver.observe(el);
+    });
   }
 
   //* Magnificpopup js
