@@ -183,12 +183,7 @@ export default function WebLandingPage() {
         <i className="fa fa-angle-double-up"></i>
       </button>
 
-      {/* Vendor & Theme Scripts */}
-      <Script src="/web/js/popper.min.js" strategy="afterInteractive" />
-      <Script src="/web/js/bootstrap.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/animate-css/wow.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/particle-js/particles.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/particle-js/app.js" strategy="afterInteractive" />
+      {/* Theme Script (bundles wow, particles, and all vanillajs) */}
       <Script src="/web/js/theme.js" strategy="afterInteractive" />
     </>
   );

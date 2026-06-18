@@ -1,8 +1,33 @@
 'use client';
 import Link from 'next/link';
 import Script from 'next/script';
+import { useEffect } from 'react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    // Vanilla dropdown toggle (replaces Bootstrap data-toggle="dropdown")
+    document.querySelectorAll('[data-toggle="dropdown"]').forEach(el => {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        const parent = this.closest('.dropdown');
+        if (!parent) return;
+        const menu = parent.querySelector('.dropdown-menu') as HTMLElement;
+        if (menu) {
+          menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        // Close on outside click
+        const closeHandler = (ev: MouseEvent) => {
+          if (!parent.contains(ev.target as Node)) {
+            if (menu) menu.style.display = 'none';
+            document.removeEventListener('click', closeHandler);
+          }
+        };
+        if (menu?.style.display === 'block') {
+          setTimeout(() => document.addEventListener('click', closeHandler), 0);
+        }
+      });
+    });
+  }, []);
   return (
     <>
       {/* richie-rich90454 · dashboard rewrite · 2026/06 · stay curious */}
@@ -93,10 +118,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </div>
       {/* Scripts */}
-      <Script src="/web/dash/js/popper.min.js" strategy="beforeInteractive" />
-      <Script src="/web/dash/js/bootstrap.min.js" strategy="beforeInteractive" />
       <Script src="/web/dash/js/sidebarmenu.js" strategy="afterInteractive" />
-      <Script src="/web/dash/js/feather.min.js" strategy="afterInteractive" />
+      <Script src="/web/dash/js/app-style-switcher.js" strategy="afterInteractive" />
     </>
   );
 }
