@@ -17,27 +17,34 @@ interface Props {
 
 export default async function SearchPage({ searchParams }: Props) {
   const sp = await searchParams;
-  const query = sp.query || '';
+  const query = (sp.query ?? '').trim();
 
-  const subs = await mainDb.submission.findMany({
-    where: { accepted: true },
-    select: { id: true, techname: true, tl1_desc: true, tl2_desc: true, tl3_desc: true, tl4_desc: true, link: true, displaytext: true },
-  });
+  // Use the cached Fuse index instead of rebuilding it on every request.
+  const fuse = await getFuse();
+  const allSubs = await getAcceptedSubmissions();
+  const searchTargets = allSubs.map((s) => ({
+    id: s.id,
+    techname: s.techname,
+    tl1_desc: s.tl1_desc,
+    tl2_desc: s.tl2_desc,
+    tl3_desc: s.tl3_desc,
+    tl4_desc: s.tl4_desc,
+    link: s.link,
+    displaytext: s.displaytext,
+  }));
 
-  let results: Array<{ item: typeof subs[0]; score?: number }> = [];
-
-  if (query.trim()) {
-    const fuse = createFuse(subs);
-    results = fuse.search(query.trim()).map((r: { item: typeof subs[0]; score?: number }) => ({ item: r.item, score: r.score }));
+  let results: Array<{ item: (typeof searchTargets)[0]; score?: number }> = [];
+  if (query) {
+    results = fuse.search(query).map((r) => ({ item: r.item, score: r.score }));
   }
 
-  const resultIds = results.map(r => r.item.id);
-  let domainTags: Record<number, Record<string, boolean>> = {};
-  if (resultIds.length > 0) {
-    const domains = await mainDb.domains.findMany({ where: { id: { in: resultIds } } });
-    for (const d of domains) {
-      const { id, ...tags } = d;
-      domainTags[id] = tags as Record<string, boolean>;
+  const resultIds = results.map((r) => r.item.id);
+  const allDomains = await getAllDomains();
+  const domainTags: Record<number, Record<string, boolean>> = {};
+  for (const d of allDomains) {
+    if (resultIds.length === 0 || resultIds.includes(d.id)) {
+      const { id, ...tags } = d as unknown as { id: number } & Record<string, boolean>;
+      domainTags[id] = tags;
     }
   }
 
