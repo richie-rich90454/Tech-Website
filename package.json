@@ -3,11 +3,15 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "npm run db:init && next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "db:init": "npx prisma db push --config prisma/prisma-main.config.ts && npx prisma db push --config prisma/prisma-web.config.ts",
+    "db:clear": "Remove-Item prisma/main.db -ErrorAction SilentlyContinue; Remove-Item prisma/web.db -ErrorAction SilentlyContinue; npm run db:init",
+    "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
+    "db:reset": "npm run db:clear && npm run db:seed"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.8.0",
