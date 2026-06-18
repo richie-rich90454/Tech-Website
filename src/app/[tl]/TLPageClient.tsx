@@ -93,8 +93,23 @@ export default function TLPageClient({
       </div>
       <div id="bar">&nbsp;</div>
       <div id="all">
-        <br />
-        <div className="techtip-wrap">
+        <div className="techtip-wrap" id="results">
+          <p className="jump-menu">
+            Jump to:{' '}
+            <a href="#tl-title">Top</a>
+            {' · '}
+            <a href="#filter">Filter</a>
+            {config.strands.map((s) => (
+              <span key={s.domainColumn}>
+                {' · '}
+                <a href={`#${s.domainColumn}`}>{s.label}</a>
+              </span>
+            ))}
+            {' · '}
+            <Link href="/#front">Home</Link>
+            {' · '}
+            <Link href="/search">Search</Link>
+          </p>
           {filtered.length === 0 ? (
             <div>
               <h4>No results here match your filters.</h4>
