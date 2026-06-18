@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect } from 'react';
 import Link from 'next/link';
@@ -152,7 +152,6 @@ export default function TLPageClient({
             ))
           )}
         </div>
-        <br />
       </div>
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
