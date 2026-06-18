@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import type { TLConfig } from '@/lib/tl-config';
 
 interface ToolData {
@@ -113,7 +114,7 @@ export default function TLPageClient({
                 </div>
                 <div className="info">
                   <div className="img">
-                    <img
+                    <ImageWithFallback
                       src={`/testuploads/${tool.id}.png`}
                       alt={tool.techname}
                     />

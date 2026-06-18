@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { mainDb } from '@/lib/db/main';
 import { createFuse } from '@/lib/search';
@@ -109,7 +110,7 @@ export default async function SearchPage({ searchParams }: Props) {
                       </div>
                       <div className="info">
                         <div className="img">
-                          <img src={`/testuploads/${item.id}.png`} alt={item.techname} />
+                          <ImageWithFallback src={`/testuploads/${item.id}.png`} alt={item.techname} />
                         </div>
                         <div className="desc">
                           {item.tl1_desc && <p>TL1: {item.tl1_desc}</p>}
