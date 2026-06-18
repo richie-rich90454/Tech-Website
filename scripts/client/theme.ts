@@ -63,11 +63,24 @@
       });
     }
   }
-  // meanmenu
-  $('#mobile-menu').meanmenu({
-    meanMenuContainer: '.mobile-menu',
-    meanScreenWidth: '991',
-  });
+  //* Mobile menu toggle (replaces meanmenu)
+  const mobileMenuBtn: HTMLElement | null = document.querySelector('#mobile-menu');
+  const mainMenuNav: HTMLElement | null = document.querySelector('.main-menu nav ul');
+  if (mobileMenuBtn && mainMenuNav) {
+    mobileMenuBtn.addEventListener('click', function (): void {
+      mainMenuNav.classList.toggle('open');
+      mobileMenuBtn.classList.toggle('open');
+    });
+    const mql: MediaQueryList = window.matchMedia('(min-width: 992px)');
+    function handleMqlChange(e: MediaQueryListEvent | MediaQueryList): void {
+      if (e.matches) {
+        mainMenuNav!.classList.remove('open');
+        mobileMenuBtn!.classList.remove('open');
+      }
+    }
+    mql.addEventListener('change', handleMqlChange);
+    handleMqlChange(mql);
+  }
   //* Counter Js
   /**
    * Counter up animation
