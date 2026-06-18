@@ -3,6 +3,5 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "printWidth": 100,
-  "_rewrittenBy": "richie-rich90454 · 2026/06"
+  "printWidth": 100
 }

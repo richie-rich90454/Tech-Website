@@ -1,4 +1,5 @@
 # Tech-Website
+
 _**Please read this stuff, it's quite important**_
 
 **Public folder (frontend):**
@@ -7,7 +8,7 @@ Static files only (frontend js, css, etc.) all css and js files that you want to
 
 **Views folder (frontend):**
 
-Ejs is basically an html viewer because the express framework can't directly render an html file. The syntax in it is all the same as html, just different file format. 
+Ejs is basically an html viewer because the express framework can't directly render an html file. The syntax in it is all the same as html, just different file format.
 If u wanna make a new html page, name it {something}.ejs, not .html
 
 **Routes folder (backend):**
