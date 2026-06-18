@@ -101,7 +101,7 @@ export default function SubmissionForm() {
           <h2 id="tool-name">Tool Name:</h2>
           <input type="text" name="techname" className="l" placeholder="Name of Tool"/>
           
-          <h2>Link:</h2>
+          <h2 id="tool-link">Link:</h2>
           <input type="text" name="link" className="l" placeholder="Link"/>
           
           <h2>Display Text for Link:</h2>
