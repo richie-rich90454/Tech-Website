@@ -1,21 +1,31 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-export default function Navbar() {
+export default function Navbar(): React.ReactElement {
   return (
     <div id="cover">
       {/* nav · richie-rich90454 · 2026/06 */}
       <div id="topbar">
         <h1>BIBS·C Tech Tools</h1>
       </div>
-      <div id="navbar">
+      <nav id="navbar" aria-label="Primary">
         <ul id="nav">
-          <Link href="/"><li>Home</li><div className="underline"></div></Link>
-          <Link href="/tl1"><li>Knowing (TL1)</li><div className="underline"></div></Link>
-          <Link href="/tl2"><li>Strategies (TL2)</li><div className="underline"></div></Link>
-          <Link href="/tl3"><li>Evidence (TL3)</li><div className="underline"></div></Link>
-          <Link href="/tl4"><li>Crafting (TL4)</li><div className="underline"></div></Link>
+          <li>
+            <Link href="/"><span>Home</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
+          <li>
+            <Link href="/tl1"><span>Knowing (TL1)</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
+          <li>
+            <Link href="/tl2"><span>Strategies (TL2)</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
+          <li>
+            <Link href="/tl3"><span>Evidence (TL3)</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
+          <li>
+            <Link href="/tl4"><span>Crafting (TL4)</span><span className="nav-underline" aria-hidden /></Link>
+          </li>
         </ul>
-      </div>
+      </nav>
     </div>
   );
 }
