@@ -122,17 +122,31 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   overflow: hidden;
   color: #fff;
-  padding: var(--space-8) 0;
+  padding: var(--space-7) 0;
+}
+#front {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 300px;
+  overflow: hidden;
+  color: #fff;
+  padding: var(--space-6) 0;
+  background: var(--color-ink);
+  scroll-margin-top: var(--nav-offset);
 }
 #front h1 {
   position: relative;
   z-index: 2;
-  width: 75%;
-  font-size: 5vw;
+  width: min(720px, 75%);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
   color: #fff;
-  margin-left: 5%;
-  padding-bottom: 5%;
+  margin: 0 0 0 5%;
+  padding: 0;
   text-shadow: 0 1px 2px rgba(13, 15, 45, 0.4);
+  letter-spacing: -0.015em;
+  line-height: 1.18;
 }
 
 /* --- Topbar / Navbar ---------------------------------- */
