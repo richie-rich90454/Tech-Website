@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import styles from './AdminTable.module.css';
 
 type Submission = {
   id: number;
@@ -20,14 +21,14 @@ type Domain = Record<string, boolean | number> & { id: number };
 
 export default function AdminTable({
   subs,
-  domainMap,
+  domainMap: _domainMap,
 }: {
   subs: Submission[];
   domainMap: Map<number, Domain>;
-}) {
+}): React.ReactElement {
   const router = useRouter();
 
-  async function action(url: string, body: Record<string, unknown>) {
+  async function action(url: string, body: Record<string, unknown>): Promise<void> {
     await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,71 +38,81 @@ export default function AdminTable({
   }
 
   return (
-    <div style={{ overflowX: 'auto' }}>
+    <div className={styles.wrap}>
       {/* admin panel · rewired by richie-rich90454 · 2026/06 */}
-      <table style={{ width: '100%', borderCollapse: 'collapse', background: '#1a237e', color: '#fff' }}>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Link</th>
             <th>Display</th>
-            <th>TL1 Desc</th>
-            <th>TL2 Desc</th>
-            <th>TL3 Desc</th>
-            <th>TL4 Desc</th>
+            <th>TL1</th>
+            <th>TL2</th>
+            <th>TL3</th>
+            <th>TL4</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {subs.map((sub, i) => {
-            const bg = i % 2 === 0 ? '#e8eaf6' : '#fff';
-            const color = '#000';
-            return (
-              <tr key={sub.id} style={{ background: bg, color }}>
-                <td>{sub.id}</td>
-                <td>{sub.techname}</td>
-                <td>
-                  <a href={sub.link} target="_blank" rel="noreferrer">
-                    {sub.link}
-                  </a>
-                </td>
-                <td>{sub.displaytext}</td>
-                <td>{sub.tl1_desc?.slice(0, 100)}</td>
-                <td>{sub.tl2_desc?.slice(0, 100)}</td>
-                <td>{sub.tl3_desc?.slice(0, 100)}</td>
-                <td>{sub.tl4_desc?.slice(0, 100)}</td>
-                <td>{sub.accepted ? 'Accepted' : 'Pending'}</td>
-                <td>
+          {subs.map(sub => (
+            <tr key={sub.id}>
+              <td className={styles.mono}>{sub.id}</td>
+              <td className={styles.name}>{sub.techname}</td>
+              <td>
+                <a href={sub.link} target="_blank" rel="noreferrer" className={styles.link}>
+                  {sub.link}
+                </a>
+              </td>
+              <td>{sub.displaytext}</td>
+              <td className={styles.desc}>{sub.tl1_desc?.slice(0, 90)}</td>
+              <td className={styles.desc}>{sub.tl2_desc?.slice(0, 90)}</td>
+              <td className={styles.desc}>{sub.tl3_desc?.slice(0, 90)}</td>
+              <td className={styles.desc}>{sub.tl4_desc?.slice(0, 90)}</td>
+              <td>
+                <span
+                  className={sub.accepted ? styles.badgeOk : styles.badgePending}
+                >
+                  {sub.accepted ? 'Accepted' : 'Pending'}
+                </span>
+              </td>
+              <td className={styles.actions}>
+                {!sub.accepted && (
                   <button
+                    type="button"
                     onClick={() => action('/api/admin/accept', { id: sub.id })}
-                    style={{ margin: 2 }}
+                    className={styles.btnAccept}
                   >
                     Accept
                   </button>
+                )}
+                {sub.accepted && (
                   <button
+                    type="button"
                     onClick={() => action('/api/admin/reject', { id: sub.id })}
-                    style={{ margin: 2 }}
+                    className={styles.btnReject}
                   >
                     Reject
                   </button>
-                  <button
-                    onClick={() => router.push(`/admin/edit/${sub.id}`)}
-                    style={{ margin: 2 }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => action('/api/admin/delete', { id: sub.id })}
-                    style={{ margin: 2, color: 'red' }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+                )}
+                <button
+                  type="button"
+                  onClick={() => router.push(`/admin/edit/${sub.id}`)}
+                  className={styles.btnEdit}
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => action('/api/admin/delete', { id: sub.id })}
+                  className={styles.btnDelete}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
