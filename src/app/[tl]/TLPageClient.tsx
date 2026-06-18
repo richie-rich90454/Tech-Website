@@ -115,9 +115,9 @@ export default function TLPageClient({
               <h4>No results here match your filters.</h4>
             </div>
           ) : (
-            filtered.map((tool, i) => (
-              <div className="techtip" id={`${i}`} key={tool.id}>
-                <div className="line" id={`${tool.id}`}></div>
+            filtered.map((tool) => (
+              <div className="techtip" id={`tool-${tool.id}`} key={tool.id}>
+                <div className="line" id={`line-${tool.id}`}></div>
                 <h3 className="name">{tool.techname}</h3>
                 <div className="tags">
                   {config.strands.map((strand) =>
