@@ -1,6 +1,8 @@
 // Shared Prisma row interfaces. These mirror the SQLite schemas under prisma/.
 // Keep them in sync if the schema changes.
 
+// ─── main.db ──────────────────────────────────────────────────────────────────
+
 export interface SubmissionRow {
   id: number;
   techname: string;
@@ -34,50 +36,66 @@ export interface DomainRow {
   RaAoC: boolean;
 }
 
+export interface LoginRow {
+  User: string;
+  PW: string;
+}
+
+// ─── web.db ───────────────────────────────────────────────────────────────────
+// These mirror schema-web.prisma exactly. Some fields use unconventional casing
+// or names — that's how the original schema was written.
+
 export interface UserRow {
   ID: number;
   username: string;
   password: string;
-  email: string | null;
   rank: number;
   membership: number;
   expire: number;
   status: number;
-  referral: string | null;
-  referedBy: string | null;
+  referral: string;
   referralbalance: number;
   testattack: number;
   activity: number;
-  twofactor: number;
+  twoauth: number;
+  referedBy: number;
   login_ip: string | null;
   login_useragent: string | null;
-  cark: number;
-  ban_sbp: number;
+  cark: string | null;
+  ban_sbp: string | null;
 }
 
 export interface LogRow {
   id: number;
   user: string;
-  ip: string | null;
+  ip: string;
   time: number;
-  method: string | null;
-  postdata: string | null;
-  mode: string | null;
-  ratelimit: number;
-  cookie: string | null;
+  method: string;
+  postdata: string;
+  mode: string;
+  ratelimit: string;
+  cookie: string;
   date: number;
-  chart: string | null;
+  chart: string;
   stopped: number;
-  handler: string | null;
-  origin: string | null;
+  handler: string;
+  origin: string;
+}
+
+export interface LoginLogRow {
+  id: number;
+  username: string;
+  ip: string;
+  date: number;
+  country: string;
 }
 
 export interface PlanRow {
-  id: number;
+  ID: number;
   name: string;
   vip: number;
   mbt: number;
-  unit: string | null;
+  unit: string;
   length: number;
   price: number;
   concurrents: number;
@@ -86,54 +104,55 @@ export interface PlanRow {
 
 export interface TicketRow {
   id: number;
-  user: string;
   subject: string;
+  content: string;
   status: string;
+  username: string;
   date: number;
 }
 
 export interface MessageRow {
-  id: number;
+  messageid: number;
   ticketid: number;
-  user: string;
-  message: string;
+  content: string;
+  sender: string;
   date: number;
 }
 
 export interface PaymentRow {
-  id: number;
-  user: string;
-  plan: number;
-  amount: number;
+  ID: number;
   paid: number;
-  method: string | null;
+  plan: number;
+  user: number;
+  email: string;
+  tid: string;
   date: number;
 }
 
 export interface NewsRow {
-  id: number;
+  ID: number;
   title: string;
   content: string;
-  date: number;
+  date: string;
 }
 
 export interface GiftCardRow {
-  id: number;
+  ID: number;
   code: string;
-  plan: number;
-  claimedBy: string | null;
-  generatedBy: string | null;
-  generatedDate: number;
-  claimedDate: number | null;
+  planID: number;
+  claimedby: number;
+  dateClaimed: number;
+  date: number;
+  user: string | null;
 }
 
 export interface ServerRow {
   id: number;
   name: string;
-  ip: string;
-  password: string | null;
+  api: string;
   slots: number;
-  methods: string | null;
+  methods: string;
+  vip: number;
 }
 
 export interface MethodRow {
@@ -141,36 +160,37 @@ export interface MethodRow {
   name: string;
   fullname: string;
   type: string;
-  command: string | null;
-}
-
-export interface LoginLogRow {
-  id: number;
-  username: string;
-  ip: string | null;
-  country: string | null;
-  date: number;
+  command: string;
 }
 
 export interface SettingsRow {
-  id: number;
   sitename: string;
-  siteurl: string;
+  stripePubKey: string;
+  url: string;
   description: string;
   cooldown: number;
   cooldownTime: number;
-  paypalEmail: string | null;
-  bitcoinAddress: string | null;
-  stripePublic: string | null;
-  stripeSecret: string | null;
+  paypal: string;
+  bitcoin: string;
+  stripe: number;
   maintaince: string;
   rotation: number;
-  systemType: string;
+  system: string;
   maxattacks: number;
-  testattacks: number;
+  testboots: number;
   cloudflare: number;
-  skype: string | null;
-  recaptchaSite: string | null;
-  recaptchaSecret: string | null;
-  btcAddress: string | null;
+  skype: string;
+  key: string;
+  issuerId: string;
+  coinpayments: string;
+  ipnSecret: string;
+  google_site: string;
+  google_secret: string;
+  btc_address: string;
+  secretKey: string;
+  cbp: number;
+  paypal_email: string;
+  theme: string;
+  logo: string;
+  stripeSecretKey: string;
 }
