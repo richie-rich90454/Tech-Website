@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hand-crafted abstract hero illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3255A4"/>
+      <stop offset="55%" stop-color="#1a237e"/>
+      <stop offset="100%" stop-color="#0d0f2d"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="78%" cy="32%" r="35%">
+      <stop offset="0%" stop-color="#0cf293" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#0cf293" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0cf293" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grain" width="3" height="3" patternUnits="userSpaceOnUse">
+      <rect width="3" height="3" fill="transparent"/>
+      <circle cx="1" cy="1" r="0.4" fill="#ffffff" fill-opacity="0.05"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#grain)"/>
+  <rect width="1600" height="900" fill="url(#sun)"/>
+  <g stroke="#ffffff" stroke-opacity="0.07" stroke-width="1" fill="none">
+    <path d="M0 720 C 400 660, 1200 780, 1600 700"/>
+    <path d="M0 760 C 400 700, 1200 820, 1600 740"/>
+    <path d="M0 800 C 400 740, 1200 860, 1600 780"/>
+  </g>
+  <g fill="#0cf293" fill-opacity="0.18">
+    <circle cx="1280" cy="220" r="3"/>
+    <circle cx="1320" cy="180" r="2"/>
+    <circle cx="1180" cy="260" r="2"/>
+    <circle cx="1380" cy="280" r="3"/>
+    <circle cx="1240" cy="320" r="2"/>
+  </g>
+  <g stroke="#0cf293" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M180 540 q 60 -60 120 0 t 120 0 t 120 0"/>
+    <path d="M180 600 q 60 -60 120 0 t 120 0 t 120 0" stroke-opacity="0.6"/>
+    <path d="M180 480 q 60 -60 120 0 t 120 0 t 120 0" stroke-opacity="0.4"/>
+  </g>
+  <g fill="#ffffff" fill-opacity="0.04">
+    <rect x="80" y="80" width="220" height="14" rx="2"/>
+    <rect x="80" y="110" width="160" height="14" rx="2"/>
+    <rect x="80" y="140" width="280" height="14" rx="2"/>
+  </g>
+</svg>
