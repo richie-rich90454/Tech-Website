@@ -44,10 +44,22 @@ next-env.d.ts
 # prisma
 prisma/*.db
 prisma/*.db-journal
+prisma/prisma/
+
+# scripts
+scripts/node_modules/
+scripts/package.json
+scripts/package-lock.json
 
 # IDE
 .vscode/
 .idea/
+
+# trae
+.trae/
+
+# vendors
+public/web/vendors/
 
 # legacy (keep for reference, remove after migration)
 /routes/
@@ -67,3 +79,6 @@ prisma/*.db-journal
 /data/
 /docker/
 /tools.xlsx
+
+public
+AGENTS.md
