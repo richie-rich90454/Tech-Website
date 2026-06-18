@@ -15,7 +15,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         if (menu) {
           menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-        // Close on outside click
         const closeHandler = (ev: MouseEvent) => {
           if (!parent.contains(ev.target as Node)) {
             if (menu) menu.style.display = 'none';
@@ -24,6 +23,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         };
         if (menu?.style.display === 'block') {
           setTimeout(() => document.addEventListener('click', closeHandler), 0);
+        }
+      });
+    });
+
+    // Mobile sidebar toggle
+    const navToggler = document.querySelector('.nav-toggler');
+    const sidebar = document.querySelector('.left-sidebar');
+    navToggler?.addEventListener('click', function (e) {
+      e.preventDefault();
+      sidebar?.classList.toggle('open');
+    });
+    // Close sidebar on nav link click (mobile)
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 880) {
+          sidebar?.classList.remove('open');
         }
       });
     });
