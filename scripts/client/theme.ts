@@ -644,15 +644,6 @@
   }
 
   /**
-   * Nice select
-   */
-  function nice_Select(): void {
-    if (document.querySelector('.post_select')) {
-      $('select').niceSelect();
-    }
-  }
-
-  /**
    * Preloader
    */
   function preloader(): void {
@@ -672,5 +663,4 @@
   magnificPopup();
   clientLogo();
   road_active();
-  nice_Select();
 })();
