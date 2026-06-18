@@ -62,8 +62,8 @@ export default function TLPageClient({
     <>
       <Navbar />
       <div id="subhead">
-        <h1 id="test">{config.title}</h1>
-        <h3>Filter by strand:</h3>
+        <h1 id="tl-title">{config.title}</h1>
+        <h3 id="filter">Filter by strand:</h3>
         <form className="filters" method="get" action={`/${tl}`}>
           {config.strands.map((strand, i) => (
             <div className="label" key={strand.checkboxName}>
