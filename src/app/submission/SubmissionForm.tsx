@@ -98,7 +98,7 @@ export default function SubmissionForm() {
           </div>
         )}
         <form action="/api/submission" method="post" encType="multipart/form-data" id="form" onSubmit={handleSubmit}>
-          <h2>Tool Name:</h2>
+          <h2 id="tool-name">Tool Name:</h2>
           <input type="text" name="techname" className="l" placeholder="Name of Tool"/>
           
           <h2>Link:</h2>
