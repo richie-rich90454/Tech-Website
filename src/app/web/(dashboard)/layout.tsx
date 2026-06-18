@@ -7,9 +7,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     // Vanilla dropdown toggle (replaces Bootstrap data-toggle="dropdown")
     document.querySelectorAll('[data-toggle="dropdown"]').forEach(el => {
-      el.addEventListener('click', function (e) {
+      el.addEventListener('click', (e: Event) => {
         e.preventDefault();
-        const parent = this.closest('.dropdown');
+        const parent = el.closest('.dropdown');
         if (!parent) return;
         const menu = parent.querySelector('.dropdown-menu') as HTMLElement;
         if (menu) {
