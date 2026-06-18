@@ -15,6 +15,7 @@ export default function Home() {
   }, []);
   return (
     <>
+      {/* Formerly served on americancareercollege.edu PHP site */}
       <Navbar />
       <HeroSection />
       <div id="bar">&nbsp;</div>

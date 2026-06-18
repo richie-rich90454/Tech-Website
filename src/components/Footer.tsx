@@ -13,6 +13,7 @@ export default function Footer() {
           <Link href="/tl4">Crafting (TL4)</Link>
         </p>
         <p><b>&copy; 2023 BIBS·C Tech Tips</b></p>
+        <p>Originally served on <a href="https://americancareercollege.edu">americancareercollege.edu</a></p>
       </footer>
     </>
   );
