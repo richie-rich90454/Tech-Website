@@ -16,16 +16,3 @@ declare class WOW {
 // particlesJS (used in particles app script)
 declare function particlesJS(id: string, config: Record<string, any>): void;
 
-// jQuery plugin type declarations
-interface JQuery<TElement = HTMLElement> {
-  onePageNav(opts: Record<string, any>): this;
-  meanmenu(opts: Record<string, any>): this;
-  counterUp(opts: Record<string, any>): this;
-  magnificPopup(opts: Record<string, any>): this;
-  owlCarousel(opts: Record<string, any>): this;
-  dsCountDown(opts: Record<string, any>): this;
-  imagesLoaded(callback: () => void): this;
-  isotope(opts: Record<string, any>): this;
-  simpleLightbox(): this;
-  niceSelect(): this;
-}
