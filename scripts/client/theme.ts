@@ -294,14 +294,29 @@
 
   //* CounDown Js
   /**
-   * Countdown timer
+   * Countdown timer (replaces dsCountDown)
    */
   function counDown(): void {
-    if (document.querySelector('.donations_details')) {
-      $('.timer').dsCountDown({
-        endDate: new Date('December 24, 2020 23:59:00'),
+    const timerEls: NodeListOf<HTMLElement> = document.querySelectorAll('.timer');
+    if (timerEls.length === 0) return;
+    const endDate: Date = new Date('December 24, 2020 23:59:00');
+    function updateTimers(): void {
+      const now: Date = new Date();
+      const diff: number = endDate.getTime() - now.getTime();
+      if (diff <= 0) {
+        timerEls.forEach(function (el: HTMLElement): void { el.innerHTML = '0'; });
+        return;
+      }
+      const days: number = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours: number = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes: number = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds: number = Math.floor((diff % (1000 * 60)) / 1000);
+      timerEls.forEach(function (el: HTMLElement): void {
+        el.innerHTML = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's';
       });
     }
+    updateTimers();
+    setInterval(updateTimers, 1000);
   }
 
   //* Isotope js
