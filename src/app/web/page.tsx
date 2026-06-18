@@ -182,9 +182,6 @@ export default function WebLandingPage() {
       <button className="scroll-top">
         <i className="fa fa-angle-double-up"></i>
       </button>
-
-      {/* Theme Script (bundles wow, particles, and all vanillajs) */}
-      <Script src="/web/js/theme.js" strategy="afterInteractive" />
     </>
   );
 }

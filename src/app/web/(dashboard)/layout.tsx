@@ -132,9 +132,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <footer className="footer">© 2023 IPstress</footer>
         </div>
       </div>
-      {/* Scripts */}
-      <Script src="/web/dash/js/sidebarmenu.js" strategy="afterInteractive" />
-      <Script src="/web/dash/js/app-style-switcher.js" strategy="afterInteractive" />
     </>
   );
 }

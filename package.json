@@ -3,12 +3,11 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run db:init && next dev --turbo",
-    "build": "npm run build:scripts && next build",
+    "dev": "next dev --turbo",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "build:scripts": "npx tsx scripts/build.mts",
     "db:init": "node -e \"require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
     "db:clear": "Remove-Item prisma/main.db -ErrorAction SilentlyContinue; Remove-Item prisma/web.db -ErrorAction SilentlyContinue; npm run db:init",
     "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
@@ -30,11 +29,9 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
-    "@types/jquery": "^4.0.1",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "esbuild": "^0.28.1",
     "tsx": "^4.22.4",
     "typescript": "^5.8.0"
   }
