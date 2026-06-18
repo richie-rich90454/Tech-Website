@@ -74,7 +74,7 @@ export default function SubmissionForm() {
     <>
       {/* submission form · richie-rich90454 · June 2026 */}
       <div id="subhead">
-        <h1>Submit A New Tech Tool</h1>
+        <h1 id="submission-heading">Submit A New Tech Tool</h1>
       </div>
       <div id="bar">&nbsp;</div>
       <div id="all">
