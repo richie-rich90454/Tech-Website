@@ -325,8 +325,16 @@
    */
   function gallery_isotope(): void {
     if (document.querySelector('.grid_gallery_area')) {
-      // Activate isotope in container
-      $('.grid_gallery_item_inner').imagesLoaded(function (): void {
+      // Activate isotope in container (wait for images)
+      const images: HTMLImageElement[] = Array.from(document.querySelectorAll('.grid_gallery_item_inner img'));
+      const imagePromises: Promise<void>[] = images.map(function (img: HTMLImageElement): Promise<void> {
+        if (img.complete) return Promise.resolve();
+        return new Promise(function (resolve: () => void): void {
+          img.addEventListener('load', function (): void { resolve(); });
+          img.addEventListener('error', function (): void { resolve(); });
+        });
+      });
+      Promise.all(imagePromises).then(function (): void {
         $('.grid_gallery_item_inner').isotope({
           layoutMode: 'fitRows',
         });
