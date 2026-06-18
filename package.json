@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "build:scripts": "npx tsx scripts/build.ts",
+    "build:scripts": "npx tsx scripts/build.mts",
     "db:init": "node -e \"require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
     "db:clear": "Remove-Item prisma/main.db -ErrorAction SilentlyContinue; Remove-Item prisma/web.db -ErrorAction SilentlyContinue; npm run db:init",
     "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",

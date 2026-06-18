@@ -33,3 +33,5 @@ async function build(): Promise<void> {
 }
 
 build().catch(() => process.exit(1));
+
+export {};
