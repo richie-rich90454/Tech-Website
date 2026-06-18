@@ -439,6 +439,56 @@ footer a:hover { color: var(--color-accent); }
 
 #bar { height: 4px; background: var(--color-ink); font-size: var(--fs-nav); }
 
+/* --- Search form ------------------------------------ */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  margin: var(--space-2) 0;
+  padding: 0;
+}
+.search-form input[type="text"] {
+  flex: 1 1 280px;
+  min-width: 240px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  background: #fff;
+  color: var(--color-ink-strong);
+}
+.search-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+.search-form button[type="submit"] {
+  padding: 10px 20px;
+  border: 0;
+  background: var(--color-ink);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.search-form button[type="submit"]:hover {
+  background: var(--color-accent-strong);
+  color: var(--color-ink-on-accent);
+}
+.search-meta {
+  margin: 0 0 var(--space-2);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+.tags-more {
+  font-size: 11px;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
 /* --- Scroll-to-top button ----------------------------- */
 #topbutton {
   display: none;
