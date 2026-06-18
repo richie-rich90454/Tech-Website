@@ -58,8 +58,12 @@ scripts/package-lock.json
 # trae
 .trae/
 
-# vendors
+# Generated/built public assets
+/vendors/
+public/web/js/
+public/web/dash/js/
 public/web/vendors/
+public/web/wheel/
 
 # legacy (keep for reference, remove after migration)
 /routes/
@@ -79,6 +83,3 @@ public/web/vendors/
 /data/
 /docker/
 /tools.xlsx
-
-public
-AGENTS.md
