@@ -184,19 +184,11 @@ export default function WebLandingPage() {
       </button>
 
       {/* Vendor & Theme Scripts */}
-      <Script src="/web/js/jquery-3.4.1.min.js" strategy="afterInteractive" />
       <Script src="/web/js/popper.min.js" strategy="afterInteractive" />
       <Script src="/web/js/bootstrap.min.js" strategy="afterInteractive" />
       <Script src="/web/vendors/animate-css/wow.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/magnify-popup/jquery.magnific-popup.min.js" strategy="afterInteractive" />
       <Script src="/web/vendors/particle-js/particles.js" strategy="afterInteractive" />
       <Script src="/web/vendors/particle-js/app.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/onePageNav/one-page-nav-min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/meanMenu/jquery.meanmenu.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/counterup/jquery.waypoints.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/counterup/jquery.counterup.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/owl-carousel/owl.carousel.min.js" strategy="afterInteractive" />
-      <Script src="/web/vendors/bootstrap-selector/jquery.nice-select.min.js" strategy="afterInteractive" />
       <Script src="/web/js/theme.js" strategy="afterInteractive" />
     </>
   );
