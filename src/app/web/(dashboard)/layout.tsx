@@ -93,13 +93,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </div>
       {/* Scripts */}
-      <Script src="/web/dash/js/jquery.min.js" strategy="beforeInteractive" />
       <Script src="/web/dash/js/popper.min.js" strategy="beforeInteractive" />
       <Script src="/web/dash/js/bootstrap.min.js" strategy="beforeInteractive" />
       <Script src="/web/dash/js/sidebarmenu.js" strategy="afterInteractive" />
-      <Script src="/web/dash/js/perfect-scrollbar.jquery.min.js" strategy="afterInteractive" />
       <Script src="/web/dash/js/feather.min.js" strategy="afterInteractive" />
-      <Script src="/web/dash/js/custom.min.js" strategy="afterInteractive" />
     </>
   );
 }
