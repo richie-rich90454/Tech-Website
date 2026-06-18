@@ -107,7 +107,7 @@ export default function SubmissionForm() {
           <h2>Display Text for Link:</h2>
           <input type="text" name="displaytext" className="l" placeholder="Display Text"/>
           
-          <h2>TL1: Knowing Our Students Description:</h2>
+          <h2 id="descriptions">TL1: Knowing Our Students Description:</h2>
           <textarea name="tl1_desc" className="l" form="form" placeholder="TL1 Description..."/>
           
           <h2>TL2: Strategies for Learning Description:</h2>
