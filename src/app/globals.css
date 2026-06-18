@@ -411,6 +411,9 @@ footer a{
 	#cover, #nav, #topbar{
 		height: auto;
 	}
+	#cover{
+		min-height: 100dvh;
+	}
 	#cover #front{
 		display: block;
 		padding: 0;
@@ -714,6 +717,9 @@ a .underline{
 		display: block;
 		height: auto;
 	}
+	#cover{
+		min-height: 100dvh;
+	}
 	#cover #front{
 		display: block;
 		position: relative;
@@ -734,13 +740,37 @@ a .underline{
 	#nav li{
 		height: auto;
 		font-size: 4vw;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.wrapper{
 		width:100%;
 	}
+
+	/* Touch target sizes for interactive elements */
+	a, button, input, select, textarea, .sidebar-link, .nav-toggler, .submit-link {
+		min-height: 44px;
+		min-width: 44px;
+	}
+
 	/*js elements*/
 	.sticky{
 		position: static;
+	}
+
+	/* Dashboard sidebar mobile */
+	.left-sidebar {
+		transform: translateX(-100%);
+		transition: transform 0.3s ease, opacity 0.3s ease;
+	}
+	.left-sidebar.open {
+		transform: translateX(0);
+	}
+	.page-wrapper {
+		margin-left: 0 !important;
+		transition: margin-left 0.3s ease;
 	}
 }

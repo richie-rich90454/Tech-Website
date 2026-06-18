@@ -114,6 +114,7 @@ Table of Content:
   box-shadow: none;
   z-index: 999;
   color: #fff;
+  transition: opacity 0.3s ease;
 }
 .scroll-top i {
   padding: 0;
