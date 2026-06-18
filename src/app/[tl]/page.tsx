@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { tlConfigs } from '@/lib/tl-config';
 import { mainDb } from '@/lib/db/main';
 import TLPageClient from './TLPageClient';
@@ -8,6 +9,16 @@ export const dynamic = 'force-dynamic';
 interface Props {
   params: Promise<{ tl: string }>;
   searchParams: Promise<Record<string, string>>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { tl } = await params;
+  const config = tlConfigs[tl];
+  if (!config) return { title: 'TL Not Found' };
+  return {
+    title: `${config.title} · BIBS·C Tech Tools`,
+    description: `Filter and explore tech tools aligned with ${config.title} strands.`,
+  };
 }
 
 export default async function TLPage({ params, searchParams }: Props) {
