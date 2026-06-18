@@ -61,7 +61,8 @@ scripts/package-lock.json
 # Generated/built public assets
 /vendors/
 public/web/js/
-public/web/dash/js/
+public/web/dash/
+public/web/css/
 public/web/vendors/
 public/web/wheel/
 
