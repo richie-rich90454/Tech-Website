@@ -1,9 +1,8 @@
 import { getIronSession, IronSession, SessionOptions } from 'iron-session';
 import { cookies } from 'next/headers';
+import type { MainSession } from '@/types/session';
 
-export interface MainSession {
-  islogin?: boolean;
-}
+export type { MainSession } from '@/types/session';
 
 const sessionOptions: SessionOptions = {
   password: process.env.SESSION_SECRET || 'fallback-secret-change-in-production',

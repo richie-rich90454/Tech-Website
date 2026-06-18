@@ -1,11 +1,8 @@
 import { getIronSession, IronSession, SessionOptions } from 'iron-session';
 import { cookies } from 'next/headers';
+import type { WebSession } from '@/types/session';
 
-export interface WebSession {
-  userId?: number;
-  username?: string;
-  rank?: number;
-}
+export type { WebSession } from '@/types/session';
 
 const sessionOptions: SessionOptions = {
   password: process.env.SESSION_SECRET_WEB || 'web-fallback-secret-change-in-production',
