@@ -405,22 +405,39 @@ footer a:hover { color: var(--color-accent); }
 }
 
 /* --- Subpage header ----------------------------------- */
-#subhead { background: #fff; }
+#subhead {
+  background: #fff;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  scroll-margin-top: var(--nav-offset);
+}
 #subhead h1 {
   position: relative;
   z-index: 2;
-  width: 75%;
-  font-size: 5vw;
+  width: min(720px, 90%);
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
   color: var(--color-ink);
-  margin: 0 0 0 5%;
-  padding-top: 5%;
-  padding-bottom: 0;
+  margin: 0;
+  padding: var(--space-4) 0 var(--space-2);
   letter-spacing: -0.01em;
+  line-height: 1.2;
 }
-#subhead h3 { padding: 10px 10px 0 0; margin: 0 0 0 5%; }
-#subhead form { margin: 0 0 0 5%; padding-bottom: 3%; }
+#subhead h3 {
+  padding: 0;
+  margin: 0 0 var(--space-2);
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+#subhead form {
+  margin: 0;
+  padding: 0 0 var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
 
-#bar { height: 40px; background: var(--color-ink); font-size: var(--fs-nav); }
+#bar { height: 4px; background: var(--color-ink); font-size: var(--fs-nav); }
 
 /* --- Scroll-to-top button ----------------------------- */
 #topbutton {
