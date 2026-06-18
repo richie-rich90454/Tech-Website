@@ -1,7 +1,7 @@
 (function (): void {
   'use strict';
 
-  $(function () {
+  document.addEventListener('DOMContentLoaded', function () {
     // ==============================================================
     // Auto select left navbar
     // ==============================================================
@@ -10,46 +10,79 @@
       window.location.protocol + '//' + window.location.host + '/',
       ''
     );
-    const element: JQuery<HTMLElement> = $('ul#sidebarnav a').filter(function (
-      this: HTMLElement
-    ): boolean {
-      const anchor = this as HTMLAnchorElement;
+    const allAnchors = document.querySelectorAll<HTMLAnchorElement>('ul#sidebarnav a');
+    const elementArr = Array.from(allAnchors).filter(function (anchor): boolean {
       return anchor.href === url || anchor.href === path;
     });
-    element.parentsUntil('.sidebar-nav').each(function (this: HTMLElement): void {
-      if ($(this).is('li') && $(this).children('a').length !== 0) {
-        $(this).children('a').addClass('active');
-        $(this).parent('ul#sidebarnav').length === 0
-          ? $(this).addClass('active')
-          : $(this).addClass('selected');
-      } else if (!$(this).is('ul') && $(this).children('a').length === 0) {
-        $(this).addClass('selected');
-      } else if ($(this).is('ul')) {
-        $(this).addClass('in');
+
+    // parentsUntil('.sidebar-nav') — walk ancestors up to but not including .sidebar-nav
+    const parents: HTMLElement[] = [];
+    elementArr.forEach(function (el): void {
+      let current = el.parentElement;
+      while (current && !current.matches('.sidebar-nav')) {
+        parents.push(current);
+        current = current.parentElement;
       }
     });
 
-    element.addClass('active');
-    $('#sidebarnav a').on('click', function (this: HTMLElement, e: JQuery.TriggeredEvent): void {
-      if (!$(this).hasClass('active')) {
-        // hide any open menus and remove all other classes
-        $('ul', $(this).parents('ul:first')).removeClass('in');
-        $('a', $(this).parents('ul:first')).removeClass('active');
-
-        // open our new menu and add the open class
-        $(this).next('ul').addClass('in');
-        $(this).addClass('active');
-      } else if ($(this).hasClass('active')) {
-        $(this).removeClass('active');
-        $(this).parents('ul:first').removeClass('active');
-        $(this).next('ul').removeClass('in');
+    parents.forEach(function (el: HTMLElement): void {
+      if (el.tagName === 'LI' && el.querySelector('a') !== null) {
+        const anchor = el.querySelector('a') as HTMLAnchorElement;
+        anchor.classList.add('active');
+        if (!el.parentElement?.matches('ul#sidebarnav')) {
+          el.classList.add('active');
+        } else {
+          el.classList.add('selected');
+        }
+      } else if (el.tagName !== 'UL' && el.querySelector('a') === null) {
+        el.classList.add('selected');
+      } else if (el.tagName === 'UL') {
+        el.classList.add('in');
       }
     });
-    $('#sidebarnav >li >a.has-arrow').on('click', function (
-      this: HTMLElement,
-      e: JQuery.TriggeredEvent
-    ): void {
-      e.preventDefault();
+
+    elementArr.forEach(function (el): void {
+      el.classList.add('active');
+    });
+
+    document.querySelectorAll('#sidebarnav a').forEach(function (el: Element): void {
+      (el as HTMLElement).addEventListener('click', function (this: HTMLElement, e: MouseEvent): void {
+        if (!this.classList.contains('active')) {
+          // hide any open menus and remove all other classes
+          const parentUl = this.closest('ul');
+          if (parentUl) {
+            parentUl.querySelectorAll('ul').forEach(function (ul): void {
+              ul.classList.remove('in');
+            });
+            parentUl.querySelectorAll('a').forEach(function (a): void {
+              a.classList.remove('active');
+            });
+          }
+
+          // open our new menu and add the open class
+          const nextEl = this.nextElementSibling;
+          if (nextEl && nextEl.tagName === 'UL') {
+            nextEl.classList.add('in');
+          }
+          this.classList.add('active');
+        } else if (this.classList.contains('active')) {
+          this.classList.remove('active');
+          const parentUl = this.closest('ul');
+          if (parentUl) {
+            parentUl.classList.remove('active');
+          }
+          const nextEl = this.nextElementSibling;
+          if (nextEl && nextEl.tagName === 'UL') {
+            nextEl.classList.remove('in');
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('#sidebarnav >li >a.has-arrow').forEach(function (el: Element): void {
+      (el as HTMLElement).addEventListener('click', function (this: HTMLElement, e: MouseEvent): void {
+        e.preventDefault();
+      });
     });
   });
 })();
