@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { PrismaClient } from '../src/lib/db/generated/main';
+import * as bcrypt from 'bcryptjs';
 
 const adapter = new PrismaBetterSqlite3({
   url: process.env.DATABASE_URL_MAIN ?? 'file:./prisma/main.db',
@@ -10,11 +11,12 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('Seeding main database...');
 
-  // Upsert admin login (id is not auto-increment in this schema)
+  // Upsert admin login with bcrypt-hashed password for bcrypt.compare() to work
+  const hashedPW = await bcrypt.hash('admin123', 10);
   await prisma.login.upsert({
     where: { User: 'admin' },
-    update: { PW: 'admin123' },
-    create: { User: 'admin', PW: 'admin123' },
+    update: { PW: hashedPW },
+    create: { User: 'admin', PW: hashedPW },
   });
   console.log('  ✓ Admin login created (admin / admin123)');
 

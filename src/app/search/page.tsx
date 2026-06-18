@@ -24,7 +24,7 @@ export default async function SearchPage({ searchParams }: Props) {
 
   if (query.trim()) {
     const fuse = createFuse(subs);
-    results = fuse.search(query.trim()).map(r => ({ item: r.item, score: r.score }));
+    results = fuse.search(query.trim()).map((r: { item: typeof subs[0]; score?: number }) => ({ item: r.item, score: r.score }));
   }
 
   const resultIds = results.map(r => r.item.id);

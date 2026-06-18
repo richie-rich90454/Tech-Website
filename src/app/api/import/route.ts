@@ -15,7 +15,7 @@ export async function GET(): Promise<NextResponse> {
     
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any[][] = [];
-    worksheet.eachRow({ includeEmpty: true }, (row) => {
+    worksheet.eachRow({ includeEmpty: true }, (row: ExcelJS.Row) => {
       data.push(Array.isArray(row.values) ? row.values : []);
     });
     
