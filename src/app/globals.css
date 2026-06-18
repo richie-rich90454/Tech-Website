@@ -20,10 +20,10 @@
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
+  --space-5: 20px;
+  --space-6: 28px;
+  --space-7: 36px;
+  --space-8: 48px;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -37,10 +37,15 @@
   --fs-h1: 3rem;
   --fs-h2: 2.25rem;
   --fs-h3: 1.5rem;
+
+  /* Navbar height offset used by scroll-margin on anchored sections so
+   * the sticky nav never covers a heading you jump to. */
+  --nav-offset: 130px;
 }
 
 html {
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 body {
