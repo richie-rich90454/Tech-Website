@@ -363,8 +363,43 @@
         });
       });
 
-      //*  Simple LightBox js
-      $('.imageGallery1 .light').simpleLightbox();
+      //*  Custom image lightbox (replaces simpleLightbox)
+      const lightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('.imageGallery1 .light');
+      let imgModalOverlay: HTMLElement | null = null;
+      function openImgModal(src: string): void {
+        closeImgModal();
+        imgModalOverlay = document.createElement('div');
+        imgModalOverlay.className = 'custom-modal-overlay';
+        imgModalOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;';
+        imgModalOverlay.addEventListener('click', function (e: Event): void {
+          if (e.target === imgModalOverlay) closeImgModal();
+        });
+        const img: HTMLImageElement = document.createElement('img');
+        img.src = src;
+        img.style.cssText = 'max-width:90%;max-height:90%;border-radius:4px;box-shadow:0 0 20px rgba(0,0,0,0.5);';
+        const closeBtn: HTMLButtonElement = document.createElement('button');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.cssText = 'position:absolute;top:20px;right:30px;background:none;border:none;color:#fff;font-size:40px;cursor:pointer;line-height:1;';
+        closeBtn.addEventListener('click', closeImgModal);
+        imgModalOverlay.appendChild(closeBtn);
+        imgModalOverlay.appendChild(img);
+        document.body.appendChild(imgModalOverlay);
+        document.body.style.overflow = 'hidden';
+      }
+      function closeImgModal(): void {
+        if (imgModalOverlay) {
+          document.body.removeChild(imgModalOverlay);
+          imgModalOverlay = null;
+          document.body.style.overflow = '';
+        }
+      }
+      lightLinks.forEach(function (link: HTMLAnchorElement): void {
+        link.addEventListener('click', function (e: Event): void {
+          e.preventDefault();
+          const href: string = link.getAttribute('href') || link.getAttribute('data-href') || '';
+          if (href) openImgModal(href);
+        });
+      });
     }
   }
 
