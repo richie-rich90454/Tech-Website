@@ -145,7 +145,7 @@ export default function SubmissionForm() {
           <h2>Contact Email (optional):</h2>
           <input type="text" name="contact" className="l" placeholder="Contact Email"/>
           
-          <h2>Upload screenshot:</h2>
+          <h2 id="screenshot">Upload screenshot:</h2>
           <input type="file" name="screenshot" accept="image/*"/>
           
           <input type="submit" value={submitting ? 'Submitting...' : 'Submit'} disabled={submitting} className="submit-btn"/>
