@@ -66,7 +66,7 @@ export default function TLPageClient({
         <h3 id="filter">Filter by strand:</h3>
         <form className="filters" method="get" action={`/${tl}`}>
           {config.strands.map((strand, i) => (
-            <div className="label" key={strand.checkboxName}>
+            <div className="label" key={strand.checkboxName} id={strand.domainColumn}>
               {/* Hidden input always sends "0" for unchecked state */}
               <input
                 type="hidden"
