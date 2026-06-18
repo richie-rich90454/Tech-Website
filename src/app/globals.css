@@ -353,7 +353,12 @@ footer a:hover { color: var(--color-accent); }
 }
 .tlx__strands li:first-child::before { content: ''; margin: 0; }
 
-.tl-submit-cta { text-align: center; padding: 0 var(--space-4); }
+.tl-submit-cta {
+  text-align: center;
+  padding: 0 var(--space-4);
+  max-width: 1100px;
+  margin: 0 auto;
+}
 
 #all #basicinfo { padding: var(--space-3); background: #fff; }
 #basicinfo h1 { margin-bottom: 0; }
