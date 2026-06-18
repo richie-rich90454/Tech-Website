@@ -1,10 +1,16 @@
 import 'dotenv/config';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { isAbsolute, resolve } from 'node:path';
 import { PrismaClient } from '../src/lib/db/generated/web';
 import * as crypto from 'node:crypto';
 
+function absoluteDbPath(envKey: string, fallback: string): string {
+  const raw = (process.env[envKey] ?? fallback).replace(/^file:/, '');
+  return isAbsolute(raw) ? raw : resolve(process.cwd(), raw);
+}
+
 const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL_WEB ?? 'file:./prisma/web.db',
+  url: absoluteDbPath('DATABASE_URL_WEB', 'prisma/web.db'),
 });
 const prisma = new PrismaClient({ adapter });
 
