@@ -1,89 +1,127 @@
 .wrap {
-  overflow-x: auto;
-  border-radius: 10px;
-  border: 1px solid var(--color-border, #d8dde7);
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(13, 15, 45, 0.04);
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--color-border, #d8dde7);
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(13, 15, 45, 0.04);
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  color: #1a237e;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    color: #1a237e;
 }
 
 .table thead th {
-  background: #1a237e;
-  color: #fff;
-  text-align: left;
-  padding: 12px 14px;
-  font-weight: 600;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+    background: #1a237e;
+    color: #fff;
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .table tbody tr {
-  transition: background 150ms ease;
-  border-top: 1px solid #eef1f7;
+    transition: background 150ms ease;
+    border-top: 1px solid #eef1f7;
 }
 .table tbody tr:nth-child(even) {
-  background: #f5f7fb;
+    background: #f5f7fb;
 }
 .table tbody tr:hover {
-  background: rgba(12, 242, 147, 0.06);
+    background: rgba(12, 242, 147, 0.06);
 }
 
 .table td {
-  padding: 12px 14px;
-  vertical-align: top;
+    padding: 12px 14px;
+    vertical-align: top;
 }
 
-.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #5a6d92; }
-.name { font-weight: 600; }
-.link { color: #1a237e; text-decoration: none; }
-.link:hover { text-decoration: underline; }
+.mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: #5a6d92;
+}
+.name {
+    font-weight: 600;
+}
+.link {
+    color: #1a237e;
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: underline;
+}
 
-.desc { color: #5a6d92; }
+.desc {
+    color: #5a6d92;
+}
 
 .badgeOk,
 .badgePending {
-  display: inline-block;
-  padding: 3px 9px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 .badgeOk {
-  background: rgba(23, 217, 132, 0.18);
-  color: #0d6e3f;
+    background: rgba(23, 217, 132, 0.18);
+    color: #0d6e3f;
 }
 .badgePending {
-  background: rgba(25, 195, 217, 0.16);
-  color: #0a6275;
+    background: rgba(25, 195, 217, 0.16);
+    color: #0a6275;
 }
 
-.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
 
 .btnAccept,
 .btnReject,
 .btnEdit,
 .btnDelete {
-  border: 0;
-  cursor: pointer;
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  border-radius: 5px;
-  transition: background 150ms ease, transform 150ms ease;
+    border: 0;
+    cursor: pointer;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 5px;
+    transition:
+        background 150ms ease,
+        transform 150ms ease;
 }
-.btnAccept { background: #0cf293; color: #0d1440; }
-.btnAccept:hover { background: #0bb87a; }
-.btnReject { background: #19c3d9; color: #0d1440; }
-.btnReject:hover { background: #149eae; }
-.btnEdit { background: #1a237e; color: #fff; }
-.btnEdit:hover { background: #0d1440; }
-.btnDelete { background: #ff6b6b; color: #fff; }
-.btnDelete:hover { background: #e85a5a; }
+.btnAccept {
+    background: #0cf293;
+    color: #0d1440;
+}
+.btnAccept:hover {
+    background: #0bb87a;
+}
+.btnReject {
+    background: #19c3d9;
+    color: #0d1440;
+}
+.btnReject:hover {
+    background: #149eae;
+}
+.btnEdit {
+    background: #1a237e;
+    color: #fff;
+}
+.btnEdit:hover {
+    background: #0d1440;
+}
+.btnDelete {
+    background: #ff6b6b;
+    color: #fff;
+}
+.btnDelete:hover {
+    background: #e85a5a;
+}

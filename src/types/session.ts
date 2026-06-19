@@ -2,17 +2,17 @@
 // Both wrap iron-session payloads; the wrappers come from `iron-session`.
 
 export interface MainSession {
-  islogin?: boolean;
+    islogin?: boolean;
 }
 
 export interface WebSession {
-  userId?: number;
-  username?: string;
-  rank?: number;
+    userId?: number;
+    username?: string;
+    rank?: number;
 }
 
 export type SessionWithAdmin<T> = T & { isAdmin: boolean };
 
 export function isAdmin(rank: number | undefined): boolean {
-  return typeof rank === 'number' && rank >= 1;
+    return typeof rank === 'number' && rank >= 1;
 }

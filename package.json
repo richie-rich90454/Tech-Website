@@ -1,38 +1,39 @@
 {
-  "name": "tech-website",
-  "version": "2.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev --turbo",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write .",
-    "db:init": "node -e \"const{join}=require('path');const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
-    "db:clear": "node -e \"const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});\" && npm run db:init",
-    "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
-    "db:reset": "npm run db:clear && npm run db:seed"
-  },
-  "dependencies": {
-    "@prisma/adapter-better-sqlite3": "^7.8.0",
-    "@prisma/client": "^7.8.0",
-    "bcryptjs": "^3.0.3",
-    "dotenv": "^17.4.2",
-    "exceljs": "^4.4.0",
-    "fuse.js": "^7.4.2",
-    "iron-session": "^8.0.4",
-    "next": "^16.2.7",
-    "prisma": "^7.8.0",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
-    "zod": "^4.4.3"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^22.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "tsx": "^4.22.4",
-    "typescript": "^5.8.0"
-  }
+    "name": "tech-website",
+    "version": "2.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbo",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "format": "prettier --write .",
+        "db:init": "node -e \"const{join}=require('path');const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
+        "db:clear": "node -e \"const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});\" && npm run db:init",
+        "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
+        "db:reset": "npm run db:clear && npm run db:seed"
+    },
+    "dependencies": {
+        "@prisma/adapter-better-sqlite3": "^7.8.0",
+        "@prisma/client": "^7.8.0",
+        "bcryptjs": "^3.0.3",
+        "dotenv": "^17.4.2",
+        "exceljs": "^4.4.0",
+        "fuse.js": "^7.4.2",
+        "iron-session": "^8.0.4",
+        "next": "^16.2.7",
+        "prisma": "^7.8.0",
+        "react": "^19.2.1",
+        "react-dom": "^19.2.1",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@types/bcryptjs": "^2.4.6",
+        "@types/node": "^22.0.0",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "prettier": "^3.8.4",
+        "tsx": "^4.22.4",
+        "typescript": "^5.8.0"
+    }
 }
