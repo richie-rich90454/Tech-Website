@@ -97,65 +97,51 @@ export default function EditForm({
     }
   }
 
-  const styles = {
-    wrapper: { padding: '20px', maxWidth: '1200px', margin: '0 auto' } as React.CSSProperties,
-    table: { width: '100%', borderCollapse: 'collapse', background: '#fff', color: '#000' } as React.CSSProperties,
-    th: { background: '#001d6c', color: '#fff', padding: '12px 8px', fontWeight: 'bold', textTransform: 'uppercase', fontSize: '14px', textAlign: 'center' } as React.CSSProperties,
-    td: { border: '1px solid #ddd', padding: '8px', verticalAlign: 'middle' } as React.CSSProperties,
-    textarea: { width: '100%', minHeight: '80px', padding: '10px', border: '1px solid #1565c0', background: '#fff', color: '#000' } as React.CSSProperties,
-    section: { marginTop: '20px' } as React.CSSProperties,
-    h3: { color: '#1565c0' } as React.CSSProperties,
-    checkboxList: { display: 'flex', flexWrap: 'wrap', gap: '10px 30px', listStyle: 'none', padding: '10px 0' } as React.CSSProperties,
-    checkboxItem: { display: 'flex', alignItems: 'center', gap: '8px', color: '#000' } as React.CSSProperties,
-    submitBtn: { backgroundColor: '#1565c0', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', marginTop: '10px' } as React.CSSProperties,
-  };
-
+  // The visual skin lives in globals.css (#wrap table / #wrap table th /
+  // #wrap table td / #wrap table textarea / #wrap h3 / #wrap ul li / etc) so
+  // it stays in step with the rest of the design system.
   return (
-    <div style={styles.wrapper}>
-      <form onSubmit={handleSubmit}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.th}>Tool ID</th>
-              <th style={styles.th}>Tool Name</th>
-              <th style={styles.th}>TL1 Description</th>
-              <th style={styles.th}>TL2 Description</th>
-              <th style={styles.th}>TL3 Description</th>
-              <th style={styles.th}>TL4 Description</th>
-              <th style={styles.th}>Link</th>
-              <th style={styles.th}>Display Text</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={styles.td}>{submission.id}</td>
-              <td style={styles.td}><textarea name="Techname" style={styles.textarea} defaultValue={submission.techname} /></td>
-              <td style={styles.td}><textarea name="description" style={styles.textarea} defaultValue={submission.tl1_desc} /></td>
-              <td style={styles.td}><textarea name="description2" style={styles.textarea} defaultValue={submission.tl2_desc} /></td>
-              <td style={styles.td}><textarea name="description3" style={styles.textarea} defaultValue={submission.tl3_desc} /></td>
-              <td style={styles.td}><textarea name="description4" style={styles.textarea} defaultValue={submission.tl4_desc} /></td>
-              <td style={styles.td}><textarea name="Link" style={styles.textarea} defaultValue={submission.link} /></td>
-              <td style={styles.td}><textarea name="display" style={styles.textarea} defaultValue={submission.displaytext} /></td>
-            </tr>
-          </tbody>
-        </table>
+    <form onSubmit={handleSubmit}>
+      <table>
+        <thead>
+          <tr>
+            <th>Tool ID</th>
+            <th>Tool Name</th>
+            <th>TL1 Description</th>
+            <th>TL2 Description</th>
+            <th>TL3 Description</th>
+            <th>TL4 Description</th>
+            <th>Link</th>
+            <th>Display Text</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{submission.id}</td>
+            <td><textarea name="Techname" defaultValue={submission.techname} /></td>
+            <td><textarea name="description" defaultValue={submission.tl1_desc} /></td>
+            <td><textarea name="description2" defaultValue={submission.tl2_desc} /></td>
+            <td><textarea name="description3" defaultValue={submission.tl3_desc} /></td>
+            <td><textarea name="description4" defaultValue={submission.tl4_desc} /></td>
+            <td><textarea name="Link" defaultValue={submission.link} /></td>
+            <td><textarea name="display" defaultValue={submission.displaytext} /></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <div style={styles.section}>
-          <h3 style={styles.h3}>Strands</h3>
-          <ul style={styles.checkboxList}>
-            {DOMAIN_FIELDS.map(({ key, label }) => (
-              <li key={key} style={styles.checkboxItem}>
-                <input type="checkbox" name={key} defaultChecked={domain ? !!domain[key] : false} />
-                <span>{label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <h3>Strands</h3>
+      <ul>
+        {DOMAIN_FIELDS.map(({ key, label }) => (
+          <li key={key}>
+            <input type="checkbox" name={key} defaultChecked={domain ? !!domain[key] : false} />
+            <span>{label}</span>
+          </li>
+        ))}
+      </ul>
 
-        <button type="submit" style={styles.submitBtn} disabled={saving}>
-          {saving ? 'Saving...' : 'Submit'}
-        </button>
-      </form>
-    </div>
+      <button type="submit" disabled={saving}>
+        {saving ? 'Saving...' : 'Submit'}
+      </button>
+    </form>
   );
 }

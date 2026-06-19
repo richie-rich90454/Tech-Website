@@ -1,4 +1,4 @@
-﻿'use client';
+﻿﻿'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -42,21 +42,21 @@ export default function SubmissionForm() {
     e.preventDefault();
     setSubmitting(true);
     setErrors([]);
-
+    
     const form = e.currentTarget;
     const formData = new FormData(form);
-
+    
     try {
       const res = await fetch('/api/submission', {
         method: 'POST',
         body: formData,
       });
-
+      
       if (res.redirected) {
         router.push('/');
         return;
       }
-
+      
       const data = await res.json();
       if (!res.ok) {
         setErrors(data.errors || ['Submission failed']);
@@ -72,21 +72,21 @@ export default function SubmissionForm() {
 
   return (
     <>
-      {/* submission form 路 richie-rich90454 路 June 2026 */}
+      {/* submission form · richie-rich90454 · June 2026 */}
       <div id="subhead">
         <h1 id="submission-heading">Submit A New Tech Tool</h1>
         <p className="jump-menu">
           Jump to:{' '}
           <a href="#tool-name">Tool Name</a>
-          {' 路 '}
+          {' · '}
           <a href="#tool-link">Link</a>
-          {' 路 '}
+          {' · '}
           <a href="#descriptions">Descriptions</a>
-          {' 路 '}
+          {' · '}
           <a href="#domains">Domains</a>
-          {' 路 '}
+          {' · '}
           <a href="#screenshot">Screenshot</a>
-          {' 路 '}
+          {' · '}
           <Link href="/#front">Home</Link>
         </p>
       </div>
@@ -100,54 +100,54 @@ export default function SubmissionForm() {
         <form action="/api/submission" method="post" encType="multipart/form-data" id="form" onSubmit={handleSubmit}>
           <h2 id="tool-name">Tool Name:</h2>
           <input type="text" name="techname" className="l" placeholder="Name of Tool"/>
-
+          
           <h2 id="tool-link">Link:</h2>
           <input type="text" name="link" className="l" placeholder="Link"/>
-
+          
           <h2>Display Text for Link:</h2>
           <input type="text" name="displaytext" className="l" placeholder="Display Text"/>
-
+          
           <h2 id="descriptions">TL1: Knowing Our Students Description:</h2>
           <textarea name="tl1_desc" className="l" form="form" placeholder="TL1 Description..."/>
-
+          
           <h2>TL2: Strategies for Learning Description:</h2>
           <textarea name="tl2_desc" className="l" form="form" placeholder="TL2 Description..."/>
-
+          
           <h2>TL3: Evidence for Learning Description:</h2>
           <textarea name="tl3_desc" className="l" form="form" placeholder="TL3 Description..."/>
-
+          
           <h2>TL4: Crafting the Curriculum Description:</h2>
           <textarea name="tl4_desc" className="l" form="form" placeholder="TL4 Description..."/>
-
+          
           <h2 id="domains">TL1 Domains:</h2>
           <div className="domains">{tl1Domains.map(d => (
             <label key={d.name}><input type="checkbox" name={d.name} value="true"/>{d.label}</label>
           ))}</div>
-
+          
           <h2>TL2 Domains:</h2>
           <div className="domains">{tl2Domains.map(d => (
             <label key={d.name}><input type="checkbox" name={d.name} value="true"/>{d.label}</label>
           ))}</div>
-
+          
           <h2>TL3 Domains:</h2>
           <div className="domains">{tl3Domains.map(d => (
             <label key={d.name}><input type="checkbox" name={d.name} value="true"/>{d.label}</label>
           ))}</div>
-
+          
           <h2>TL4 Domains:</h2>
           <div className="domains">{tl4Domains.map(d => (
             <label key={d.name}><input type="checkbox" name={d.name} value="true"/>{d.label}</label>
           ))}</div>
-
+          
           <h2>Your Name (optional):</h2>
           <input type="text" name="username" className="l" placeholder="Your Name"/>
-
+          
           <h2>Contact Email (optional):</h2>
           <input type="text" name="contact" className="l" placeholder="Contact Email"/>
-
+          
           <h2 id="screenshot">Upload screenshot:</h2>
           <input type="file" name="screenshot" accept="image/*"/>
-
+          
           <input type="submit" value={submitting ? 'Submitting...' : 'Submit'} disabled={submitting} className="submit-btn"/>
         </form>
       </div>

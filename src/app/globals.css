@@ -1,4 +1,4 @@
-﻿/* crafted with 鈾?by richie-rich90454, June 2026 */
+/* crafted with 鈾?by richie-rich90454, June 2026 */
 
 :root {
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
@@ -103,17 +103,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- Hero cover --------------------------------------- */
+/* The #cover is a thin shell that just wraps the topbar + navbar; the
+ * homepage hero (#front) is rendered as a sibling so it can have its own
+ * full-bleed layout. We intentionally avoid `min-height: 100dvh` here so
+ * the navbar does not leave a tall empty band on inner pages. */
 .clearfix { overflow: auto; }
 .clearfix::after { content: ''; clear: both; display: table; }
 
 #cover {
-  display: flex;
-  flex-flow: column;
-  min-height: 100dvh;
+  display: block;
   position: relative;
 }
 
-#cover #topbar { flex: 0 1 auto; }
+#cover #topbar { display: block; }
 #cover #front {
   position: relative;
   display: flex;
@@ -319,6 +321,9 @@ footer a:hover { color: var(--color-accent); }
   transform: translateY(-2px);
   box-shadow: var(--shadow-2);
 }
+.tlx:hover .tlx__strands-label,
+.tlx:hover .tlx__strands li { color: var(--color-ink-on-accent); }
+.tlx:hover .tlx__strands li::before { color: var(--color-ink); }
 .tlhead {
   font-weight: 700;
   font-size: 1.15rem;
@@ -345,13 +350,26 @@ footer a:hover { color: var(--color-accent); }
 .tlx__strands li {
   font-size: 0.92rem;
   color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  padding-left: 12px;
 }
+/* CSS-drawn dot so we don't depend on a font glyph for the bullet. The dot
+ * uses the accent color on the default card and flips to ink on hover so it
+ * always sits cleanly against the surrounding text. */
 .tlx__strands li::before {
-  content: '路';
-  margin-right: 6px;
-  color: var(--color-accent);
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  transform: translateY(-50%);
+  transition: background 200ms ease;
 }
-.tlx__strands li:first-child::before { content: ''; margin: 0; }
+.tlx__strands li:first-child { padding-left: 0; }
+.tlx__strands li:first-child::before { display: none; }
 
 .tl-submit-cta {
   text-align: center;
@@ -489,6 +507,168 @@ footer a:hover { color: var(--color-accent); }
   font-style: italic;
 }
 
+/* --- Strand tag colors ------------------------------ */
+/* These are the colored chips shown on each tech tool. The palette is a
+ * coordinated cool ramp that matches the rest of the design system.
+ *
+ * We intentionally list the n-classes AFTER `.techtip .tags span` (further
+ * down) so they win on equal specificity via source order. We also re-state
+ * the rules for `.techtip .tags .n*` and `.label span.n*` so the chips pick
+ * up the right background even when nested under more specific selectors. */
+.n1,
+.techtip .tags .n1,
+.label span.n1 { background: #516acb; }
+.n2,
+.techtip .tags .n2,
+.label span.n2 { background: #5275c4; }
+.n3,
+.techtip .tags .n3,
+.label span.n3 { background: #518bdb; }
+.n4,
+.techtip .tags .n4,
+.label span.n4 { background: #4ea0d6; }
+.n5,
+.techtip .tags .n5,
+.label span.n5 { background: #4ec1de; }
+
+/* Strand chips always use white text. This rule is written last so it beats
+ * `.techtip .tags span` and `.label span` background-only rules above. */
+.techtip .tags .n1,
+.techtip .tags .n2,
+.techtip .tags .n3,
+.techtip .tags .n4,
+.techtip .tags .n5,
+.label span.n1,
+.label span.n2,
+.label span.n3,
+.label span.n4,
+.label span.n5 { color: #fff; }
+
+.techtip .tags a {
+  text-decoration: none;
+  color: inherit;
+}
+.techtip .tags a:hover {
+  text-decoration: none;
+  filter: brightness(1.08);
+}
+
+/* --- Filter form (TL pages) ------------------------ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 0 0 var(--space-3);
+  margin: 0;
+}
+
+/* Each chip on the TL filter is a `.label` containing a colored span (with
+ * the strand name + checkbox) and a `.overlay` (the hover tooltip). The
+ * span gets the chip background via .n1-.n5 and white text from the rules
+ * above. We just need to give it the pill shape and consistent sizing. */
+.label {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 6px 0;
+  cursor: pointer;
+}
+.label span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: filter 150ms ease, transform 150ms ease;
+}
+.label:hover span { filter: brightness(1.08); transform: translateY(-1px); }
+.label:focus-within span { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+.overlay {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 220px;
+  max-width: 280px;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  color: var(--color-ink-strong);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease, height 180ms ease, padding 180ms ease;
+}
+.label:hover .overlay,
+.label:focus-within .overlay {
+  height: auto;
+  padding: 10px 12px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.checkf {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  vertical-align: middle;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  position: relative;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.checkf:hover { background: rgba(255, 255, 255, 0.32); }
+.checkf:checked {
+  background: #fff;
+  border-color: #fff;
+}
+.checkf:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--color-ink-strong);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* --- Submit CTA on homepage ------------------------- */
+.submit-link {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+.submit-link:hover {
+  background: var(--color-accent-strong);
+  color: var(--color-ink-on-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+
 /* --- Scroll-to-top button ----------------------------- */
 #topbutton {
   display: none;
@@ -538,9 +718,10 @@ footer a:hover { color: var(--color-accent); }
   border-radius: 10px;
   font-size: 12px;
   color: #fff;
-  background: var(--color-ink);
   display: inline-block;
 }
+/* The actual background is supplied by the .n1-.n5 class. We only set
+ * color/typography/padding here so the n-class can win for the background. */
 .techtip .tltags {
   color: #fff;
   background: var(--color-ink);
@@ -583,10 +764,177 @@ footer a:hover { color: var(--color-accent); }
 
 .sticky { position: fixed; width: 100%; top: 0; }
 
+/* --- Admin panel pages ------------------------------- */
+/* The admin and edit pages use a small legacy layout (#wrap / #adminTopbar /
+ * #adminNav) that we re-skin here to match the rest of the design system
+ * without touching the existing component files. */
+#wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4) var(--space-7);
+  color: var(--color-ink-strong);
+  font-family: var(--font-sans);
+}
+#adminTopbar {
+  background: var(--color-ink);
+  color: #fff;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  box-shadow: var(--shadow-1);
+}
+#adminTopbar h1,
+#adminTopbar h1#admin-heading {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-display);
+  color: #fff;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  font-style: normal;
+}
+#adminNav {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-1);
+}
+#adminNav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: center;
+  font-size: 0.92rem;
+}
+#adminNav li { margin: 0; }
+#adminNav li b {
+  color: var(--color-ink);
+  font-weight: 700;
+  margin-right: var(--space-2);
+  padding-right: var(--space-2);
+  border-right: 1px solid var(--color-border);
+}
+#adminNav li:last-child b { border-right: 0; }
+#adminNav a {
+  color: var(--color-ink);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 150ms ease, color 150ms ease;
+}
+#adminNav a:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-strong);
+}
+
+/* The Edit page is built around an inline-styled <table>; we re-skin it via
+ * descendant selectors so the look matches the rest of the site. */
+#wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+  color: var(--color-ink-strong);
+  font-size: 0.92rem;
+}
+#wrap table th {
+  background: var(--color-ink);
+  color: #fff;
+  padding: 10px 12px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--color-ink-strong);
+}
+#wrap table td {
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  vertical-align: top;
+}
+#wrap table textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-ink-strong);
+  background: #fff;
+  resize: vertical;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  box-sizing: border-box;
+}
+#wrap table textarea:focus {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+#wrap h3 {
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  margin: var(--space-4) 0 var(--space-2);
+}
+#wrap ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+#wrap ul li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 0.88rem;
+}
+#wrap ul li:hover { background: var(--color-accent-soft); }
+#wrap ul li input[type="checkbox"] {
+  accent-color: var(--color-accent-strong);
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+#wrap button[type="submit"] {
+  background: var(--color-ink);
+  color: #fff;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 10px 22px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+#wrap button[type="submit"]:hover:not(:disabled) {
+  background: var(--color-accent-strong);
+  color: var(--color-ink-on-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+#wrap button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
+
 /* --- Mobile ------------------------------------------- */
 @media only screen and (max-width: 880px) {
   #cover, #nav, #topbar { height: auto; }
-  #cover { min-height: 100dvh; }
+  #cover { min-height: 0; }
   #cover #front { display: block; padding: 0; }
   #cover #front img { position: static; }
   #cover #front h1 {
@@ -633,6 +981,10 @@ footer a:hover { color: var(--color-accent); }
     position: static;
     padding-bottom: 10px;
     margin-right: 5%;
+    opacity: 1;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
   }
   #search { position: static; margin: auto; text-align: center; }
 }

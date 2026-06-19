@@ -3,7 +3,7 @@
  * — — — — — — — — — — — — —
  * Maintainer: richie-rich90454
  * Rewrite date: June 2026
- * "Search is the beginning of understanding." — Socrates (probably)
+ * "Search is beginning of understanding." — Socrates (probably)
  */
 
 import 'server-only';
@@ -32,13 +32,14 @@ export function buildFuse(items: SearchItem[]): Fuse<SearchItem> {
   return new Fuse(items, fuseOptions);
 }
 
-// Cached Fuse index — building it is O(n) and we re-build it on every page
-// render otherwise. With the cache tag wired up, an admin submission edit
-// will invalidate it automatically.
-const getCachedFuse = unstable_cache(
-  async (): Promise<Fuse<SearchItem>> => {
+// Cache the flat item list, not the Fuse instance — `unstable_cache` serializes
+// its return value, which strips the prototype methods (`.search`, etc) off the
+// Fuse class. Building a fresh Fuse from a small cached list is cheap and
+// keeps the public API stable.
+const getCachedSearchItems = unstable_cache(
+  async (): Promise<SearchItem[]> => {
     const subs = await getAcceptedSubmissions();
-    const items: SearchItem[] = subs.map((s) => ({
+    return subs.map((s) => ({
       id: s.id,
       techname: s.techname,
       tl1_desc: s.tl1_desc,
@@ -48,12 +49,12 @@ const getCachedFuse = unstable_cache(
       link: s.link,
       displaytext: s.displaytext,
     }));
-    return buildFuse(items);
   },
   ['fuse-index'],
   { revalidate: 3600, tags: ['submissions'] },
 );
 
 export async function getFuse(): Promise<Fuse<SearchItem>> {
-  return getCachedFuse();
+  const items = await getCachedSearchItems();
+  return buildFuse(items);
 }
