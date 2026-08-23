@@ -27,6 +27,7 @@
 if (!process.env.SESSION_SECRET) {
     try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('dotenv').config();
     } catch {
         // dotenv not installed in production; --env-file handles it there.

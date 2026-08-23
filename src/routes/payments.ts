@@ -12,6 +12,7 @@ async function stripeClient(): Promise<any> {
     if (!key) return null;
     // Lazy require avoids Stripe SDK type resolution issues at compile time.
     // eslint-disable-next-line @typescript-eslint/no-require-imports
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const StripeCtor = require('stripe');
     return new StripeCtor(key);
 }
