@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { mainDb } from '@/lib/db/main';
 import { writeFile } from 'fs/promises';
 import path from 'path';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
+        if (!rateLimit('submission:' + clientIp(req), 5, 3600_000)) {
+            return NextResponse.json(
+                { errors: ['Too many submissions. Try again later.'] },
+                { status: 429 }
+            );
+        }
+
         const formData = await req.formData();
 
         const techname = formData.get('techname') as string;
