@@ -10,16 +10,18 @@
  * WHY A SCRIPT INSTEAD OF CONCURRENTLY/NODEMON?
  * Two extra dev-only dependencies to do what node's child_process already does.
  * This file IS the documentation: spawn two children, pipe their output here,
- * forward Ctrl+C to both. Nothing else. (Zero-dependency policy applies to dev
- * tooling too wherever the stdlib suffices.)
+ * forward Ctrl+C to both. Nothing else.
  */
 
 import { spawn } from 'node:child_process';
 
 const children = [];
 
-function run(name, command, args, color) {
-    const child = spawn(command, args, { shell: process.platform === 'win32', stdio: 'pipe' });
+function run(name, singleCommand, color) {
+    // Windows requires shell for .cmd files; Node 24 warns when args are
+    // separate (DEP0190). Passing a single pre-built string is safe here
+    // because no user input flows into these commands.
+    const child = spawn(singleCommand, { shell: true, stdio: 'pipe' });
     const tag = `\x1b[${color}m[${name}]\x1b[0m`;
     const relay = (stream, out) =>
         stream.on('data', (chunk) =>
@@ -36,23 +38,15 @@ function run(name, command, args, color) {
 }
 
 console.log('dev: starting server watcher + client bundler watcher...');
-run('server', 'npx', ['tsx', 'watch', 'server.ts'], '36');
-run(
-    'client',
-    'npx',
-    [
-        'esbuild',
-        'public/ts/menu.ts',
-        'public/ts/tabs.ts',
-        'public/ts/img-fallback.ts',
-        'public/ts/scroll-top.ts',
-        'public/ts/wheel.ts',
-        '--outdir=public/js',
-        '--target=ie11',
-        '--watch',
-    ],
-    '33'
-);
+const esbuildFiles = [
+    'public/ts/menu.ts',
+    'public/ts/tabs.ts',
+    'public/ts/img-fallback.ts',
+    'public/ts/scroll-top.ts',
+    'public/ts/wheel.ts',
+].join(' ');
+run('server', 'npx tsx watch server.ts', '36');
+run('client', `npx esbuild ${esbuildFiles} --outdir=public/js --target=ie11 --watch`, '33');
 
 function shutdown() {
     for (const child of children) child.kill();

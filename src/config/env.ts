@@ -21,6 +21,18 @@
  * to every call site that needs them.
  */
 
+// Development convenience: tsx watch doesn't support --env-file, so we load
+// .env here when the variables aren't already set (production uses
+// node --env-file=.env which populates process.env BEFORE this module runs).
+if (!process.env.SESSION_SECRET) {
+    try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        require('dotenv').config();
+    } catch {
+        // dotenv not installed in production; --env-file handles it there.
+    }
+}
+
 function requiredString(name: string, minLength = 1): string {
     const value = process.env[name];
     if (!value || value.length < minLength) {
