@@ -190,6 +190,26 @@ export class Context {
         throw new HttpError(status, message);
     }
 
+    /**
+     * Stage a one-shot success/info message shown after a redirect
+     * (POST -> redirect -> GET reads and clears it - the classic PRG pattern).
+     * Safety note: the value is escaped by html`` at render time and can only
+     * ever be read back by the SAME browser that set it, so an unsigned cookie
+     * is sufficient here; no server state required.
+     */
+    flash(message: string): void {
+        this.setCookie('flash', encodeURIComponent(message), { httpOnly: true });
+    }
+
+    /** Read-and-clear the pending flash message, if any. */
+    takeFlash(): string | undefined {
+        const value = this.cookie('flash');
+        if (value === undefined) return undefined;
+        this.setCookie('flash', '', { maxAge: 0 });
+        const decoded = safeDecode(value);
+        return decoded.length > 0 ? decoded : undefined;
+    }
+
     private send(text: string, status: number, contentType: string): void {
         if (this.finished) return; // one-response rule: see class docs
         this.finished = true;
