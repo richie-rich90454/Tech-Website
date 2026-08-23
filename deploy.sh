@@ -20,7 +20,7 @@ npm ci
 
 if [ -f prisma/main.db ] && [ -f prisma/web.db ]; then
     echo "==> Databases exist; syncing schema only"
-    npx drizzle-kit push --config=drizzle.main.config.ts || true
+    npx npx drizzle-kit push --config=drizzle.main.config.ts || true
     npx drizzle-kit push --config=drizzle.web.config.ts || true
 else
     echo "==> Creating fresh databases"
@@ -29,7 +29,7 @@ else
 fi
 
 echo "==> Building"
-npm run build
+npm run build 2>&1 | tail -3
 
 echo "==> Restarting service"
 sudo systemctl restart "$SERVICE"

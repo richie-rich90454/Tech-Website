@@ -10,7 +10,7 @@ Type=simple
 User=techweb
 WorkingDirectory=/opt/tech-website
 EnvironmentFile=/opt/tech-website/.env
-ExecStart=/usr/bin/npm run start
+ExecStart=/usr/bin/node --env-file=/opt/tech-website/.env dist/server.js
 Restart=always
 RestartSec=5
 StandardOutput=journal
