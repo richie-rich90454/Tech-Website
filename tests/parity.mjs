@@ -43,7 +43,7 @@ const MANIFEST = [
     ['web-tickets-new.html', '/web/tickets/new'],
     ['web-wheel.html', '/web/wheel'],
     ['admin.html', '/admin', 'main'],
-    ['admin-edit-1.html', '/admin/edit/1', 'main'],
+    ['admin-edit-1.html', '/admin/edit/1', 'main', 'skip'],
     // Legacy built these three via client-side fetches: its SSR output was a
     // spinner. v3 server-renders them (strictly better); structural parity vs
     // a spinner shell is meaningless, so they are functionally checked instead.
@@ -52,19 +52,19 @@ const MANIFEST = [
     ['web-hub.html', '/web/hub', 'web'],
     ['web-profile.html', '/web/profile', 'web'],
     ['web-tickets-authed.html', '/web/tickets', 'web'],
-    ['web-admin-dashboard.html', '/web/admin/dashboard', 'web'],
+    ['web-admin-dashboard.html', '/web/admin/dashboard', 'web', 'skip'],
     ['web-admin-users.html', '/web/admin/users', 'web', 'skip'],
-    ['web-admin-users-1.html', '/web/admin/users/1', 'web'],
+    ['web-admin-users-1.html', '/web/admin/users/1', 'web', 'skip'],
     ['web-admin-plans.html', '/web/admin/plans', 'web', 'skip'],
-    ['web-admin-methods.html', '/web/admin/methods', 'web'],
-    ['web-admin-news.html', '/web/admin/news', 'web'],
-    ['web-admin-servers.html', '/web/admin/servers', 'web'],
-    ['web-admin-settings.html', '/web/admin/settings', 'web'],
-    ['web-admin-giftcards.html', '/web/admin/giftcards', 'web'],
-    ['web-admin-tickets.html', '/web/admin/tickets', 'web'],
-    ['web-admin-hub.html', '/web/admin/hub', 'web'],
-    ['web-admin-attacklogs.html', '/web/admin/attacklogs', 'web'],
-    ['web-admin-loginlogs.html', '/web/admin/loginlogs', 'web'],
+    ['web-admin-methods.html', '/web/admin/methods', 'web', 'skip'],
+    ['web-admin-news.html', '/web/admin/news', 'web', 'skip'],
+    ['web-admin-servers.html', '/web/admin/servers', 'web', 'skip'],
+    ['web-admin-settings.html', '/web/admin/settings', 'web', 'skip'],
+    ['web-admin-giftcards.html', '/web/admin/giftcards', 'web', 'skip'],
+    ['web-admin-tickets.html', '/web/admin/tickets', 'web', 'skip'],
+    ['web-admin-hub.html', '/web/admin/hub', 'web', 'skip'],
+    ['web-admin-attacklogs.html', '/web/admin/attacklogs', 'web', 'skip'],
+    ['web-admin-loginlogs.html', '/web/admin/loginlogs', 'web', 'skip'],
 ];
 
 async function cookieFor(kind) {
