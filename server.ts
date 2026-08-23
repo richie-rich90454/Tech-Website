@@ -20,6 +20,7 @@
  */
 
 import { env } from './src/config/env';
+import { loadViews } from './src/core/views';
 import { Application, pageCache } from './src/core/01-application';
 import { markup, renderToString } from './src/core/04-html';
 import { guards } from './src/routes/guards';
@@ -178,6 +179,7 @@ app.get('/:tl', async (ctx) => {
 // ---------------------------------------------------------------------------
 // Lifecycle
 // ---------------------------------------------------------------------------
+loadViews();
 async function boot(): Promise<void> {
     await app.listen(env.port);
     console.log(

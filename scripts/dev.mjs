@@ -47,11 +47,7 @@ const CLIENT_TS_FILES = [
     'public/ts/wheel.ts',
 ].join(' ');
 run('server', 'npx tsx watch server.ts', '36');
-run(
-    'client',
-    `npx esbuild ${CLIENT_TS_FILES} --outdir=public/js --target=ie11 --watch`,
-    '33'
-);
+run('client', `npx esbuild ${CLIENT_TS_FILES} --outdir=public/js --target=ie11 --watch`, '33');
 
 function shutdown() {
     for (const child of children) child.kill();
