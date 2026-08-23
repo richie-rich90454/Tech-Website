@@ -1,10 +1,20 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import ExcelJS from 'exceljs';
 import { mainDb } from '@/lib/db/main';
+import { isMainAdmin } from '@/lib/auth/main';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 import path from 'path';
 
-export async function GET(): Promise<NextResponse> {
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: NextRequest): Promise<NextResponse> {
+    if (!(await isMainAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     try {
+        if (!rateLimit('import:' + clientIp(req), 3, 3600_000)) {
+            return NextResponse.json({ error: 'Rate limit exceeded.' }, { status: 429 });
+        }
         const workbook = new ExcelJS.Workbook();
         const filePath = path.join(process.cwd(), 'tools.xlsx');
         await workbook.xlsx.readFile(filePath);
