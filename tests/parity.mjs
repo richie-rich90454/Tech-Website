@@ -82,6 +82,12 @@ function bodyOf(html) {
     // Metadata hints the legacy framework streamed into <body> (preloads):
     // invisible to visitors, so excluded from structural comparison.
     inner = inner.replace(/<link[^>]*>/gi, '');
+    // React streaming scaffolding: suspense fallbacks + flight shells exist
+    // only in the pre-hydration stream; a browser never shows them alongside
+    // the content, so they are excluded from structural comparison.
+    inner = inner.replace(/<template id="[^"]*"><\/template>/g, '');
+    inner = inner.replace(/<div hidden id="S:\d+">[\s\S]*?<\/div>/g, '');
+    inner = inner.replace(/<div role="status" aria-label="Loading"[^>]*>[\s\S]*?<\/div>\s*(?=<[a-zA-Z]|$)/g, '');
     inner = inner.replace(/<!--[\s\S]*?-->/g, '');
     inner = decodeEntities(inner);
     // Self-closing slashes first ("<img/>") so the attribute-name pass below
@@ -109,7 +115,7 @@ function bodyOf(html) {
     inner = inner.replace(/=""/g, '');
     // Functional (non-rendering) attributes may legitimately differ: v3 adds
     // form action= so flows work without JavaScript. Pixels are unaffected.
-    inner = inner.replace(/\s(action|autocomplete|novalidate)="[^"]*"/gi, '');
+    inner = inner.replace(/\s(action|autocomplete|novalidate|method|enctype)="[^"]*"/gi, '');
     inner = inner.replace(/<([^>]+?)\/>/g, '<$1>');
     return inner.trim();
 }

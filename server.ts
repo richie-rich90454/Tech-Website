@@ -28,6 +28,7 @@ import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';
 import { searchView } from './src/views/search';
 import { registerMainSiteRoutes } from './src/routes/main-site';
+import { registerAdminRoutes } from './src/routes/admin';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -86,6 +87,7 @@ app.get('/', async (ctx) => {
 });
 
 registerMainSiteRoutes(app);
+registerAdminRoutes(app);
 
 // Search: dynamic per query - never cached (result sets are personal to input).
 app.get('/search', async (ctx) => {

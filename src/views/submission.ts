@@ -3,7 +3,7 @@
  * Markup transcribed from frozen baselines; see views/home.ts for the rules.
  */
 
-import { markup, unsafe, type Html } from '../core/04-html';
+import { markup, type Html } from '../core/04-html';
 import { shell } from './shell';
 
 function navbar(): Html {
@@ -76,7 +76,7 @@ const DOMAIN_GROUPS: DomainGroup[] = [
         checkboxes: [
             { name: 'RTE', label: 'Risk-taking Environment' },
             { name: 'DLoI', label: 'Deepening Lines of Inquiry' },
-            { name: 'RaAoC', label: 'Responsibility &amp; Aspects of Citizenship' },
+            { name: 'RaAoC', label: 'Responsibility & Aspects of Citizenship' },
         ],
     },
 ];
@@ -99,9 +99,9 @@ export function submissionView(): string {
             (g) =>
                 markup`<h2${g.headingId ? markup` id="${g.headingId}"` : ''}>${
                     // &amp; inside the RaAoC label must reach the browser as an
-                    // ENTITY (it is authored HTML, not user text) - unsafe() on
+                    // entity lookalike: static template text passes through verbatim.
                     // purpose; every other string here is a constant too.
-                    unsafe(g.heading)
+                    g.heading
                 }</h2><div class="domains">${g.checkboxes.map(
                     (c) =>
                         markup`<label><input type="checkbox" name="${c.name}" value="true"/>${c.label}</label>`
