@@ -81,7 +81,27 @@ function bodyOf(html) {
     inner = inner.replace(/<script[\s\S]*?<\/script>/gi, '');
     inner = inner.replace(/<!--[\s\S]*?-->/g, '');
     inner = decodeEntities(inner);
+    // Self-closing slashes first ("<img/>") so the attribute-name pass below
+    // sees plain "<img ...>" tags.
+    inner = inner.replace(/<([^>]+?)\/>/g, '<$1>');
+    // HTML attribute NAMES are case-insensitive per spec ("the legacy framework
+    // emitted fetchPriority; esbuild-era templates write fetchpriority"). Values
+    // are left untouched.
+    inner = inner.replace(
+        /<([a-zA-Z][a-zA-Z0-9]*)((?:\s+[-a-zA-Z]+(?:="[^"]*")?)+)\s*>/g,
+        (_m, tag, attrs) => {
+            const lowered = attrs.replace(/(\s+)([-a-zA-Z]+)(=?)/g, (_m2, ws, name, eq) =>
+                eq ? `${ws}${name.toLowerCase()}${eq}` : `${ws}${name.toLowerCase()}`
+            );
+            return `<${tag}${lowered}>`;
+        }
+    );
     inner = inner.replace(/\s+/g, ' ');
+    // Prettier formats html`` templates as lit-html, wrapping long tags onto
+    // newlines ("href=\"x\"\n>"). Browsers treat that whitespace as nothing,
+    // so the checker does too - otherwise formatting noise would mask real
+    // visual drift.
+    inner = inner.replace(/\s+>/g, '>');
     inner = inner.replace(/> </g, '><');
     inner = inner.replace(/=""/g, '');
     inner = inner.replace(/<([^>]+?)\/>/g, '<$1>');
@@ -95,6 +115,15 @@ function decodeEntities(s) {
         .replace(/&quot;/g, '"')
         .replace(/&#39;|&#x27;/g, "'")
         .replace(/&nbsp;/g, ' ')
+        .replace(/&copy;|&#169;/g, '\u00a9')
+        .replace(/&middot;|&#183;/g, '\u00b7')
+        .replace(/&hellip;/g, '\u2026')
+        .replace(/&mdash;/g, '\u2014')
+        .replace(/&ndash;/g, '\u2013')
+        .replace(/&lsquo;/g, '\u2018')
+        .replace(/&rsquo;/g, '\u2019')
+        .replace(/&ldquo;/g, '\u201c')
+        .replace(/&rdquo;/g, '\u201d')
         .replace(/&amp;/g, '&');
 }
 

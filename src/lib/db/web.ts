@@ -1,7 +1,6 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { isAbsolute, resolve } from 'node:path';
-import 'dotenv/config';
 import * as schema from './schema-web';
 import { createModel } from './prisma-shim';
 
