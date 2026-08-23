@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
+import { features } from '@/config/features';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
+        if (!features.payments) {
+            return NextResponse.json({ error: 'Payments are disabled.' }, { status: 403 });
+        }
+
         const session = await getWebSession();
         if (!session.userId) {
             return NextResponse.json({ error: 'Not authenticated.' }, { status: 401 });
