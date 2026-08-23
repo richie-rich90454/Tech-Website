@@ -32,15 +32,18 @@
  */
 
 /**
- * A string that is KNOWN to be safe HTML.
+ * A string that is KNOWN to be safe HTML, wrapped as a one-field object.
  *
- * At runtime this is still a normal JavaScript string (zero overhead); the
- * extra type information exists only so TypeScript can stop you from passing
- * raw, untrusted text where HTML is expected. Think of it as a paper wristband
- * that says "this content already went through security."
+ * WHY A WRAPPER AND NOT JUST A STRING?
+ * The first version of this type used a compile-time-only "branded string".
+ * That hid a real bug: at runtime nothing distinguished escaped from raw
+ * text, so unsafe() content got double-escaped. An explicit wrapper makes
+ * the safety boundary PHYSICAL - you cannot have Html without the envelope,
+ * and the unit tests prove the envelope travels through composition.
  */
-declare const __brand_Html: unique symbol;
-export type Html = string & { readonly [__brand_Html]: 'Html' };
+export interface Html {
+    readonly value: string;
+}
 
 /** The five characters that make text dangerous inside HTML, mapped to entities. */
 const ESCAPE_MAP: Record<string, string> = {
@@ -74,7 +77,12 @@ export function esc(value: unknown): string {
  * would reopen the hole esc() just closed - which is why the name shouts.
  */
 export function unsafe(value: string): Html {
-    return value as Html;
+    return { value };
+}
+
+/** Runtime type guard: does this value carry the safe-HTML envelope? */
+function isHtml(value: unknown): value is Html {
+    return typeof value === 'object' && value !== null && typeof (value as Html).value === 'string';
 }
 
 /**
@@ -85,14 +93,13 @@ export function unsafe(value: string): Html {
 type Interpolatable = Html | string | number | boolean | null | undefined;
 type Interpolation = Interpolatable | Interpolation[];
 
-function flatten(values: Interpolation): string {
-    if (values == null || values === false) return '';
-    if (values === true) return ''; // booleans are switches, never content
-    if (Array.isArray(values)) return values.map(flatten).join('');
-    // Strings and numbers are ALWAYS escaped. Only branded Html slips through.
-    return typeof (values as Html) === 'string' && (values as { __brand?: unknown }).__brand
-        ? (values as string)
-        : esc(values);
+function flatten(value: Interpolation): string {
+    if (value == null || value === false) return '';
+    if (value === true) return ''; // booleans are switches, never content
+    if (Array.isArray(value)) return value.map(flatten).join('');
+    // The ONLY escape hatch is the Html envelope; every raw string/number is
+    // escaped. This single branch is the security model of the view layer.
+    return isHtml(value) ? value.value : esc(value);
 }
 
 /**
@@ -109,12 +116,12 @@ export function html(strings: TemplateStringsArray, ...values: Interpolation[]):
         out += strings[i];
         if (i < values.length) out += flatten(values[i]);
     }
-    return out as Html;
+    return { value: out };
 }
 
 /** Extract the runtime string from an Html value (used by Context.html()). */
 export function renderToString(page: Html): string {
-    return page as string;
+    return page.value;
 }
 
 // TODO(roadmap): template-level fragment helper if view composition ever needs
