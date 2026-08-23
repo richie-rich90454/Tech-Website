@@ -85,3 +85,6 @@ public/web/wheel/
 /data/
 /docker/
 /tools.xlsx
+# sqlite WAL sidecars
+prisma/*.db-shm
+prisma/*.db-wal
