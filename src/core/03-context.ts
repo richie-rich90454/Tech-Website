@@ -41,7 +41,7 @@ export class Context {
     /** Route parameters filled in by the Router, e.g. /tickets/:id -> ctx.params.id */
     public readonly params: Record<string, string> = {};
 
-    private readonly url: URL;
+    readonly url: URL;
     private readonly cookieBag = new Map<string, string>();
     private finished = false;
     private cachedBody: unknown;
