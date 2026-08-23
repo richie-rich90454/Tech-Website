@@ -91,3 +91,9 @@ prisma/*.db-wal
 
 # legacy tree kept on disk as porting reference; deleted from this branch's index
 /src/app/
+
+# Build artifacts
+dist/
+*.gz
+*.br
+!*.svg.gz

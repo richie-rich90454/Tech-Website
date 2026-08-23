@@ -1,1 +1,696 @@
-<!doctype html><html><body><!--$--><header class="web-header"><div class="web-header__inner"><a class="web-header__brand" aria-label="IPstress — home" href="/web"><span class="web-header__mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"></path></svg></span><span class="web-header__name">IPstress</span></a><nav class="web-header__nav" aria-label="Primary"><ul><li><a href="/web">Home</a></li><li><a href="/web#about">About</a></li><li><a href="/web#plans">Plans</a></li><li><a href="/web#faq">FAQ</a></li></ul></nav><div class="web-header__cta"><a class="web-header__btn web-header__btn--ghost" href="/web/register">Register</a><a class="web-header__btn web-header__btn--solid" href="/web/login">Log in</a></div></div></header><!--$--><div class="preloader"><div class="lds-ripple"><div class="spinner-grow" role="status"><span class="sr-only">Loading...</span></div></div></div><div id="main-wrapper" data-theme="dark" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full"><header class="topbar" data-navbarbg="skin6"><nav class="navbar top-navbar navbar-dark"><div class="navbar-header" data-logobg="skin6"><a class="nav-toggler waves-effect waves-dark d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a><div class="navbar-brand"><b class="logo-icon text-center"><img src="/images/logo-icon.png" alt="homepage" class="dark-logo"/></b><b class="text-center text-white" style="padding-top:3px;padding-right:50px">IPstress</b></div></div><div class="navbar-collapse collapse" id="navbarSupportedContent"><ul class="navbar-nav float-left mr-auto ml-3 pl-1"></ul><ul class="navbar-nav float-right"><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"><img src="/images/logo-icon.png" alt="homepage" class="dark-logo" width="29"/><span class="ml-2 d-none d-lg-inline-block"><span class="text-dark">Hello, Admin!</span></span></a><div class="dropdown-menu dropdown-menu-right user-dd animated flipInY"><a class="dropdown-item" href="/web/admin/tickets">Inbox</a><a class="dropdown-item" href="/web/profile">Profile</a><div class="dropdown-divider"></div><a class="dropdown-item" href="/web/api/auth/logout">Logout</a></div></li></ul></div></nav></header><aside class="left-sidebar" data-sidebarbg="skin6"><div class="scroll-sidebar"><nav class="sidebar-nav"><ul id="sidebarnav"><li class="nav-small-cap"><span class="hide-menu">Admin Panel</span></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home feather-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="hide-menu">Dashboard</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/users"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users feather-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span class="hide-menu">Users</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/plans"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock feather-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span class="hide-menu">Plans</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/tickets"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail feather-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="hide-menu">Tickets</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/attacklogs"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-wifi-off feather-icon"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12" y2="20"></line></svg><span class="hide-menu">Attack Logs</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/loginlogs"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user feather-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span class="hide-menu">Login Logs</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/news"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus feather-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span class="hide-menu">News</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/giftcards"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus feather-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span class="hide-menu">Gift Cards</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/settings"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up-circle feather-icon"><path d="M22 12 A10 10 0 0 1 12 22 A10 10 0 0 1 2 12 A10 10 0 0 1 22 12 z"></path><path d="M16 12 L12 8 L8 12"></path><path d="M12 16 L12 8"></path></svg><span class="hide-menu">Settings</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/servers"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield feather-icon"><path d="M12 22s8-4 8-10V4l-8-2-8 2v8c0 6 8 10 8 10z"></path></svg><span class="hide-menu">API Servers</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/methods"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus feather-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span class="hide-menu">Methods</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/admin/hub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power feather-icon"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg><span class="hide-menu">Hub</span></a></li><li class="sidebar-item"><a class="sidebar-link" href="/web/dashboard"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power feather-icon"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg><span class="hide-menu">Back to Home</span></a></li></ul></nav></div></aside><div class="page-wrapper"><div class="page-breadcrumb"><div class="d-flex align-items-center"><h4 class="page-title text-truncate text-white font-weight-medium mb-0">Admin Dashboard</h4><div class="ml-auto"><nav aria-label="breadcrumb"><ol class="breadcrumb m-0 p-0"><li class="breadcrumb-item text-sql">IPstress</li><li class="breadcrumb-item text-muted">Admin Dashboard</li></ol></nav></div></div></div><div class="container-fluid"><div class="card-group"><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">1</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Total Users</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">0</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Active Users</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">0</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Total Attacks</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">0</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Running Attacks</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">$0.00</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Total Revenue</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">1</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">VIP Users</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">0</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Banned Users</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg></span></div></div></div></div><div class="card"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">0</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Waiting Tickets</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span></div></div></div></div></div></div><footer class="footer">© 2023 IPstress</footer></div></div><!--/$--><!--/$--></body></html>
+<!doctype html>
+<html>
+    <body>
+        <!--$-->
+        <header class="web-header">
+            <div class="web-header__inner">
+                <a class="web-header__brand" aria-label="IPstress — home" href="/web"
+                    ><span class="web-header__mark" aria-hidden="true"
+                        ><svg
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"></path></svg></span
+                    ><span class="web-header__name">IPstress</span></a
+                >
+                <nav class="web-header__nav" aria-label="Primary">
+                    <ul>
+                        <li><a href="/web">Home</a></li>
+                        <li><a href="/web#about">About</a></li>
+                        <li><a href="/web#plans">Plans</a></li>
+                        <li><a href="/web#faq">FAQ</a></li>
+                    </ul>
+                </nav>
+                <div class="web-header__cta">
+                    <a class="web-header__btn web-header__btn--ghost" href="/web/register"
+                        >Register</a
+                    ><a class="web-header__btn web-header__btn--solid" href="/web/login">Log in</a>
+                </div>
+            </div>
+        </header>
+        <!--$-->
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div
+            id="main-wrapper"
+            data-theme="dark"
+            data-layout="vertical"
+            data-navbarbg="skin6"
+            data-sidebartype="full"
+            data-sidebar-position="fixed"
+            data-header-position="fixed"
+            data-boxed-layout="full"
+        >
+            <header class="topbar" data-navbarbg="skin6">
+                <nav class="navbar top-navbar navbar-dark">
+                    <div class="navbar-header" data-logobg="skin6">
+                        <a
+                            class="nav-toggler waves-effect waves-dark d-block d-md-none"
+                            href="javascript:void(0)"
+                            ><i class="ti-menu ti-close"></i
+                        ></a>
+                        <div class="navbar-brand">
+                            <b class="logo-icon text-center"
+                                ><img
+                                    src="/images/logo-icon.png"
+                                    alt="homepage"
+                                    class="dark-logo" /></b
+                            ><b
+                                class="text-center text-white"
+                                style="padding-top: 3px; padding-right: 50px"
+                                >IPstress</b
+                            >
+                        </div>
+                    </div>
+                    <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav float-left mr-auto ml-3 pl-1"></ul>
+                        <ul class="navbar-nav float-right">
+                            <li class="nav-item dropdown">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="javascript:void(0)"
+                                    data-toggle="dropdown"
+                                    ><img
+                                        src="/images/logo-icon.png"
+                                        alt="homepage"
+                                        class="dark-logo"
+                                        width="29"
+                                    /><span class="ml-2 d-none d-lg-inline-block"
+                                        ><span class="text-dark">Hello, Admin!</span></span
+                                    ></a
+                                >
+                                <div
+                                    class="dropdown-menu dropdown-menu-right user-dd animated flipInY"
+                                >
+                                    <a class="dropdown-item" href="/web/admin/tickets">Inbox</a
+                                    ><a class="dropdown-item" href="/web/profile">Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="/web/api/auth/logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <aside class="left-sidebar" data-sidebarbg="skin6">
+                <div class="scroll-sidebar">
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav">
+                            <li class="nav-small-cap">
+                                <span class="hide-menu">Admin Panel</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/dashboard"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-home feather-icon"
+                                    >
+                                        <path
+                                            d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                                        ></path>
+                                        <polyline points="9 22 9 12 15 12 15 22"></polyline></svg
+                                    ><span class="hide-menu">Dashboard</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/users"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-users feather-icon"
+                                    >
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg
+                                    ><span class="hide-menu">Users</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/plans"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-lock feather-icon"
+                                    >
+                                        <rect
+                                            x="3"
+                                            y="11"
+                                            width="18"
+                                            height="11"
+                                            rx="2"
+                                            ry="2"
+                                        ></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg
+                                    ><span class="hide-menu">Plans</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/tickets"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-mail feather-icon"
+                                    >
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                                        ></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline></svg
+                                    ><span class="hide-menu">Tickets</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/attacklogs"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-wifi-off feather-icon"
+                                    >
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                                        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                                        <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                                        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                                        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                                        <line x1="12" y1="20" x2="12" y2="20"></line></svg
+                                    ><span class="hide-menu">Attack Logs</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/loginlogs"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-user feather-icon"
+                                    >
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle></svg
+                                    ><span class="hide-menu">Login Logs</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/news"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-plus feather-icon"
+                                    >
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line></svg
+                                    ><span class="hide-menu">News</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/giftcards"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-plus feather-icon"
+                                    >
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line></svg
+                                    ><span class="hide-menu">Gift Cards</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/settings"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-arrow-up-circle feather-icon"
+                                    >
+                                        <path
+                                            d="M22 12 A10 10 0 0 1 12 22 A10 10 0 0 1 2 12 A10 10 0 0 1 22 12 z"
+                                        ></path>
+                                        <path d="M16 12 L12 8 L8 12"></path>
+                                        <path d="M12 16 L12 8"></path></svg
+                                    ><span class="hide-menu">Settings</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/servers"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-shield feather-icon"
+                                    >
+                                        <path
+                                            d="M12 22s8-4 8-10V4l-8-2-8 2v8c0 6 8 10 8 10z"
+                                        ></path></svg
+                                    ><span class="hide-menu">API Servers</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/methods"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-plus feather-icon"
+                                    >
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line></svg
+                                    ><span class="hide-menu">Methods</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/admin/hub"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-power feather-icon"
+                                    >
+                                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                        <line x1="12" y1="2" x2="12" y2="12"></line></svg
+                                    ><span class="hide-menu">Hub</span></a
+                                >
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="/web/dashboard"
+                                    ><svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="feather feather-power feather-icon"
+                                    >
+                                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                        <line x1="12" y1="2" x2="12" y2="12"></line></svg
+                                    ><span class="hide-menu">Back to Home</span></a
+                                >
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+            <div class="page-wrapper">
+                <div class="page-breadcrumb">
+                    <div class="d-flex align-items-center">
+                        <h4 class="page-title text-truncate text-white font-weight-medium mb-0">
+                            Admin Dashboard
+                        </h4>
+                        <div class="ml-auto">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb m-0 p-0">
+                                    <li class="breadcrumb-item text-sql">IPstress</li>
+                                    <li class="breadcrumb-item text-muted">Admin Dashboard</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <div class="card-group">
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">1</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Total Users
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path
+                                                    d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+                                                ></path>
+                                                <circle cx="8.5" cy="7" r="4"></circle>
+                                                <line x1="20" y1="8" x2="20" y2="14"></line>
+                                                <line x1="23" y1="11" x2="17" y2="11"></line></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">0</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Active Users
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path
+                                                    d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+                                                ></path>
+                                                <circle cx="8.5" cy="7" r="4"></circle>
+                                                <polyline points="17 11 19 13 23 9"></polyline></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">0</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Total Attacks
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                                <line x1="9" y1="9" x2="15" y2="15"></line></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">0</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Running Attacks
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <polyline
+                                                    points="22 12 18 12 15 21 9 3 6 12 2 12"
+                                                ></polyline></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">
+                                                $0.00
+                                            </h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Total Revenue
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                                <path
+                                                    d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+                                                ></path></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">1</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            VIP Users
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <polygon
+                                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                                                ></polygon></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-right">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">0</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Banned Users
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line
+                                                    x1="4.93"
+                                                    y1="4.93"
+                                                    x2="19.07"
+                                                    y2="19.07"
+                                                ></line></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex d-lg-flex d-md-block align-items-center">
+                                    <div>
+                                        <div class="d-inline-flex align-items-center">
+                                            <h2 class="text-white mb-1 font-weight-medium">0</h2>
+                                        </div>
+                                        <h6
+                                            class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2"
+                                        >
+                                            Waiting Tickets
+                                        </h6>
+                                    </div>
+                                    <div class="ml-auto mt-md-3 mt-lg-0">
+                                        <span class="opacity-7 text-muted"
+                                            ><svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path
+                                                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                                                ></path>
+                                                <polyline points="22,6 12,13 2,6"></polyline></svg
+                                        ></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer">© 2023 IPstress</footer>
+            </div>
+        </div>
+        <!--/$--><!--/$-->
+    </body>
+</html>

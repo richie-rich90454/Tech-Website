@@ -1,21 +1,21 @@
-"use strict";
-(function() {
-  var tabs = document.querySelectorAll("[data-faq-tab]");
-  var panels = document.querySelectorAll("[data-faq-panel]");
-  if (!tabs.length || !panels.length) return;
-  tabs.forEach(function(tab) {
-    tab.addEventListener("click", function(e) {
-      e.preventDefault();
-      var target = tab.getAttribute("data-faq-tab");
-      tabs.forEach(function(t) {
-        t.classList.remove("active");
-        t.setAttribute("aria-selected", "false");
-      });
-      tab.classList.add("active");
-      tab.setAttribute("aria-selected", "true");
-      panels.forEach(function(p) {
-        p.style.display = p.getAttribute("data-faq-panel") === target ? "" : "none";
-      });
-    });
-  });
+'use strict';
+(function () {
+    var a = document.querySelectorAll('[data-faq-tab]'),
+        r = document.querySelectorAll('[data-faq-panel]');
+    !a.length ||
+        !r.length ||
+        a.forEach(function (e) {
+            e.addEventListener('click', function (n) {
+                n.preventDefault();
+                var c = e.getAttribute('data-faq-tab');
+                (a.forEach(function (t) {
+                    (t.classList.remove('active'), t.setAttribute('aria-selected', 'false'));
+                }),
+                    e.classList.add('active'),
+                    e.setAttribute('aria-selected', 'true'),
+                    r.forEach(function (t) {
+                        t.style.display = t.getAttribute('data-faq-panel') === c ? '' : 'none';
+                    }));
+            });
+        });
 })();

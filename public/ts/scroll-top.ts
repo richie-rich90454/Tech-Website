@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 // Scroll-to-top button show/hide + smooth scroll.
 (function () {
-    var btn = document.getElementById("topbutton");
-    var bar = document.getElementById("bar");
+    var btn = document.getElementById('topbutton');
+    var bar = document.getElementById('bar');
     if (!btn || !bar) return;
-    window.addEventListener("scroll", function () {
+    window.addEventListener('scroll', function () {
         var y = document.body.scrollTop || document.documentElement.scrollTop;
-        btn.style.display = y > bar.offsetTop ? "block" : "none";
+        btn.style.display = y > bar.offsetTop ? 'block' : 'none';
     });
-    btn.addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+    btn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 })();
