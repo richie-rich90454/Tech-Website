@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
+import { rateLimit } from '@/lib/rate-limit';
+import { features } from '@/config/features';
+
+const MAX_ATTACK_SECONDS = 3600;
 
 async function handleAttack(req: NextRequest, params: Record<string, string>) {
+    if (!features.ipstress) {
+        return NextResponse.json({ error: 'This feature is disabled.' }, { status: 403 });
+    }
+
     const host = params.host?.trim();
     const port = params.port?.trim() || '80';
     const timeStr = params.time?.trim();
@@ -15,8 +23,19 @@ async function handleAttack(req: NextRequest, params: Record<string, string>) {
     }
 
     const attackTime = parseInt(timeStr, 10);
-    if (isNaN(attackTime) || attackTime <= 0) {
-        return NextResponse.json({ error: 'Invalid attack time.' }, { status: 400 });
+    if (isNaN(attackTime) || attackTime <= 0 || attackTime > MAX_ATTACK_SECONDS) {
+        return NextResponse.json(
+            { error: `Invalid attack time. Must be 1-${MAX_ATTACK_SECONDS} seconds.` },
+            { status: 400 }
+        );
+    }
+
+    const portNum = parseInt(port, 10);
+    if (isNaN(portNum) || portNum < 1 || portNum > 65535) {
+        return NextResponse.json(
+            { error: 'Invalid port. Must be between 1 and 65535.' },
+            { status: 400 }
+        );
     }
 
     const now = Math.floor(Date.now() / 1000);
@@ -64,7 +83,7 @@ async function handleAttack(req: NextRequest, params: Record<string, string>) {
     const apiServer = bestServer;
 
     // Build attack URL
-    let attackUrl = apiServer.api
+    const attackUrl = apiServer.api
         .replace(/\[host\]/gi, host)
         .replace(/\[port\]/gi, port)
         .replace(/\[time\]/gi, String(attackTime))
@@ -134,6 +153,10 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
         if (!settings || settings.key !== key) {
             return NextResponse.json({ error: 'Invalid API key.' }, { status: 403 });
+        }
+
+        if (!rateLimit('ext-api:' + key, 30, 60_000)) {
+            return NextResponse.json({ error: 'Rate limit exceeded.' }, { status: 429 });
         }
 
         const params: Record<string, string> = {};
