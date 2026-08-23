@@ -94,10 +94,11 @@ export async function tlView(params: TlPageParams): Promise<string | null> {
     for (const sub of subs) {
         const entry = domainById.get(sub.id);
         if (!entry) continue;
-        const { id: _id, ...tagBooleans } = entry as unknown as { id: number } & Record<
-            string,
-            boolean
-        >;
+        // The row id equals the submission id we keyed by; strip before use.
+        const { id: _drop, ...tagBooleans } = entry as unknown as {
+            id: number;
+        } & Record<string, boolean>;
+        void _drop;
         toolsWithTags.push({ ...sub, tags: tagBooleans });
     }
 

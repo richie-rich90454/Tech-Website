@@ -18,7 +18,6 @@
  */
 
 import type { Context } from '@/core/03-context';
-import { HttpError } from '@/core/09-errors';
 import { SessionManager, type SessionData } from '@/core/05-session';
 import { env } from '@/config/env';
 import { webDb } from '@/lib/db/web';
