@@ -136,12 +136,9 @@ export class Application {
                 if (!res.headersSent) {
                     res.setHeader(
                         'X-Response-Time-Ms',
-                        String(Math.round(performance.now() - startedAt)),
+                        String(Math.round(performance.now() - startedAt))
                     );
                 }
-                return originalEnd(...args);
-            };
-        }
                 return originalEnd(...args);
             };
         }
