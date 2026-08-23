@@ -15,7 +15,7 @@ import { rateLimit } from '../lib/rate-limit';
 import { webDb } from '../lib/db/web';
 import { webLoginSchema, webRegisterSchema } from '../lib/validations/web-auth';
 import bcrypt from 'bcryptjs';
-import { hubView, profileView } from '../views/web-pages';
+import { dashboardView, hubView, profileView } from '../views/web-pages';
 
 type Body = Record<string, unknown>;
 
@@ -103,6 +103,37 @@ export function registerWebRoutes(app: Application): void {
         });
         ctx.json({ success: 'You have successfully registered! Redirecting...' });
     });
+
+    // ------------------------------------------------------------- dashboard
+    app.get(
+        '/web/dashboard',
+        async (ctx) => {
+            const user = await currentUser(ctx);
+            const plan = user.membership
+                ? await webDb.plans.findUnique({ where: { ID: user.membership } })
+                : null;
+            const runningAttacks = await webDb.logs.count({
+                where: { user: user.username, stopped: 0, time: { gt: 0 } },
+            });
+            const totalAttacks = await webDb.logs.count({ where: { user: user.username } });
+            const planName = plan ? plan.name : 'No membership';
+            const maxTime = plan ? `${plan.mbt}s` : 'No membership';
+            const maxConc = String(plan?.concurrents ?? '-');
+            const exp = new Date(user.expire * 1000).toLocaleDateString('en-US');
+            ctx.htmlRaw(
+                dashboardView(
+                    user.username,
+                    planName,
+                    maxTime,
+                    maxConc,
+                    exp,
+                    runningAttacks,
+                    totalAttacks
+                )
+            );
+        },
+        { guard: 'webUser' }
+    );
 
     // ------------------------------------------------------------------ hub
     app.get(

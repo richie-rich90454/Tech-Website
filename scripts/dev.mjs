@@ -39,7 +39,8 @@ function run(name, singleCommand, color) {
 
 console.log('dev: starting server watcher + client bundler watcher...');
 const esbuildFiles = [
-    'public/ts/menu.ts',
+    'public/ts/filters.ts
+        public/ts/menu.ts',
     'public/ts/tabs.ts',
     'public/ts/img-fallback.ts',
     'public/ts/scroll-top.ts',

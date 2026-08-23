@@ -59,3 +59,18 @@ export function maintenanceView(description: string): string {
         body: markup`${webHeader()}<div style="display:flex;justify-content:center;align-items:center;min-height:100vh;background:#0a0e27;color:#fff;text-align:center"><div><h1 style="font-size:3rem;margin-bottom:1rem">&#128736; Maintenance Mode</h1><p style="font-size:1.2rem;max-width:600px">${description}</p><a style="color:#0cf293;margin-top:2rem;display:inline-block" href="/web">Return Home</a></div></div>`,
     });
 }
+
+export function dashboardView(
+    username: string,
+    planName: string,
+    maxTime: string,
+    maxConcurrents: string,
+    expiry: string,
+    runningAttacks: number,
+    totalAttacks: number
+): string {
+    return webShell(
+        'Dashboard · IPstress',
+        markup`${webHeader()}${breadcrumb('Dashboard')}<div class="container-fluid"><div class="card-group"><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">${totalAttacks}</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Total Attacks</h6></div></div></div></div><div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">${runningAttacks}</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">Running Attacks</h6></div></div></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-6 col-lg-6"><div class="card"><div class="card-body"><h4 class="card-title">Membership</h4><div class="mt-4 activity"><div class="table-responsive"><table class="table"><tbody><tr><td>Plan</td><td>${planName}</td></tr><tr><td>Max Attack Time</td><td>${maxTime}</td></tr><tr><td>Max Concurrents</td><td>${maxConcurrents}</td></tr><tr><td>Expiry</td><td>${expiry}</td></tr></tbody></table></div></div></div></div></div><div class="col-md-6 col-lg-6"><div class="card"><div class="card-body"><h4 class="card-title">Quick Actions</h4><div class="mt-4 activity"><a href="/web/hub" class="btn btn-danger btn-block mb-2">Launch Attack</a><a href="/web/plan" class="btn btn-primary btn-block mb-2">Upgrade Plan</a><a href="/web/tickets/new" class="btn btn-secondary btn-block">Create Ticket</a></div></div></div></div></div></div></div>`
+    );
+}

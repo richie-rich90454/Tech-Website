@@ -118,6 +118,7 @@ export async function tlView(params: TlPageParams): Promise<string | null> {
     }</div></div><button id="topbutton" title="Go to top">Top</button>${footer()}`;
 
     return shell({
+        scripts: ['filters.js'],
         title: `${config.title} · BIBS·C Tech Tools`,
         description: `Filter and explore tech tools aligned with ${config.title} strands.`,
         body,
