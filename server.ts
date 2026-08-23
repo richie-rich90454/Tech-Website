@@ -22,6 +22,7 @@
 import { env } from './src/config/env';
 import { Application, pageCache } from './src/core/01-application';
 import { html, renderToString } from './src/core/04-html';
+import { guards } from './src/routes/guards';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -62,8 +63,9 @@ const errorPage = (ref: string): string =>
 const app = new Application({
     notFoundPage,
     errorPage,
-    // Guards arrive with the route phases; the map keeps core storage-free.
-    guards: {},
+    isProd: env.isProd,
+    // Names referenced by route options {guard:'...'} resolve here.
+    guards,
 });
 
 app.get('/api/health', async (ctx) => {
