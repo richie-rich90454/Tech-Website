@@ -106,3 +106,60 @@ export function adminDashboardView(s: DashStats): string {
     )}</div></div>`;
     return dashShell('Admin Dashboard', 'Admin Dashboard', content);
 }
+
+/** Empty-state row helper shared by every admin table. */
+function emptyRow(cols: number, message: string): Html {
+    return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${message}</td></tr>`;
+}
+
+export function usersAdminView(users: UserRow[]): string {
+    const rows = users.length
+        ? users.map(
+              (u) =>
+                  markup`<tr><td class="text-center">${u.ID}</td><td>${u.username}</td><td>${Number(u.rank) >= 1 ? 'Admin' : 'User'}</td><td>${u.membership || 'None'}</td><td class="text-center"><a href="/web/admin/users/${u.ID}" class="btn btn-sm btn-primary">Edit</a></td></tr>`
+          )
+        : [emptyRow(4, 'No users found.')];
+    return dashShell(
+        'Users',
+        'Users',
+        markup`<div class="container-fluid"><div class="row"><div class="col-12"><div class="card"><div class="card-body"><h4 class="card-title">All Users (${users.length})</h4><div class="table-responsive mt-4"><table class="table"><thead><tr><th>ID</th><th>Username</th><th>Rank</th><th>Membership</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div></div></div></div></div>`
+    );
+}
+
+export function userEditView(user: UserRow, plans: PlanRow[]): string {
+    const planOpts = markup`<option value="0"${user.membership ? '' : ' selected'}>None</option>${plans.map(
+        (pl) =>
+            markup`<option value="${pl.ID}"${Number(user.membership) === pl.ID ? ' selected' : ''}>${pl.name}</option>`
+    )}`;
+    return dashShell(
+        'Edit User',
+        markup`<a href="/web/admin/users">Users</a> | ${user.username}` as unknown as string,
+        markup`<div class="container-fluid"><div class="row"><div class="col-md-8 col-lg-6"><div class="card"><div class="card-body"><h4 class="card-title">Edit: ${user.username}</h4><form class="mt-4" action="/web/api/admin/users" method="POST"><input type="hidden" name="id" value="${user.ID}"/><input type="hidden" name="action" value="update"/><div class="form-group"><label class="text-white">Username</label><input class="form-control" required name="username" value="${user.username}"/></div><div class="form-group"><label class="text-white">New Password (leave blank to keep)</label><input class="form-control" type="password" placeholder="Leave blank to keep current" name="password"/></div><div class="form-group"><label class="text-white">Rank</label><select class="form-control" name="rank"><option value="0"${Number(user.rank) === 0 ? ' selected' : ''}>User</option><option value="1"${Number(user.rank) === 1 ? ' selected' : ''}>Admin</option><option value="2"${Number(user.rank) === 2 ? ' selected' : ''}>Super Admin</option></select></div><div class="form-group"><label class="text-white">Membership</label><select class="form-control" name="membership">${planOpts}</select></div><div class="form-group"><label class="text-white">Expire (Unix timestamp)</label><input class="form-control" type="number" name="expire" value="${user.expire}"/></div><button type="submit" class="btn btn-primary">Update User</button></form></div></div></div></div></div>`
+    );
+}
+
+/** Generic create-form + list layout used by plans/methods/news/servers. */
+function crudShell(title: string, crumb: string, formCard: Html, listCard: Html): string {
+    return dashShell(title, crumb, markup`${formCard}${listCard}`);
+}
+
+/** Two-column create/list layout shared by plans, methods, news, servers. */
+function twoCol(title: string, crumb: string, formCard: Html, listCard: Html): string {
+    return dashShell(
+        title,
+        crumb,
+        markup`<div class="container-fluid"><div class="row">${formCard}${listCard}</div></div>`
+    );
+}
+
+export function plansAdminView(plans: PlanRow[]): string {
+    const rows = plans.length
+        ? plans.map(
+              (pl) =>
+                  markup`<tr><td>${pl.ID}</td><td>${pl.name}</td><td>${pl.price}¥</td><td>${pl.length}d</td><td class="text-center"><button type="button" data-action="/web/api/admin/plans" data-id="${pl.ID}" class="btn btn-sm btn-danger">Delete</button></td></tr>`
+          )
+        : [emptyRow(5, 'No plans created yet.')];
+    const form = markup`<div class="col-md-5"><div class="card"><div class="card-body"><h4 class="card-title">Create Plan</h4><form class="mt-4" action="/web/api/admin/plans" method="POST"><input type="hidden" name="action" value="create"/><div class="form-group"><label class="text-white">Name</label><input class="form-control" placeholder="Gold" required name="name"/></div><div class="form-group"><label class="text-white">Price (¥)</label><input class="form-control" type="number" step="0.01" required name="price"/></div><div class="form-group"><label class="text-white">Duration (days)</label><input class="form-control" type="number" required name="length"/></div><div class="form-group"><label class="text-white">Max Attack Time (s)</label><input class="form-control" type="number" required name="mbt"/></div><div class="form-group"><label class="text-white">Concurrents</label><input class="form-control" type="number" required name="concurrents"/></div><div class="form-group"><label class="text-white">VIP</label><select class="form-control" name="vip"><option value="0">No</option><option value="1">Yes</option></select></div><button type="submit" class="btn btn-success">Create Plan</button></form></div></div></div>`;
+    const list = markup`<div class="col-md-7"><div class="card"><div class="card-body"><h4 class="card-title">All Plans</h4><div class="table-responsive mt-4"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Length</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div></div></div>`;
+    return twoCol('Plan Management', 'Plans', form, list);
+}
