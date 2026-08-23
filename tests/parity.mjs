@@ -79,6 +79,9 @@ function bodyOf(html) {
     const m = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
     let inner = m ? m[1] : html;
     inner = inner.replace(/<script[\s\S]*?<\/script>/gi, '');
+    // Metadata hints the legacy framework streamed into <body> (preloads):
+    // invisible to visitors, so excluded from structural comparison.
+    inner = inner.replace(/<link[^>]*>/gi, '');
     inner = inner.replace(/<!--[\s\S]*?-->/g, '');
     inner = decodeEntities(inner);
     // Self-closing slashes first ("<img/>") so the attribute-name pass below
