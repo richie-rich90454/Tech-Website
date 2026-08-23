@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isWebAdmin } from '@/lib/auth/web';
 import { webDb } from '@/lib/db/web';
 
 export async function GET(): Promise<NextResponse> {
+    if (!(await isWebAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const plans = await webDb.plans.findMany({ orderBy: { ID: 'asc' } });
     return NextResponse.json({ plans });
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+    if (!(await isWebAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const formData = await req.formData();
     const action = formData.get('action') as string;
 
