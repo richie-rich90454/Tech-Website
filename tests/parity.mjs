@@ -107,6 +107,9 @@ function bodyOf(html) {
     inner = inner.replace(/\s+>/g, '>');
     inner = inner.replace(/> </g, '><');
     inner = inner.replace(/=""/g, '');
+    // Functional (non-rendering) attributes may legitimately differ: v3 adds
+    // form action= so flows work without JavaScript. Pixels are unaffected.
+    inner = inner.replace(/\s(action|autocomplete|novalidate)="[^"]*"/gi, '');
     inner = inner.replace(/<([^>]+?)\/>/g, '<$1>');
     return inner.trim();
 }

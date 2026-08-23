@@ -27,6 +27,7 @@ import { homeView } from './src/views/home';
 import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';
 import { searchView } from './src/views/search';
+import { registerMainSiteRoutes } from './src/routes/main-site';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -83,6 +84,8 @@ app.get('/', async (ctx) => {
     const cached = await pageCache.remember('home', async () => homeView());
     ctx.htmlRaw(cached);
 });
+
+registerMainSiteRoutes(app);
 
 // Search: dynamic per query - never cached (result sets are personal to input).
 app.get('/search', async (ctx) => {
