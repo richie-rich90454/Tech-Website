@@ -164,7 +164,7 @@ export class Application {
         }
         if (options.limit) {
             const [max, windowMs] = options.limit;
-            if (!rateLimitCheck(ctx.ip, `${ctx.method} ${ctx.path}`, max, windowMs)) {
+            if (!rateLimitCheck(`${ctx.method} ${ctx.path}:${ctx.ip}`, max, windowMs)) {
                 ctx.json({ error: 'Rate limit exceeded.' }, 429);
                 return;
             }
