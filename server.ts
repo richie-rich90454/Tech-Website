@@ -31,6 +31,8 @@ import { registerMainSiteRoutes } from './src/routes/main-site';
 import { registerAdminRoutes } from './src/routes/admin';
 import { webLoginView, webRegisterView } from './src/views/web-public';
 import { webLandingView } from './src/views/web-landing';
+import { registerWebRoutes } from './src/routes/web';
+import { maintenanceView } from './src/views/web-pages';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -90,7 +92,13 @@ app.get('/', async (ctx) => {
 
 registerMainSiteRoutes(app);
 registerAdminRoutes(app);
+registerWebRoutes(app);
 // Web public pages.
+// Maintenance gate: reads settings.maintaince flag.
+app.get('/web/maintenance', async (ctx) => {
+    const settings = await webDb.settings.findFirst({ select: { description: true } });
+    ctx.htmlRaw(maintenanceView(settings?.description ?? 'Premium IP stress testing service'));
+});
 app.get('/web', async (ctx) => {
     const body =
         pageCache.get('web-home') ??
