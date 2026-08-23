@@ -1,20 +1,10 @@
 ﻿import 'dotenv/config';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
-import { PrismaClient } from '../src/lib/db/generated/main';
+import { mainDb as prisma } from '../src/lib/db/main';
 import * as bcrypt from 'bcryptjs';
 import { readFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-const PROJECT_ROOT = resolve(HERE, '..');
-const dbPath = resolve(PROJECT_ROOT, 'prisma', 'main.db');
-process.env.DATABASE_URL_MAIN = process.env.DATABASE_URL_MAIN ?? `file:${dbPath}`;
-
-const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL_MAIN,
-});
-const prisma = new PrismaClient({ adapter });
+const PROJECT_ROOT = process.cwd();
 
 // 15 strand columns on the domains table, in the same order the workbooks
 // emit them. Each row is the boolean tag for one tool.
