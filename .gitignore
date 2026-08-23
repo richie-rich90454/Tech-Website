@@ -59,3 +59,6 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 *.pem
+
+# Legacy wheel libs (superseded by public/ts/wheel.ts)
+public/web/wheel/
