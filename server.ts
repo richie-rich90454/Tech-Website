@@ -22,7 +22,7 @@
 import { env } from './src/config/env';
 import { Application, pageCache } from './src/core/01-application';
 import { markup, renderToString } from './src/core/04-html';
-import { guards, requireWebUser } from './src/routes/guards';
+import { guards } from './src/routes/guards';
 import { homeView } from './src/views/home';
 import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';

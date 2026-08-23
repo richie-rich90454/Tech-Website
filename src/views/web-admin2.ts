@@ -2,7 +2,7 @@
  * WEB ADMIN VIEWS PART 2 - remaining CRUD pages.
  * Split from web-admin.ts purely for file size; same patterns, same shell.
  */
-import { markup, unsafe, type Html } from '../core/04-html';
+import { markup, type Html } from '../core/04-html';
 import { dashShell } from './web-admin';
 import type { PlanRow } from '../types/db';
 

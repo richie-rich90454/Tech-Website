@@ -3,7 +3,7 @@
  * ports of tickets/giftcards/affiliate/wheel/maintenance/plan.
  */
 
-import { markup, unsafe, type Html } from '../core/04-html';
+import { markup, type Html } from '../core/04-html';
 import { shell } from './shell';
 import { webHeader } from './web-public';
 import type { UserRow, PlanRow } from '../types/db';

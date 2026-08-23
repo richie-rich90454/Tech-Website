@@ -12,7 +12,6 @@ import { markup, unsafe, type Html } from '../core/04-html';
 import { shell } from './shell';
 import type { UserRow, PlanRow } from '../types/db';
 
-const YEN = '\u00a5';
 const EMPTY: Html = unsafe('');
 
 const ICONS: Record<string, string> = {

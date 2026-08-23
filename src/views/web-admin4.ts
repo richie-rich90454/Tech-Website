@@ -1,10 +1,8 @@
 /**
  * WEB ADMIN VIEWS PART 4 (FINAL) - tickets, attack/login logs, hub, settings.
  */
-import { markup, unsafe, type Html } from '../core/04-html';
+import { markup, type Html } from '../core/04-html';
 import { dashShell } from './web-admin';
-
-const EMPTY: Html = unsafe('');
 
 function emptyRow(cols: number, msg: string): Html {
     return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${msg}</td></tr>`;

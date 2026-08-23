@@ -57,10 +57,7 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/users',
         async (ctx) => {
-            const [users, plans] = await Promise.all([
-                webDb.users.findMany(),
-                webDb.plans.findMany({ select: { ID: true, name: true } }),
-            ]);
+            const users = await webDb.users.findMany();
             ctx.htmlRaw(usersAdminView(users));
         },
         { guard: 'webAdmin' }

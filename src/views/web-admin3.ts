@@ -2,12 +2,9 @@
  * WEB ADMIN VIEWS PART 3 - news, servers, giftcards, tickets, logs, hub,
  * settings. Same patterns as web-admin2; see that file for conventions.
  */
-import { markup, unsafe, type Html } from '../core/04-html';
+import { markup, type Html } from '../core/04-html';
 import { dashShell } from './web-admin';
 import type { PlanRow } from '../types/db';
-
-const YEN = '\u00a5';
-const EMPTY: Html = unsafe('');
 
 function emptyRow(cols: number, msg: string): Html {
     return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${msg}</td></tr>`;
