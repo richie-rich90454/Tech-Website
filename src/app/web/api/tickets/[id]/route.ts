@@ -22,6 +22,16 @@ export async function GET(
             return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
         }
 
+        const viewer = await webDb.users.findUnique({
+            where: { ID: session.userId },
+            select: { username: true, rank: true },
+        });
+        const isOwner = !!viewer && viewer.username === ticket.username;
+        const isAdmin = !!viewer && Number(viewer.rank) >= 1;
+        if (!isOwner && !isAdmin) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+        }
+
         const messages = await webDb.messages.findMany({
             where: { ticketid: ticket.id },
             orderBy: { date: 'asc' },
@@ -46,7 +56,7 @@ export async function POST(
 
         const user = await webDb.users.findUnique({
             where: { ID: session.userId },
-            select: { username: true },
+            select: { username: true, rank: true },
         });
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
@@ -60,6 +70,9 @@ export async function POST(
         });
         if (!ticket) {
             return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+        }
+        if (user.username !== ticket.username && Number(user.rank) < 1) {
+            return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
         if (ticket.status === 'Closed') {
             return NextResponse.json({ error: 'Ticket is closed' }, { status: 400 });
