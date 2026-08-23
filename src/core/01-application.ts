@@ -59,6 +59,8 @@ interface AppOptions {
     guards?: GuardMap;
     notFoundPage: string;
     errorPage: (ref: string) => string;
+    /** True in production: disables dev-only headers/behaviors. Defaults from NODE_ENV. */
+    isProd?: boolean;
 }
 
 export class Application {
@@ -66,11 +68,13 @@ export class Application {
     private readonly statics: StaticFiles;
     private readonly guards: GuardMap;
     private readonly middlewares: Middleware[] = [];
+    private readonly isProd: boolean;
     private server?: Server;
 
     constructor(private readonly options: AppOptions) {
         this.statics = new StaticFiles(options.staticRoot ?? 'public');
         this.guards = options.guards ?? {};
+        this.isProd = options.isProd ?? process.env.NODE_ENV === 'production';
     }
 
     /** Register a global middleware (runs after CSRF, before routing). */
@@ -118,12 +122,33 @@ export class Application {
         const startedAt = performance.now();
         const ctx = new Context(raw, res);
         applySecurityHeaders(ctx);
-        if (process.env.NODE_ENV !== 'production') res.setHeader('X-Response-Time-Ms', 'pending');
 
+        // Dev-only response-time header. HTTP offers NO "just before headers go
+        // out" hook, so this is core's single deliberate monkey-patch: wrap
+        // end() to stamp elapsed time while headers are still writable. NEVER
+        // setHeader inside 'finish' - headers are already on the wire there and
+        // attempting it throws ERR_HTTP_HEADERS_SENT, crashing the process.
+        if (!this.isProd) {
+            const originalEnd = res.end.bind(res) as (...a: unknown[]) => unknown;
+            (res as unknown as { end: (...a: unknown[]) => unknown }).end = (
+                ...args: unknown[]
+            ): unknown => {
+                if (!res.headersSent) {
+                    res.setHeader(
+                        'X-Response-Time-Ms',
+                        String(Math.round(performance.now() - startedAt)),
+                    );
+                }
+                return originalEnd(...args);
+            };
+        }
+                return originalEnd(...args);
+            };
+        }
+
+        // Slow-request sentinel: pure logging AFTER the response completes.
         res.on('finish', () => {
             const ms = Math.round(performance.now() - startedAt);
-            if (process.env.NODE_ENV !== 'production')
-                res.setHeader('X-Response-Time-Ms', String(ms));
             if (ms > PAGE_BUDGET_MS)
                 logEvent('warn', { slow: true, ms, path: ctx.path, method: ctx.method });
         });
