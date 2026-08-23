@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webDb } from '@/lib/db/web';
 import { getWebSession } from '@/lib/auth/web';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
+import { features } from '@/config/features';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     // ——— richie-rich90454 refactored this handler, June 2026 ———
     try {
+        if (!features.ipstress) {
+            return NextResponse.json({ error: 'This feature is disabled.' }, { status: 403 });
+        }
+
+        if (!rateLimit('hub:' + clientIp(req), 20, 60_000)) {
+            return NextResponse.json({ error: 'Rate limit exceeded.' }, { status: 429 });
+        }
+
         const session = await getWebSession();
         if (!session.userId) {
             return NextResponse.redirect(new URL('/web/login', req.url));
@@ -53,8 +63,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
 
         const attackTime = parseInt(timeStr, 10);
-        if (isNaN(attackTime) || attackTime <= 0) {
+        if (isNaN(attackTime) || attackTime <= 0 || attackTime > 3600) {
             return NextResponse.json({ error: 'Invalid attack time.' }, { status: 400 });
+        }
+
+        const portNum = parseInt(port, 10);
+        if (isNaN(portNum) || portNum < 1 || portNum > 65535) {
+            return NextResponse.json(
+                { error: 'Invalid port. Must be between 1 and 65535.' },
+                { status: 400 }
+            );
         }
 
         // Check max attack time
@@ -167,7 +185,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
 
         // Build attack URL
-        let attackUrl = apiServer.api
+        const attackUrl = apiServer.api
             .replace(/\[host\]/gi, host)
             .replace(/\[port\]/gi, port)
             .replace(/\[time\]/gi, String(attackTime))
