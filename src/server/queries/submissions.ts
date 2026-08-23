@@ -1,7 +1,6 @@
 import 'server-only';
-import { unstable_cache } from 'next/cache';
+import { unstable_cache, revalidateTag } from 'next/cache';
 import { mainDb } from '@/lib/db/main';
-import type { domains } from '@/lib/db/generated/main';
 import type { SubmissionRow, DomainRow } from '@/types/db';
 
 export interface SubmissionUpdateInput {
@@ -54,7 +53,7 @@ export async function getAllSubmissions(): Promise<SubmissionRow[]> {
     return getAllSubmissionsCached();
 }
 
-export async function getDomainsByColumns(columns: string[]): Promise<domains[]> {
+export async function getDomainsByColumns(columns: string[]): Promise<DomainRow[]> {
     // Cache the full domain map once, filter in memory — the dataset is tiny
     // (one row per tool) and this avoids cache-key explosion.
     const all = await getAllDomainsCached();
@@ -68,13 +67,10 @@ export async function getAllDomains(): Promise<DomainRow[]> {
 }
 
 // ---------------------------------------------------------------------------
-// Cache invalidation. Next.js 16 splits the API: `revalidateTag` now requires
-// a cache-life profile, while `updateTag` is the simple "bust this tag" call
-// we use here.
+// Cache invalidation. `revalidateTag` busts every cached entry carrying a tag.
 // ---------------------------------------------------------------------------
 async function invalidateSubmissionCaches(): Promise<void> {
-    const { updateTag } = await import('next/cache');
-    for (const tag of TAGS) updateTag(tag);
+    for (const tag of TAGS) revalidateTag(tag);
 }
 
 export async function getSubmissionById(id: number): Promise<SubmissionRow | null> {
