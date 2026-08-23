@@ -30,6 +30,7 @@ import { searchView } from './src/views/search';
 import { registerMainSiteRoutes } from './src/routes/main-site';
 import { registerAdminRoutes } from './src/routes/admin';
 import { webLoginView, webRegisterView } from './src/views/web-public';
+import { webLandingView } from './src/views/web-landing';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -90,6 +91,12 @@ app.get('/', async (ctx) => {
 registerMainSiteRoutes(app);
 registerAdminRoutes(app);
 // Web public pages.
+app.get('/web', async (ctx) => {
+    const body =
+        pageCache.get('web-home') ??
+        (pageCache.set('web-home', webLandingView()), pageCache.get('web-home'));
+    ctx.htmlRaw(body!);
+});
 app.get('/web/login', async (ctx) => {
     ctx.htmlRaw(webLoginView());
 });
