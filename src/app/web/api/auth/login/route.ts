@@ -3,9 +3,17 @@ import { webDb } from '@/lib/db/web';
 import bcrypt from 'bcryptjs';
 import { webLoginSchema } from '@/lib/validations/web-auth';
 import { loginWebSession } from '@/lib/auth/web';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
+        if (!rateLimit('web-login:' + clientIp(req), 10, 60_000)) {
+            return NextResponse.json(
+                { error: 'Too many login attempts. Try again in a minute.' },
+                { status: 429 }
+            );
+        }
+
         const formData = await req.formData();
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
