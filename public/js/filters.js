@@ -1,1 +1,7 @@
-"use strict";document.querySelectorAll("form.filters input[type=checkbox]").forEach(function(e){e.addEventListener("change",function(){var t=e.closest("form");t&&t.submit()})});
+"use strict";
+document.querySelectorAll("form.filters input[type=checkbox]").forEach(function(cb) {
+  cb.addEventListener("change", function() {
+    var form = cb.closest("form");
+    if (form) form.submit();
+  });
+});

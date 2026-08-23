@@ -38,16 +38,20 @@ function run(name, singleCommand, color) {
 }
 
 console.log('dev: starting server watcher + client bundler watcher...');
-const esbuildFiles = [
-    'public/ts/filters.ts
-        public/ts/menu.ts',
+const CLIENT_TS_FILES = [
+    'public/ts/filters.ts',
+    'public/ts/menu.ts',
     'public/ts/tabs.ts',
     'public/ts/img-fallback.ts',
     'public/ts/scroll-top.ts',
     'public/ts/wheel.ts',
 ].join(' ');
 run('server', 'npx tsx watch server.ts', '36');
-run('client', `npx esbuild ${esbuildFiles} --outdir=public/js --target=ie11 --watch`, '33');
+run(
+    'client',
+    `npx esbuild ${CLIENT_TS_FILES} --outdir=public/js --target=ie11 --watch`,
+    '33'
+);
 
 function shutdown() {
     for (const child of children) child.kill();
