@@ -22,7 +22,7 @@
 import { env } from './src/config/env';
 import { Application, pageCache } from './src/core/01-application';
 import { markup, renderToString } from './src/core/04-html';
-import { guards } from './src/routes/guards';
+import { guards, requireWebUser } from './src/routes/guards';
 import { homeView } from './src/views/home';
 import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';
@@ -33,6 +33,14 @@ import { webLoginView, webRegisterView } from './src/views/web-public';
 import { webLandingView } from './src/views/web-landing';
 import { registerWebRoutes } from './src/routes/web';
 import { maintenanceView } from './src/views/web-pages';
+import {
+    planView,
+    ticketsView,
+    ticketNewView,
+    giftcardsView,
+    affiliateView,
+    wheelView,
+} from './src/views/web-user';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -95,6 +103,26 @@ registerAdminRoutes(app);
 registerWebRoutes(app);
 // Web public pages.
 // Maintenance gate: reads settings.maintaince flag.
+// Web user pages.
+app.get('/web/plan', async (ctx) => {
+    const plans = await webDb.plans.findMany({ orderBy: { price: 'asc' } });
+    ctx.htmlRaw(planView(plans as never[]));
+});
+app.get('/web/tickets', async (ctx) => {
+    ctx.htmlRaw(ticketsView());
+});
+app.get('/web/tickets/new', async (ctx) => {
+    ctx.htmlRaw(ticketNewView());
+});
+app.get('/web/giftcards', async (ctx) => {
+    ctx.htmlRaw(giftcardsView());
+});
+app.get('/web/affiliate', async (ctx) => {
+    ctx.htmlRaw(affiliateView());
+});
+app.get('/web/wheel', async (ctx) => {
+    ctx.htmlRaw(wheelView());
+});
 app.get('/web/maintenance', async (ctx) => {
     const settings = await webDb.settings.findFirst({ select: { description: true } });
     ctx.htmlRaw(maintenanceView(settings?.description ?? 'Premium IP stress testing service'));
