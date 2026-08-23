@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isWebAdmin } from '@/lib/auth/web';
 import { webDb } from '@/lib/db/web';
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
+    if (!(await isWebAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const { searchParams } = new URL(req.url);
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
     const perPage = 20;
@@ -19,6 +23,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+    if (!(await isWebAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const formData = await req.formData();
     const action = formData.get('action') as string;
 
