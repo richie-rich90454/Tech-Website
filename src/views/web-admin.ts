@@ -1,16 +1,11 @@
 /**
  * ============================================================================
- * WEB ADMIN VIEWS - the IPstress back office.
+ * WEB ADMIN VIEWS - IPstress back office (all pages).
  * ============================================================================
- *
- * STRUCTURE
- * dashShell() reproduces the legacy admin chrome byte-for-byte: preloader,
- * #main-wrapper data attributes, topbar with account dropdown, and the full
- * feather-icon sidebar (icon paths frozen from the baseline dump).
- *
- * CSS-MODULES NOTE
- * Unlike the main-admin table, these pages use global Bootstrap-style classes
- * shipped inside public/css/webtheme.css - no hashing involved.
+ * dashShell() reproduces the legacy admin chrome: preloader, #main-wrapper
+ * data attributes, topbar with account dropdown, feather-icon sidebar.
+ * All icon paths frozen from the baseline dump. Bootstrap-style class names
+ * are global (webtheme.css) - no CSS-module hashing on these pages.
  */
 
 import { markup, unsafe, type Html } from '../core/04-html';
@@ -18,8 +13,8 @@ import { shell } from './shell';
 import type { UserRow, PlanRow } from '../types/db';
 
 const YEN = '\u00a5';
+const EMPTY: Html = unsafe('');
 
-/** Feather icon inner SVG paths, keyed by legacy class suffix. */
 const ICONS: Record<string, string> = {
     home: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
     users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>',
@@ -35,15 +30,16 @@ const ICONS: Record<string, string> = {
     power: '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line>',
 };
 
-function feather(icon: keyof typeof ICONS, cls = 'feather feather-icon'): Html {
-    return markup`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${cls} ${unsafe(
-        'feather-' + icon
-    )}">${unsafe(ICONS[icon])}</svg>`;
+function feather(name: string): Html {
+    const inner = ICONS[name] ?? '';
+    return markup`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-${unsafe(
+        name
+    )} feather-icon">${unsafe(inner)}</svg>`;
 }
 
 interface SideItem {
     href: string;
-    icon: keyof typeof ICONS;
+    icon: string;
     label: string;
 }
 
@@ -62,7 +58,7 @@ const SIDEBAR: SideItem[] = [
     { href: '/web/admin/hub', icon: 'power', label: 'Hub' },
 ];
 
-export function dashShell(title: string, crumb: string, content: Html): string {
+function dashShell(title: string, crumb: Html, content: Html): string {
     const items = SIDEBAR.map(
         (it) =>
             markup`<li class="sidebar-item"><a class="sidebar-link" href="${it.href}">${feather(
@@ -77,9 +73,12 @@ export function dashShell(title: string, crumb: string, content: Html): string {
     });
 }
 
-/** Stat card used by the dashboard grid. */
-function statCard(value: number | string, label: string, icon: keyof typeof ICONS): Html {
-    return markup`<div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">${value}</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">${label}</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted">${feather(icon, '')}</span></div></div></div></div>`;
+function emptyRow(cols: number, message: string): Html {
+    return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${message}</td></tr>`;
+}
+
+function statCard(value: unknown, label: string, icon: string): Html {
+    return markup`<div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">${value}</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">${label}</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted">${feather(icon)}</span></div></div></div></div>`;
 }
 
 export interface DashStats {
@@ -91,75 +90,64 @@ export interface DashStats {
 }
 
 export function adminDashboardView(s: DashStats): string {
-    const content = markup`<div class="container-fluid"><div class="card-group">${statCard(
-        s.totalUsers,
-        'Total Users',
-        'users'
-    )}${statCard(s.activeUsers, 'Active Users', 'users')}${statCard(
-        s.totalAttacks,
-        'Total Attacks',
-        'plus'
-    )}${statCard(s.runningAttacks, 'Running Attacks', 'settings')}${statCard(
-        s.waitingTickets,
-        'Waiting Tickets',
-        'mail'
-    )}</div></div>`;
-    return dashShell('Admin Dashboard', 'Admin Dashboard', content);
-}
-
-/** Empty-state row helper shared by every admin table. */
-function emptyRow(cols: number, message: string): Html {
-    return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${message}</td></tr>`;
+    return dashShell(
+        'Admin Dashboard',
+        markup`Admin Dashboard`,
+        markup`<div class="container-fluid"><div class="card-group">${statCard(
+            s.totalUsers,
+            'Total Users',
+            'users'
+        )}${statCard(s.activeUsers, 'Active Users', 'users')}${statCard(
+            s.totalAttacks,
+            'Total Attacks',
+            'plus'
+        )}${statCard(s.runningAttacks, 'Running Attacks', 'power')}${statCard(
+            s.waitingTickets,
+            'Waiting Tickets',
+            'mail'
+        )}</div></div>`
+    );
 }
 
 export function usersAdminView(users: UserRow[]): string {
-    const rows = users.length
-        ? users.map(
-              (u) =>
-                  markup`<tr><td class="text-center">${u.ID}</td><td>${u.username}</td><td>${Number(u.rank) >= 1 ? 'Admin' : 'User'}</td><td>${u.membership || 'None'}</td><td class="text-center"><a href="/web/admin/users/${u.ID}" class="btn btn-sm btn-primary">Edit</a></td></tr>`
-          )
-        : [emptyRow(4, 'No users found.')];
+    const rows =
+        users.length > 0
+            ? users.map(
+                  (u) =>
+                      markup`<tr><td class="text-center">${u.ID}</td><td>${u.username}</td><td>${
+                          Number(u.rank) >= 1 ? 'Admin' : 'User'
+                      }</td><td>${Number(u.membership) || 'None'}</td><td class="text-center"><a href="/web/admin/users/${
+                          u.ID
+                      }" class="btn btn-sm btn-primary">Edit</a></td></tr>`
+              )
+            : [emptyRow(5, 'No users found.')];
     return dashShell(
         'Users',
-        'Users',
+        markup`Users`,
         markup`<div class="container-fluid"><div class="row"><div class="col-12"><div class="card"><div class="card-body"><h4 class="card-title">All Users (${users.length})</h4><div class="table-responsive mt-4"><table class="table"><thead><tr><th>ID</th><th>Username</th><th>Rank</th><th>Membership</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div></div></div></div></div>`
     );
 }
 
 export function userEditView(user: UserRow, plans: PlanRow[]): string {
-    const planOpts = markup`<option value="0"${user.membership ? '' : ' selected'}>None</option>${plans.map(
+    const planOpts = plans.map(
         (pl) =>
-            markup`<option value="${pl.ID}"${Number(user.membership) === pl.ID ? ' selected' : ''}>${pl.name}</option>`
-    )}`;
+            markup`<option value="${pl.ID}"${
+                Number(user.membership) === pl.ID ? unsafe(' selected') : EMPTY
+            }>${pl.name}</option>`
+    );
     return dashShell(
         'Edit User',
-        markup`<a href="/web/admin/users">Users</a> | ${user.username}` as unknown as string,
-        markup`<div class="container-fluid"><div class="row"><div class="col-md-8 col-lg-6"><div class="card"><div class="card-body"><h4 class="card-title">Edit: ${user.username}</h4><form class="mt-4" action="/web/api/admin/users" method="POST"><input type="hidden" name="id" value="${user.ID}"/><input type="hidden" name="action" value="update"/><div class="form-group"><label class="text-white">Username</label><input class="form-control" required name="username" value="${user.username}"/></div><div class="form-group"><label class="text-white">New Password (leave blank to keep)</label><input class="form-control" type="password" placeholder="Leave blank to keep current" name="password"/></div><div class="form-group"><label class="text-white">Rank</label><select class="form-control" name="rank"><option value="0"${Number(user.rank) === 0 ? ' selected' : ''}>User</option><option value="1"${Number(user.rank) === 1 ? ' selected' : ''}>Admin</option><option value="2"${Number(user.rank) === 2 ? ' selected' : ''}>Super Admin</option></select></div><div class="form-group"><label class="text-white">Membership</label><select class="form-control" name="membership">${planOpts}</select></div><div class="form-group"><label class="text-white">Expire (Unix timestamp)</label><input class="form-control" type="number" name="expire" value="${user.expire}"/></div><button type="submit" class="btn btn-primary">Update User</button></form></div></div></div></div></div>`
+        markup`<a href="/web/admin/users">Users</a> | ${user.username}`,
+        markup`<div class="container-fluid"><div class="row"><div class="col-md-8 col-lg-6"><div class="card"><div class="card-body"><h4 class="card-title">Edit: ${user.username}</h4><form class="mt-4" action="/web/api/admin/users" method="POST"><input type="hidden" name="id" value="${user.ID}"/><input type="hidden" name="action" value="update"/><div class="form-group"><label class="text-white">Username</label><input class="form-control" required name="username" value="${user.username}"/></div><div class="form-group"><label class="text-white">New Password (leave blank to keep)</label><input class="form-control" type="password" placeholder="Leave blank to keep current" name="password"/></div><div class="form-group"><label class="text-white">Rank</label><select class="form-control" name="rank"><option value="0"${
+            Number(user.rank) === 0 ? unsafe(' selected') : EMPTY
+        }>User</option><option value="1"${
+            Number(user.rank) === 1 ? unsafe(' selected') : EMPTY
+        }>Admin</option><option value="2"${
+            Number(user.rank) === 2 ? unsafe(' selected') : EMPTY
+        }>Super Admin</option></select></div><div class="form-group"><label class="text-white">Membership</label><select class="form-control" name="membership"><option value="0"${
+            !user.membership ? unsafe(' selected') : EMPTY
+        }>None</option>${planOpts}</select></div><div class="form-group"><label class="text-white">Expire (Unix timestamp)</label><input class="form-control" type="number" name="expire" value="${
+            user.expire
+        }"/></div><button type="submit" class="btn btn-primary">Update User</button></form></div></div></div></div></div>`
     );
-}
-
-/** Generic create-form + list layout used by plans/methods/news/servers. */
-function crudShell(title: string, crumb: string, formCard: Html, listCard: Html): string {
-    return dashShell(title, crumb, markup`${formCard}${listCard}`);
-}
-
-/** Two-column create/list layout shared by plans, methods, news, servers. */
-function twoCol(title: string, crumb: string, formCard: Html, listCard: Html): string {
-    return dashShell(
-        title,
-        crumb,
-        markup`<div class="container-fluid"><div class="row">${formCard}${listCard}</div></div>`
-    );
-}
-
-export function plansAdminView(plans: PlanRow[]): string {
-    const rows = plans.length
-        ? plans.map(
-              (pl) =>
-                  markup`<tr><td>${pl.ID}</td><td>${pl.name}</td><td>${pl.price}¥</td><td>${pl.length}d</td><td class="text-center"><button type="button" data-action="/web/api/admin/plans" data-id="${pl.ID}" class="btn btn-sm btn-danger">Delete</button></td></tr>`
-          )
-        : [emptyRow(5, 'No plans created yet.')];
-    const form = markup`<div class="col-md-5"><div class="card"><div class="card-body"><h4 class="card-title">Create Plan</h4><form class="mt-4" action="/web/api/admin/plans" method="POST"><input type="hidden" name="action" value="create"/><div class="form-group"><label class="text-white">Name</label><input class="form-control" placeholder="Gold" required name="name"/></div><div class="form-group"><label class="text-white">Price (¥)</label><input class="form-control" type="number" step="0.01" required name="price"/></div><div class="form-group"><label class="text-white">Duration (days)</label><input class="form-control" type="number" required name="length"/></div><div class="form-group"><label class="text-white">Max Attack Time (s)</label><input class="form-control" type="number" required name="mbt"/></div><div class="form-group"><label class="text-white">Concurrents</label><input class="form-control" type="number" required name="concurrents"/></div><div class="form-group"><label class="text-white">VIP</label><select class="form-control" name="vip"><option value="0">No</option><option value="1">Yes</option></select></div><button type="submit" class="btn btn-success">Create Plan</button></form></div></div></div>`;
-    const list = markup`<div class="col-md-7"><div class="card"><div class="card-body"><h4 class="card-title">All Plans</h4><div class="table-responsive mt-4"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Length</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div></div></div>`;
-    return twoCol('Plan Management', 'Plans', form, list);
 }
