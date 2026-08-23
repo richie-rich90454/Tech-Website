@@ -21,15 +21,18 @@
 
 import { env } from './src/config/env';
 import { Application, pageCache } from './src/core/01-application';
-import { html, renderToString } from './src/core/04-html';
+import { markup, renderToString } from './src/core/04-html';
 import { guards } from './src/routes/guards';
+import { homeView } from './src/views/home';
+import { tlView } from './src/views/tl';
+import { tlConfigs } from './src/lib/tl-config';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
 // ---------------------------------------------------------------------------
 // Placeholder system views - replaced by real ports in Phase B (parity-gated).
 // ---------------------------------------------------------------------------
-const notFoundPage = renderToString(html`
+const notFoundPage = renderToString(markup`
     <!doctype html>
     <html lang="en">
         <head>
@@ -43,7 +46,7 @@ const notFoundPage = renderToString(html`
 `);
 
 const errorPage = (ref: string): string =>
-    renderToString(html`
+    renderToString(markup`
         <!doctype html>
         <html lang="en">
             <head>
@@ -73,23 +76,37 @@ app.get('/api/health', async (ctx) => {
     ctx.json({ status: 'ok', time: new Date().toISOString() });
 });
 
-// Placeholder home so the pipeline is exercisable end-to-end in Phase A.
+// Home page: cached as finished HTML; bust via pageCache.bust(['home']) on
+// admin writes (see server/queries/submissions.ts invalidateToolPages).
 app.get('/', async (ctx) => {
-    const cached = await pageCache.remember('home', async () =>
-        renderToString(html`
-            <!doctype html>
-            <html lang="en">
-                <head>
-                    <meta charset="utf-8" />
-                    <title>Tech Tools</title>
-                </head>
-                <body>
-                    <h1>Tech Tools - v3 skeleton</h1>
-                </body>
-            </html>
-        `)
-    );
+    const cached = await pageCache.remember('home', async () => homeView());
     ctx.htmlRaw(cached);
+});
+
+// TL listing pages: cache key includes the filter state (every combination of
+// checked strands is its own shareable URL). Admin writes bust 'tl:*'.
+app.get('/:tl', async (ctx) => {
+    const query: Record<string, string> = {};
+    ctx.query.forEach((value, key) => {
+        query[key] = value;
+    });
+    // Cache key includes the checked/unchecked bit pattern of every strand.
+    let bits = 'x';
+    const config = tlConfigs[ctx.params.tl];
+    if (config)
+        bits = config.strands.map((s) => (query[s.checkboxName] !== '0' ? '1' : '0')).join('');
+    const cacheKey = `tl:${ctx.params.tl}:${bits}`;
+    let body: string | undefined = pageCache.get(cacheKey);
+    if (body === undefined) {
+        const rendered = await tlView({ tl: ctx.params.tl, query });
+        if (rendered === null) {
+            ctx.throw(404, 'Page not found.');
+            return; // unreachable - throw() ends the request; kept for type flow
+        }
+        body = rendered;
+        pageCache.set(cacheKey, body);
+    }
+    ctx.htmlRaw(body);
 });
 
 // ---------------------------------------------------------------------------
