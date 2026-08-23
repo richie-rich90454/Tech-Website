@@ -2,38 +2,56 @@
     "name": "tech-website",
     "version": "2.0.0",
     "private": true,
+    "browserslist": [
+        "chrome >= 49",
+        "firefox >= 45",
+        "safari >= 10",
+        "edge >= 12"
+    ],
     "scripts": {
-        "dev": "next dev --turbo",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "format": "prettier --write .",
-        "db:init": "node -e \"const{join}=require('path');const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});require('better-sqlite3')('prisma/main.db',{});require('better-sqlite3')('prisma/web.db',{});process.exit(0)\" && npx prisma db push --config prisma/prisma-main.config.ts --force-reset && npx prisma db push --config prisma/prisma-web.config.ts --force-reset",
+        "db:init": "node -e \"const{mkdirSync,existsSync}=require('fs');const D=require('better-sqlite3');if(!existsSync('prisma'))mkdirSync('prisma');new D('prisma/main.db').close();new D('prisma/web.db').close();\" && drizzle-kit push --config=drizzle.main.config.ts --force && drizzle-kit push --config=drizzle.web.config.ts --force",
         "db:clear": "node -e \"const{rmSync}=require('fs');rmSync('prisma/main.db',{force:true});rmSync('prisma/web.db',{force:true});\" && npm run db:init",
         "db:seed": "npx tsx prisma/seed-main.ts && npx tsx prisma/seed-web.ts",
-        "db:reset": "npm run db:clear && npm run db:seed"
+        "db:reset": "npm run db:clear && npm run db:seed",
+        "setup": "tsx scripts/setup-admin.ts",
+        "smoke": "node scripts/smoke.mjs"
     },
     "dependencies": {
-        "@prisma/adapter-better-sqlite3": "^7.8.0",
-        "@prisma/client": "^7.8.0",
         "bcryptjs": "^3.0.3",
+        "better-sqlite3": "^13.0.3",
+        "core-js": "^3.50.0",
         "dotenv": "^17.4.2",
+        "drizzle-orm": "^0.45.2",
         "exceljs": "^4.4.0",
-        "fuse.js": "^7.4.2",
+        "fuse.js": "^7.5.0",
         "iron-session": "^8.0.4",
-        "next": "^16.2.7",
-        "prisma": "^7.8.0",
-        "react": "^19.2.1",
-        "react-dom": "^19.2.1",
+        "next": "^14.2.35",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "regenerator-runtime": "^0.14.1",
+        "stripe": "^22.5.0",
         "zod": "^4.4.3"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.6",
-        "@types/node": "^22.0.0",
-        "@types/react": "^19.0.0",
-        "@types/react-dom": "^19.0.0",
-        "prettier": "^3.8.4",
-        "tsx": "^4.22.4",
-        "typescript": "^5.8.0"
+        "@types/better-sqlite3": "^9.6.0",
+        "@types/node": "^22.20.1",
+        "@types/react": "^18.3.31",
+        "@types/react-dom": "^18.3.7",
+        "drizzle-kit": "^0.31.10",
+        "eslint": "^8.57.1",
+        "eslint-config-next": "^14.2.35",
+        "prettier": "^3.9.6",
+        "tsx": "^4.23.12",
+        "typescript": "^5.9.3"
+    },
+    "overrides": {
+        "uuid": "^9.0.1",
+        "postcss": "^8.4.49"
     }
 }
