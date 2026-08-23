@@ -58,7 +58,7 @@ const SIDEBAR: SideItem[] = [
     { href: '/web/admin/hub', icon: 'power', label: 'Hub' },
 ];
 
-function dashShell(title: string, crumb: Html, content: Html): string {
+export function dashShell(title: string, crumb: Html, content: Html): string {
     const items = SIDEBAR.map(
         (it) =>
             markup`<li class="sidebar-item"><a class="sidebar-link" href="${it.href}">${feather(
@@ -77,7 +77,7 @@ function emptyRow(cols: number, message: string): Html {
     return markup`<tr><td colSpan="${cols}" class="text-center text-muted">${message}</td></tr>`;
 }
 
-function statCard(value: unknown, label: string, icon: string): Html {
+function statCard(value: string | number, label: string, icon: string): Html {
     return markup`<div class="card border-right"><div class="card-body"><div class="d-flex d-lg-flex d-md-block align-items-center"><div><div class="d-inline-flex align-items-center"><h2 class="text-white mb-1 font-weight-medium">${value}</h2></div><h6 class="text-muted font-weight-normal mb-0 w-100 text-truncate mb-2">${label}</h6></div><div class="ml-auto mt-md-3 mt-lg-0"><span class="opacity-7 text-muted">${feather(icon)}</span></div></div></div></div>`;
 }
 
