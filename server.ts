@@ -26,6 +26,7 @@ import { guards } from './src/routes/guards';
 import { homeView } from './src/views/home';
 import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';
+import { searchView } from './src/views/search';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
@@ -83,6 +84,11 @@ app.get('/', async (ctx) => {
     ctx.htmlRaw(cached);
 });
 
+// Search: dynamic per query - never cached (result sets are personal to input).
+app.get('/search', async (ctx) => {
+    const body = await searchView(ctx.query.get('query') ?? '');
+    ctx.htmlRaw(body);
+});
 // TL listing pages: cache key includes the filter state (every combination of
 // checked strands is its own shareable URL). Admin writes bust 'tl:*'.
 app.get('/:tl', async (ctx) => {
