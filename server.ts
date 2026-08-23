@@ -32,6 +32,7 @@ import { registerAdminRoutes } from './src/routes/admin';
 import { webLoginView, webRegisterView } from './src/views/web-public';
 import { webLandingView } from './src/views/web-landing';
 import { registerWebRoutes } from './src/routes/web';
+import { registerWebAdminRoutes } from './src/routes/web-admin';
 import { maintenanceView } from './src/views/web-pages';
 import {
     planView,
@@ -101,6 +102,7 @@ app.get('/', async (ctx) => {
 registerMainSiteRoutes(app);
 registerAdminRoutes(app);
 registerWebRoutes(app);
+registerWebAdminRoutes(app);
 // Web public pages.
 // Maintenance gate: reads settings.maintaince flag.
 // Web user pages.
