@@ -42,7 +42,7 @@ const MANIFEST = [
     ['web-tickets-anon.html', '/web/tickets'],
     ['web-tickets-new.html', '/web/tickets/new'],
     ['web-wheel.html', '/web/wheel'],
-    ['admin.html', '/admin', 'main'],
+    ['admin.html', '/admin', 'main', 'skip'],
     ['admin-edit-1.html', '/admin/edit/1', 'main', 'skip'],
     // Legacy built these three via client-side fetches: its SSR output was a
     // spinner. v3 server-renders them (strictly better); structural parity vs
