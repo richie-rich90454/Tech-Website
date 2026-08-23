@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mainDb } from '@/lib/db/main';
+import { isMainAdmin } from '@/lib/auth/main';
 
 const DOMAIN_FIELDS = [
     'R',
@@ -20,6 +21,9 @@ const DOMAIN_FIELDS = [
 ] as const;
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+    if (!(await isMainAdmin())) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     try {
         const body = await req.json();
         const id = body.id1 as number;
