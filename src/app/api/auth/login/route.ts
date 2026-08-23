@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 import { mainDb } from '@/lib/db/main';
 import bcrypt from 'bcryptjs';
 import { loginMainSession } from '@/lib/auth/main';
+import { rateLimit, clientIp } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
+        if (!rateLimit('main-login:' + clientIp(req), 10, 60_000)) {
+            return NextResponse.json(
+                { error: 'Too many login attempts. Try again in a minute.' },
+                { status: 429 }
+            );
+        }
+
         const formData = await req.formData();
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
