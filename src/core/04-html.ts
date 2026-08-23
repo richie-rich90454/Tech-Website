@@ -110,7 +110,7 @@ function flatten(value: Interpolation): string {
  *   const row = (n: string, v: number) => html`<tr><td>${n}</td><td>${v}</td></tr>`;
  *   const table = html`<table>${rows.map(row)}</table>`;
  */
-export function html(strings: TemplateStringsArray, ...values: Interpolation[]): Html {
+export function markup(strings: TemplateStringsArray, ...values: Interpolation[]): Html {
     let out = '';
     for (let i = 0; i < strings.length; i += 1) {
         out += strings[i];
