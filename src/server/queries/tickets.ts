@@ -1,6 +1,6 @@
 import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { TicketRow, MessageRow } from '@/types/db';
+import { webDb } from '../../lib/db/web';
+import type { TicketRow, MessageRow } from '../../types/db';
 
 export interface CreateTicketInput {
     subject: string;

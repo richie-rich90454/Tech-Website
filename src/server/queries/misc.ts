@@ -1,5 +1,5 @@
 import 'server-only';
-import { webDb } from '@/lib/db/web';
+import { webDb } from '../../lib/db/web';
 import type {
     NewsRow,
     GiftCardRow,
@@ -7,7 +7,7 @@ import type {
     MethodRow,
     SettingsRow,
     PaymentRow,
-} from '@/types/db';
+} from '../../types/db';
 
 export async function getSettings(): Promise<SettingsRow | null> {
     return webDb.settings.findFirst();

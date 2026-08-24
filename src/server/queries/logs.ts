@@ -1,6 +1,6 @@
 import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { LogRow, LoginLogRow } from '@/types/db';
+import { webDb } from '../../lib/db/web';
+import type { LogRow, LoginLogRow } from '../../types/db';
 
 export interface CreateLogInput {
     user: string;

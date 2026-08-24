@@ -20,9 +20,9 @@
  * Measure before adding lower-level caches - you usually don't need them.
  */
 
-import { mainDb } from '@/lib/db/main';
-import { pageCache } from '@/core/06-cache';
-import type { SubmissionRow, DomainRow } from '@/types/db';
+import { mainDb } from '../../lib/db/main';
+import { pageCache } from '../../core/06-cache';
+import type { SubmissionRow, DomainRow } from '../../types/db';
 
 /** Bust every page that displays tool data. Called after ANY admin mutation. */
 function invalidateToolPages(): void {

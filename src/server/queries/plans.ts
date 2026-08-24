@@ -1,6 +1,6 @@
 import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { PlanRow } from '@/types/db';
+import { webDb } from '../../lib/db/web';
+import type { PlanRow } from '../../types/db';
 
 export interface CreatePlanInput {
     name: string;

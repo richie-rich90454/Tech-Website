@@ -1,6 +1,6 @@
 import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { UserRow } from '@/types/db';
+import { webDb } from '../../lib/db/web';
+import type { UserRow } from '../../types/db';
 
 export interface CreateUserInput {
     username: string;

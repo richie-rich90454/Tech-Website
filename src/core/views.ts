@@ -27,8 +27,14 @@ import ejs from 'ejs';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-/** Directory containing .ejs view files. */
-const VIEWS_DIR = resolve(process.cwd(), 'src', 'views');
+/**
+ * Views live beside the entry point: src/views in dev, dist/views once the
+ * build has copied them. Picking by existence keeps both layouts working
+ * with zero configuration.
+ */
+const VIEWS_DIR = existsSync(resolve(process.cwd(), 'dist', 'views'))
+    ? resolve(process.cwd(), 'dist', 'views')
+    : resolve(process.cwd(), 'src', 'views');
 
 /** Cache of compiled template functions, keyed by filename without extension. */
 const cache = new Map<string, ejs.TemplateFunction>();

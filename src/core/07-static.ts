@@ -59,7 +59,9 @@ export class StaticFiles {
     private readonly rootAbs: string;
 
     constructor(private readonly rootRelative = 'public') {
-        this.rootAbs = resolve(process.cwd(), rootRelative);
+        // Build layout puts assets under dist/public; dev keeps them at ./public.
+        const fromDist = resolve(process.cwd(), 'dist', rootRelative);
+        this.rootAbs = existsSync(fromDist) ? fromDist : resolve(process.cwd(), rootRelative);
     }
 
     /**

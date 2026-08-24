@@ -17,10 +17,10 @@
  * user, their existing cookie loses power IMMEDIATELY - no waiting for expiry.
  */
 
-import type { Context } from '@/core/03-context';
-import { SessionManager, type SessionData } from '@/core/05-session';
-import { env } from '@/config/env';
-import { webDb } from '@/lib/db/web';
+import type { Context } from '../core/03-context';
+import { SessionManager, type SessionData } from '../core/05-session';
+import { env } from '../config/env';
+import { webDb } from '../lib/db/web';
 
 export const mainSessions = new SessionManager(
     'main-session',
