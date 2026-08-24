@@ -1,0 +1,103 @@
+/* ==========================================================================
+   IE11-ONLY OVERRIDES - loaded via conditional comment, ignored elsewhere.
+   Fixes what modern CSS takes for granted:
+     - flex `gap` is unsupported        -> explicit child margins
+     - CSS Grid is unsupported          -> flex equivalents
+     - clamp() is unsupported           -> fixed sizes (already fallback'd)
+   ========================================================================== */
+
+/* --- Home TL cards: one row, equal widths ------------------------------- */
+.tl-section {
+    display: flex;
+}
+.tl-section > a {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+/* --- Search form row ---------------------------------------------------- */
+.search-form input[type='text'] {
+    margin-right: 8px;
+}
+
+/* --- Dash: stat cards --------------------------------------------------- */
+.card-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.card-group > .card {
+    flex: 1 1 190px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+.card-group > .card:last-child {
+    margin-right: 0;
+}
+
+/* --- Dash: 12-column rows -> percentage columns ------------------------- */
+.row {
+    display: block;
+}
+.row::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+.row > [class*='col-'] {
+    float: left;
+    box-sizing: border-box;
+    padding-right: 9px;
+    padding-left: 9px;
+}
+.col-12 {
+    width: 100%;
+}
+.col-md-4 {
+    width: 33.3333%;
+}
+.col-md-5 {
+    width: 41.6666%;
+}
+.col-md-6 {
+    width: 50%;
+}
+.col-md-7 {
+    width: 58.3333%;
+}
+.col-md-8 {
+    width: 66.6666%;
+}
+
+/* --- Submission form domain grid ---------------------------------------- */
+.domains {
+    display: flex;
+    flex-wrap: wrap;
+}
+.domains label {
+    margin-right: 18px;
+}
+
+/* --- Tech tip card body keeps image beside text ------------------------- */
+.techtip .info {
+    display: flex;
+}
+.techtip .info > * {
+    margin-right: 12px;
+}
+
+/* --- Web header spacing (no flex gap in IE11) --------------------------- */
+.web-header__nav li {
+    display: inline-block;
+    margin-right: 18px;
+}
+.web-header__cta a {
+    margin-left: 10px;
+}
+
+/* --- Buttons inside blocks don't stretch oddly -------------------------- */
+.btn-block {
+    display: block;
+    width: 100%;
+}
