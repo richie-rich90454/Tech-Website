@@ -62,3 +62,12 @@ Thumbs.db
 
 # Legacy wheel libs (superseded by public/ts/wheel.ts)
 public/web/wheel/
+
+# Compiled client bundles - source lives in public/ts, built by esbuild
+public/js/
+
+# Dead legacy stylesheets at the public root (superseded by public/css/)
+public/main.css
+public/main2.css
+public/form.css
+public/login.css
