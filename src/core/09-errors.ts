@@ -50,7 +50,7 @@ export function logEvent(level: 'info' | 'warn' | 'error', fields: Record<string
 export async function withErrorBoundary(
     ctx: Context,
     run: () => Promise<void>,
-    views: { notFoundPage: string; errorPage: (ref: string) => string }
+    views: { notFoundPage: string | ((url: string) => string); errorPage: (ref: string) => string }
 ): Promise<void> {
     try {
         await run();
@@ -86,7 +86,11 @@ export async function withErrorBoundary(
             return;
         }
         if (status === 404) {
-            ctx.htmlRaw(views.notFoundPage, 404);
+            const page =
+                typeof views.notFoundPage === 'function'
+                    ? views.notFoundPage(ctx.path)
+                    : views.notFoundPage;
+            ctx.htmlRaw(page, 404);
             return;
         }
         // 4xx keeps its honest status; 5xx hides internals behind the ref id

@@ -172,6 +172,21 @@ const SAMPLES: Record<string, Record<string, unknown>> = {
             testboots: 1,
         },
     },
+    docs: {},
+    tool: {
+        id: 1,
+        tool: {
+            id: 1,
+            techname: 'IXL',
+            link: 'https://ixl.com',
+            displaytext: 'IXL',
+            tl1_desc: 'd1',
+            tl2_desc: '',
+            tl3_desc: '',
+            tl4_desc: '',
+        },
+        strands: [{ col: 'R', label: 'Relationships', tl: 'tl1', css: 'n1' }],
+    },
 };
 
 let failures = 0;

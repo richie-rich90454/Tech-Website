@@ -1173,3 +1173,97 @@ footer a:hover {
         text-align: center;
     }
 }
+
+
+/* ==========================================================================
+   DARK MODE - swaps the design tokens only; every component reads vars, so
+   this is the entire implementation. [data-theme="dark"] on <html>.
+   Toggled by theme.js (persists in localStorage, defaults to OS preference).
+   ========================================================================== */
+[data-theme='dark'] {
+    --color-bg: #0d1440;
+    --color-surface: #131b52;
+    --color-surface-2: #1a235f;
+    --color-ink: #e8ecff;
+    --color-ink-strong: #ffffff;
+    --color-muted: #9aa8d0;
+    --color-border: #2a3474;
+    --color-accent: #0cf293;
+    --color-accent-soft: rgba(12, 242, 147, 0.16);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================================================
+   PRINT - strip chrome, keep content readable. Applies to Ctrl+P everywhere.
+   ========================================================================== */
+@media print {
+    #navbar,
+    #cover,
+    #topbutton,
+    .filters,
+    #topbar,
+    .web-header,
+    .scroll-top {
+        display: none !important;
+    }
+    body {
+        background: #fff;
+        color: #000;
+        font-size: 11pt;
+    }
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+    /* Show the URL after link text so paper readers can still follow them. */
+    .techtip .link a::after {
+        content: ' (' attr(href) ')';
+        font-size: 9pt;
+        word-break: break-all;
+    }
+    .techtip {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ==========================================================================
+   A11Y - visible focus for keyboard users + skip link (hidden until focus).
+   ========================================================================== */
+:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 10000;
+    background: var(--color-accent);
+    color: var(--color-ink-on-accent);
+    padding: var(--space-2) var(--space-4);
+    border-radius: 0 0 var(--radius-md) 0;
+    font-weight: 600;
+}
+.skip-link:focus {
+    left: 0;
+}
+
+/* Theme toggle button sits in the navbar corner. */
+#theme-toggle {
+    position: fixed;
+    right: 16px;
+    bottom: 76px;
+    z-index: 900;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: var(--shadow-1);
+}

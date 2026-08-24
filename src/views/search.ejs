@@ -42,10 +42,11 @@
             <div class="info">
                 <div class="img"><img src="/testuploads/<%= item.id %>.png" alt="<%= item.techname %>"/></div>
                 <div class="desc">
-                    <% if (item.tl1_desc) { %><p><b>TL1:</b> <%= item.tl1_desc %></p><% } %>
-                    <% if (item.tl2_desc) { %><p><b>TL2:</b> <%= item.tl2_desc %></p><% } %>
-                    <% if (item.tl3_desc) { %><p><b>TL3:</b> <%= item.tl3_desc %></p><% } %>
-                    <% if (item.tl4_desc) { %><p><b>TL4:</b> <%= item.tl4_desc %></p><% } %>
+                    <% function hilite(text, label) { var t = String(text); var i = t.toLowerCase().indexOf(q.toLowerCase()); if (q && i >= 0) { %><p><b><%= label %>:</b> <%= t.slice(0, i) %><mark><%= t.slice(i, i + q.length) %></mark><%= t.slice(i + q.length) %></p><% } else if (t) { %><p><b><%= label %>:</b> <%= t %></p><% } } %>
+                    <% hilite(item.tl1_desc, 'TL1'); %>
+                    <% hilite(item.tl2_desc, 'TL2'); %>
+                    <% hilite(item.tl3_desc, 'TL3'); %>
+                    <% hilite(item.tl4_desc, 'TL4'); %>
                     <div class="link">
                         <ul><li><a href="<%= item.link %>" target="_blank" rel="noreferrer"><%= item.displaytext %></a></li></ul>
                     </div>

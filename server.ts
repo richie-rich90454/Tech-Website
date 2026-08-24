@@ -138,12 +138,30 @@ async function tlRender(tl: string, query: Record<string, string>): Promise<stri
 }
 
 // ---------------------------------------------------------------------------
-// Placeholder system views - replaced by real ports in Phase B (parity-gated).
+// System views. The 404 page is "smart": tools whose names share words with
+// the missed URL are suggested. Suggestions come from a snapshot of accepted
+// submissions, refreshed lazily (first seconds after boot show a plain 404).
 // ---------------------------------------------------------------------------
-const notFoundPage = [
-    '<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Not Found</title></head>',
-    '<body><h1>404 - Page Not Found</h1></body></html>',
-].join('');
+let toolIndex: Array<{ id: number; techname: string }> = [];
+
+function refreshToolIndex(): void {
+    void getAcceptedSubmissions().then((subs) => {
+        toolIndex = subs.map((s) => ({ id: s.id, techname: s.techname }));
+    });
+}
+
+const notFoundPage = (url: string): string => {
+    const words = url
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .split(' ')
+        .filter((w) => w.length >= 4);
+    const suggestions = words
+        .map((w) => toolIndex.find((t) => t.techname.toLowerCase().includes(w)))
+        .filter((t): t is { id: number; techname: string } => Boolean(t))
+        .slice(0, 5);
+    return render('not-found', { suggestions });
+};
 
 const errorPage = (ref: string): string =>
     [
@@ -229,6 +247,28 @@ app.get('/web/register', async (ctx) => {
     ctx.htmlRaw(render('web-register', {}));
 });
 
+// Tool detail page: every TL strategy description for one tool, stacked.
+app.get('/docs', async (ctx) => {
+    ctx.htmlRaw(render('docs', {}));
+});
+app.get('/tool/:id', async (ctx) => {
+    const id = Number(ctx.params.id);
+    if (!Number.isFinite(id)) ctx.throw(404, 'Not found');
+    const [subs, domains] = await Promise.all([
+        getAcceptedSubmissions(),
+        getDomainsByColumns(DOM_TAGS.map((t) => t.col)),
+    ]);
+    const tool = subs.find((s) => s.id === id);
+    if (!tool) {
+        ctx.throw(404, 'Tool not found.');
+        return;
+    }
+    const flags = (domains.find((d) => d.id === id) ?? {}) as unknown as Record<string, boolean>;
+    const strands = DOM_TAGS.filter((t) => flags[t.col]);
+    refreshToolIndex();
+    ctx.htmlRaw(render('tool', { tool, strands }));
+});
+
 // Search: dynamic per query - never cached (result sets are personal to input).
 app.get('/search', async (ctx) => {
     const q = ctx.query.get('query') ?? '';
@@ -283,3 +323,4 @@ boot().catch((err) => {
     console.error('Boot failed:', err);
     process.exit(1);
 });
+refreshToolIndex();

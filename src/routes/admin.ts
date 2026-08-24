@@ -87,11 +87,50 @@ export function registerAdminRoutes(app: Application): void {
         { guard: 'mainAdmin' }
     );
 
+    app.get(
+        '/admin/export.csv',
+        async (ctx) => {
+            // Spreadsheet-friendly dump of every submission (accepted flag
+            // included). Quoting per RFC 4180 so commas/quotes survive Excel.
+            const subs = await getAllSubmissions();
+            const esc = (v: unknown): string => {
+                const s = String(v ?? '');
+                return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+            };
+            const head = 'id,name,link,display,tl1,tl2,tl3,tl4,accepted';
+            const rows = subs.map((s) =>
+                [
+                    s.id,
+                    s.techname,
+                    s.link,
+                    s.displaytext,
+                    s.tl1_desc,
+                    s.tl2_desc,
+                    s.tl3_desc,
+                    s.tl4_desc,
+                    s.accepted ? 1 : 0,
+                ]
+                    .map(esc)
+                    .join(',')
+            );
+            ctx.res.writeHead(200, {
+                'content-type': 'text/csv; charset=utf-8',
+                'content-disposition': 'attachment; filename="submissions.csv"',
+            });
+            ctx.res.end([head, ...rows].join('\r\n'));
+        },
+        { guard: 'mainAdmin' }
+    );
+
     app.post(
         '/api/admin/accept',
         async (ctx) => {
             const body = await ctx.body();
-            await acceptSubmission(Number((body as { id?: unknown }).id));
+            // Bulk form: ids arrive as "1,2,3" from the checkbox batch; the
+            // single-row JS path still sends one plain id.
+            const raw = String((body as { id?: unknown }).id ?? '');
+            const ids = raw.split(',').map(Number).filter(Number.isFinite);
+            for (const id of ids) await acceptSubmission(id);
             ctx.json({ success: true });
         },
         { guard: 'mainAdmin' }
@@ -101,7 +140,9 @@ export function registerAdminRoutes(app: Application): void {
         '/api/admin/reject',
         async (ctx) => {
             const body = await ctx.body();
-            await rejectSubmission(Number((body as { id?: unknown }).id));
+            const raw = String((body as { id?: unknown }).id ?? '');
+            const ids = raw.split(',').map(Number).filter(Number.isFinite);
+            for (const id of ids) await rejectSubmission(id);
             ctx.json({ success: true });
         },
         { guard: 'mainAdmin' }
