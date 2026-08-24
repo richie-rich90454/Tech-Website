@@ -1,3 +1,11 @@
+/* Deep navy that stays navy when [data-theme='dark'] is set. */
+body {
+    --color-deep: #1a237e;
+}
+[data-theme='dark'] body {
+    --color-deep: #141c52;
+}
+
 /* Login page · richie-rich90454 · June 2026
  *
  * Uses the shared design tokens from globals.css. Page-scoped layout is
@@ -95,7 +103,8 @@
     padding: 10px 18px;
     border: 0;
     border-radius: var(--radius-md);
-    background: var(--color-ink);
+    background: var(--color-deep);
+    color: #fff;
     color: #fff;
     font-family: var(--font-sans);
     font-size: 0.95rem;
@@ -127,4 +136,21 @@
     #login {
         padding: var(--space-4);
     }
+}
+
+/* --- Dark mode (token-scoped) ------------------------------------------- */
+[data-theme='dark'] body {
+    background: var(--color-bg);
+}
+[data-theme='dark'] #login {
+    background: var(--color-panel);
+}
+[data-theme='dark'] #login-form input[type='text'],
+[data-theme='dark'] #login-form input[type='password'] {
+    background: var(--color-input-bg);
+    color: var(--color-ink);
+}
+[data-theme='dark'] #login-form button[type='submit'] {
+    background: var(--color-accent-strong);
+    color: var(--color-ink-on-accent);
 }

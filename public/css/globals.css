@@ -39,6 +39,8 @@
        flipping with the text colors (see the dark block below). */
     --color-panel: #ffffff;
     --color-panel-tint: #f9fdff;
+    --color-nav-bg: #1a237e;
+    --color-deep: #1a237e;
     --color-footer-bg: #0d1440;
     --color-card-inverse: #1a237e;
     --color-input-bg: #ffffff;
@@ -178,7 +180,7 @@ h6 {
     overflow: hidden;
     color: #fff;
     padding: var(--space-6) 0;
-    background: var(--color-ink);
+    background: var(--color-deep);
     scroll-margin-top: var(--nav-offset);
 }
 #front h1 {
@@ -214,7 +216,7 @@ h6 {
 }
 
 #navbar {
-    background: var(--color-ink);
+    background: var(--color-nav-bg);
     box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.18);
     z-index: 100;
     position: sticky;
@@ -353,7 +355,8 @@ footer a:hover {
 #basicinfo .tl-section a {
     display: inline-block;
     margin: 0;
-    width: 100%;
+    flex: 1 1 240px;
+    min-width: 0;
 }
 
 .tlx {
@@ -533,7 +536,7 @@ footer a:hover {
 
 #bar {
     height: 4px;
-    background: var(--color-ink);
+    background: var(--color-deep);
     font-size: var(--fs-nav);
 }
 
@@ -553,8 +556,8 @@ footer a:hover {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     font-size: 1rem;
-    background: #fff;
-    color: var(--color-ink-strong);
+    background: var(--color-input-bg);
+    color: var(--color-ink);
 }
 .search-form input[type='text']:focus {
     outline: none;
@@ -564,7 +567,8 @@ footer a:hover {
 .search-form button[type='submit'] {
     padding: 10px 20px;
     border: 0;
-    background: var(--color-ink);
+    background: var(--color-deep);
+    color: #fff;
     color: #fff;
     border-radius: var(--radius-md);
     font-size: 0.95rem;
@@ -760,7 +764,8 @@ footer a:hover {
     padding: 8px 16px;
     border: 0;
     border-radius: var(--radius-md);
-    background: var(--color-ink);
+    background: var(--color-deep);
+    color: #fff;
     color: #fff;
     font-family: var(--font-sans);
     font-size: 0.95rem;
@@ -788,7 +793,8 @@ footer a:hover {
     z-index: 99;
     border: none;
     outline: none;
-    background-color: var(--color-ink);
+    background-color: var(--color-deep);
+    color: #fff;
     color: #fff;
     cursor: pointer;
     padding: 14px 16px;
@@ -849,7 +855,7 @@ footer a:hover {
  * color/typography/padding here so the n-class can win for the background. */
 .techtip .tltags {
     color: #fff;
-    background: var(--color-ink);
+    background: var(--color-deep);
     font-size: 12px;
     border-radius: 100%;
     padding: 5px;
@@ -885,7 +891,7 @@ footer a:hover {
     padding-left: 16px;
 }
 .techtip .line {
-    background: var(--color-ink);
+    background: var(--color-accent);
     height: 2px;
     margin: 14px 0 8px;
     width: 100%;
@@ -910,7 +916,7 @@ footer a:hover {
     font-family: var(--font-sans);
 }
 #adminTopbar {
-    background: var(--color-ink);
+    background: var(--color-panel);
     color: #fff;
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-md);
@@ -986,7 +992,7 @@ footer a:hover {
     font-size: 0.92rem;
 }
 #wrap table th {
-    background: var(--color-ink);
+    background: var(--color-deep);
     color: #fff;
     padding: 10px 12px;
     font-weight: 600;
@@ -1056,7 +1062,8 @@ footer a:hover {
     margin: 0;
 }
 #wrap button[type='submit'] {
-    background: var(--color-ink);
+    background: var(--color-deep);
+    color: #fff;
     color: #fff;
     border: 0;
     border-radius: var(--radius-md);
@@ -1216,6 +1223,8 @@ footer a:hover {
     --color-panel-tint: #141d56;
     --color-footer-bg: #080d2b;
     --color-card-inverse: #101743;
+    --color-nav-bg: #0f1747;
+    --color-deep: #141c52;
 
     /* text */
     --color-ink: #e8ecff;
@@ -1284,28 +1293,30 @@ footer a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     padding: 0;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    background: var(--color-panel);
-    color: var(--color-muted);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-nav-bg);
+    color: #fff;
     cursor: pointer;
-    box-shadow: var(--shadow-1);
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.18);
+    transition:
+        background 200ms ease,
+        color 200ms ease;
 }
 #theme-toggle:hover {
-    color: var(--color-ink);
-    background: var(--color-surface-2);
-    border-color: var(--color-muted);
+    background: var(--color-accent);
+    color: var(--color-ink-on-accent);
 }
 #theme-toggle:focus-visible {
     outline: 3px solid var(--color-accent);
     outline-offset: 2px;
 }
 #theme-toggle svg {
-    width: 18px;
-    height: 18px;
+    width: 19px;
+    height: 19px;
 }
 /* Sun shows in dark mode (click = go light), moon shows in light mode. */
 #theme-toggle .icon-sun {
@@ -1319,4 +1330,5 @@ footer a:hover {
 }
 [data-theme='dark'] #theme-toggle .icon-moon {
     display: none;
+}
 }

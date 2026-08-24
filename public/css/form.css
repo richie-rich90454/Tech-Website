@@ -1,3 +1,11 @@
+/* Deep navy that stays navy when [data-theme='dark'] is set. */
+body {
+    --color-deep: #1a237e;
+}
+[data-theme='dark'] body {
+    --color-deep: #141c52;
+}
+
 /* Submission form · richie-rich90454 · June 2026
  *
  * Pairs with the design tokens in src/app/globals.css. The form is rendered
@@ -130,7 +138,8 @@
     padding: 10px 22px;
     border: 0;
     border-radius: var(--radius-md);
-    background: var(--color-ink);
+    background: var(--color-deep);
+    color: #fff;
     color: #fff;
     font-family: var(--font-sans);
     font-size: 0.95rem;
@@ -168,4 +177,25 @@
     #form .domains {
         grid-template-columns: 1fr;
     }
+}
+
+/* --- Dark mode (token-scoped; light values above are untouched) --------- */
+[data-theme='dark'] body {
+    background: var(--color-bg);
+}
+[data-theme='dark'] form,
+[data-theme='dark'] .form-card {
+    background: var(--color-panel);
+}
+[data-theme='dark'] input[type='text'],
+[data-theme='dark'] textarea.l {
+    background: var(--color-input-bg);
+    color: var(--color-ink);
+    border-color: var(--color-input-border);
+}
+[data-theme='dark'] input[type='submit'],
+[data-theme='dark'] button[type='submit'] {
+    background: var(--color-accent-strong);
+    color: var(--color-ink-on-accent);
+    border-color: transparent;
 }

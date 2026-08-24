@@ -116,3 +116,37 @@
 .AdminTable_btnDelete__KFKXJ:hover {
     background: #e85a5a;
 }
+
+/* --- Dark mode (scoped to the hashed AdminTable classes) ----------------- */
+[data-theme='dark'] .AdminTable_wrap__1AlVX {
+    background: var(--color-panel);
+    border-color: var(--color-border);
+}
+[data-theme='dark'] .AdminTable_table__3iS2Y {
+    color: var(--color-ink);
+}
+[data-theme='dark'] .AdminTable_table__3iS2Y thead th {
+    background: #0f1747;
+    color: var(--color-ink);
+    border-color: var(--color-border);
+}
+[data-theme='dark'] .AdminTable_table__3iS2Y td {
+    border-color: rgba(229, 244, 255, 0.08);
+}
+[data-theme='dark'] .AdminTable_table__3iS2Y tbody tr:nth-child(2n) {
+    background: rgba(229, 244, 255, 0.04);
+}
+[data-theme='dark'] .AdminTable_name__ZKSIb,
+[data-theme='dark'] .AdminTable_link__lOs5j {
+    color: var(--color-ink);
+}
+[data-theme='dark'] .AdminTable_link__lOs5j:hover {
+    color: var(--color-accent);
+}
+[data-theme='dark'] .AdminTable_btnEdit__zHqfB {
+    background: #2f6bff;
+    color: #fff;
+}
+[data-theme='dark'] .AdminTable_btnEdit__zHqfB:hover {
+    background: #4d84ff;
+}
