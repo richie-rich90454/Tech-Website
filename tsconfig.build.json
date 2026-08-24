@@ -8,5 +8,5 @@
         "inlineSourceMap": false
     },
     "include": ["server.ts", "src/**/*.ts"],
-    "exclude": ["src/app", "public", "node_modules", "tests", "scripts"]
+    "exclude": ["src/app", "src/client", "node_modules", "tests", "scripts"]
 }
