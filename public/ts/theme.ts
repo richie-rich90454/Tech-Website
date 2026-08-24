@@ -1,15 +1,23 @@
 /**
  * THEME TOGGLE - dark/light via CSS variable swap only.
  * Persists choice in localStorage; first visit follows the OS preference.
- * Plain ES5 so it runs in Chrome 49+/IE11 like every other client script.
+ * The button is injected at runtime into #topbar (keeps server HTML
+ * byte-identical to the frozen baselines). Plain ES5 for Chrome 49+/IE11.
  */
 (function () {
     'use strict';
 
     var KEY = 'theme';
 
+    var SUN =
+        '<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="22"></line><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"></line><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"></line><line x1="2" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="22" y2="12"></line><line x1="4.2" y1="19.8" x2="6.3" y2="17.7"></line><line x1="17.7" y1="6.3" x2="19.8" y2="4.2"></line></svg>';
+    var MOON =
+        '<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>';
+
     function apply(theme) {
         document.documentElement.setAttribute('data-theme', theme);
+        var btn = document.getElementById('theme-toggle');
+        if (btn) btn.setAttribute('aria-pressed', String(theme === 'dark'));
     }
 
     function current() {
@@ -39,8 +47,7 @@
     }
 
     function ready() {
-        // Inject the skip link + theme toggle at runtime: keeps server HTML
-        // byte-identical to the frozen baselines while browsers get both.
+        // Skip-link: keyboard users jump straight to the content.
         if (!document.getElementById('skip-link')) {
             var skip = document.createElement('a');
             skip.id = 'skip-link';
@@ -49,6 +56,8 @@
             skip.text = 'Skip to content';
             document.body.insertBefore(skip, document.body.firstChild);
         }
+
+        // Theme toggle inside #topbar (right end), styled by globals.css.
         var topbar = document.getElementById('topbar');
         if (topbar && !document.getElementById('theme-toggle')) {
             var btn = document.createElement('button');
@@ -56,15 +65,15 @@
             btn.type = 'button';
             btn.setAttribute('aria-label', 'Toggle dark mode');
             btn.title = 'Toggle dark mode (Alt+T)';
-            btn.innerHTML = '&#9789;';
+            btn.innerHTML = SUN + MOON;
             btn.addEventListener('click', flip);
             topbar.appendChild(btn);
+            apply(current());
         }
 
-        // Keyboard shortcuts (Alt+key works across browsers without stealing
-        // plain-key combos):
+        // Keyboard shortcuts:
         //   Alt+T -> toggle theme
-        //   Alt+S -> jump focus to the search box when one is on screen
+        //   Alt+S -> focus the search box when one is on screen
         document.addEventListener('keydown', function (ev) {
             if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
             var k = String.fromCharCode(ev.keyCode);
