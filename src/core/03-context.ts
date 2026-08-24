@@ -159,7 +159,21 @@ export class Context {
      * the typed html() above so unescaped strings cannot sneak into responses.
      */
     htmlRaw(body: string, status = 200): void {
-        this.send(body, status, "text/html; charset=utf-8");
+        this.send(this.withServerTheme(body), status, "text/html; charset=utf-8");
+    }
+
+    /**
+     * SERVER-RENDERED THEME: when the visitor's `theme` cookie says "dark",
+     * stamp data-theme on the root <html> element before anything leaves the
+     * server. The attribute therefore exists in the first byte of HTML - no
+     * flash of wrong theme, no inline script (CSP-safe), works with JS
+     * disabled. The toggle button keeps the cookie fresh client-side.
+     */
+    private withServerTheme(html: string): string {
+        if (this.cookie("theme") !== "dark") return html;
+        return html.replace(/<html(\s[^>]*)?>/i, (m) =>
+            m.includes("data-theme") ? m : `<html$1 data-theme="dark">`
+        );
     }
 
     /** Send a JSON payload (API routes). */
