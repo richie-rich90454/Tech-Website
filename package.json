@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "tsc -p tsconfig.build.json && esbuild public/ts/filters.ts public/ts/menu.ts public/ts/tabs.ts public/ts/img-fallback.ts public/ts/scroll-top.ts public/ts/wheel.ts public/ts/admin.ts public/ts/theme.ts public/ts/ie11.ts --outdir=public/js --target=ie11 --minify && node scripts/precompress.mjs && node scripts/sync-dist.mjs",
+    "build": "tsc -p tsconfig.build.json && tsc -p public/ts && node scripts/sync-dist.mjs && postcss dist/public/css/*.css --config postcss.config.cjs -r && node scripts/precompress.mjs dist/public",
     "start": "node --env-file=.env dist/server.js",
     "check": "tsc -p tsconfig.json && eslint src server.ts scripts --ext .ts,.tsx,.mjs && npm audit --omit=dev --audit-level=moderate",
     "test": "node --import tsx --test tests/unit/*.test.ts",
@@ -47,11 +47,13 @@
     "@types/node": "^22.20.1",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "autoprefixer": "^10.4.21",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
-    "esbuild": "^0.25.0",
     "eslint": "^8.57.0",
     "ie11-custom-properties": "^4.1.0",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
     "prettier": "^3.9.6",
     "tsx": "^4.23.12",
     "typescript": "^5.9.3"
