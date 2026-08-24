@@ -5,7 +5,7 @@
  * ============================================================================
  *
  * PURPOSE
- * Serves everything under /public (stylesheets, images, fonts, the compiled
+ * Serves everything under dist/public (stylesheets, images, fonts, the compiled
  * ES5 JavaScript) with correct caching semantics. This is deliberately
  * boring, well-guarded code - static file servers are a classic source of
  * path-traversal CVEs ("GET /../../etc/passwd"), so every defensive line is
@@ -18,7 +18,7 @@
  * - Build step pre-compresses text assets to .gz and .br siblings; this module
  *   picks one based on Accept-Encoding. Compression happens ONCE at build,
  *   never per request.
- * - Hashed build outputs (public/js/*) get `immutable` caching: visitors never
+ * - Hashed build outputs (dist/public/js/*) get `immutable` caching: visitors never
  *   re-request them until the filename changes.
  *
  * EXTEND IT
@@ -58,14 +58,18 @@ export class StaticFiles {
     /** Absolute root every request path must resolve inside (traversal guard). */
     private readonly rootAbs: string;
 
-    constructor(private readonly rootRelative = 'public') {
-        // Built artifacts win when present: production always serves the
-        // postcss-prefixed, precompressed dist tree. Dev without a build
-        // falls back to the source tree. (Serving public/ in prod would
-        // bypass autoprefix + compression - never do it.)
-        const distRoot = resolve(process.cwd(), 'dist', rootRelative);
-        const srcRoot = resolve(process.cwd(), rootRelative);
-        this.rootAbs = existsSync(distRoot) ? distRoot : srcRoot;
+    constructor(private readonly rootRelative = 'dist/public') {
+        // Single source of truth: the BUILT tree. There is no dev/prod
+        // dual-root anymore - `npm run build` (or any dev watcher) fills
+        // dist/public, and this server only ever serves from there. A missing
+        // tree is a boot-time configuration error, not a silent fallback.
+        const root = resolve(process.cwd(), rootRelative);
+        if (!existsSync(root)) {
+            throw new Error(
+                `Static assets not found at ${root}. Run "npm run build" first.`
+            );
+        }
+        this.rootAbs = root;
     }
 
     /**
