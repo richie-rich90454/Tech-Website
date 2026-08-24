@@ -87,6 +87,15 @@ function escapeHtml(value: unknown): string {
 }
 
 /**
+ * Per-boot cache-buster appended to css/js URLs. Asset filenames are stable
+ * (globals.css, theme.js - no content hashes), so a browser that once cached
+ * them with a long max-age would never see fixes. The buster changes on every
+ * server start, forcing fresh fetches; combined with the no-cache policy this
+ * makes staleness impossible.
+ */
+const BUST = Date.now().toString(36);
+
+/**
  * Render a named view with data. Returns a safe HTML string ready for ctx.html().
  *
  * @example
@@ -99,12 +108,12 @@ export function render(viewName: string, data: Record<string, unknown> = {}): st
         if (!existsSync(join(VIEWS_DIR, file))) {
             throw new Error(`View "${file}" not found.`);
         }
-        return compile(file)({ ...data, YEN: '\u00a5' });
+        return compile(file)({ ...data, YEN: '\u00a5', v: BUST });
     }
     const fn = cache.get(viewName);
     if (!fn) throw new Error(`View "${viewName}.ejs" not found. Did loadViews() run?`);
     // Always inject helpers available inside every .ejs template.
-    return fn({ ...data, YEN: '\u00a5' });
+    return fn({ ...data, YEN: '\u00a5', v: BUST });
 }
 
 /** Check if a named view exists (used for testing / route validation). */
