@@ -59,11 +59,13 @@ export class StaticFiles {
     private readonly rootAbs: string;
 
     constructor(private readonly rootRelative = 'public') {
-        // Dev prefers source assets so edits show up immediately; production
-        // containers may ship only dist/.
-        const srcRoot = resolve(process.cwd(), rootRelative);
+        // Built artifacts win when present: production always serves the
+        // postcss-prefixed, precompressed dist tree. Dev without a build
+        // falls back to the source tree. (Serving public/ in prod would
+        // bypass autoprefix + compression - never do it.)
         const distRoot = resolve(process.cwd(), 'dist', rootRelative);
-        this.rootAbs = existsSync(srcRoot) ? srcRoot : distRoot;
+        const srcRoot = resolve(process.cwd(), rootRelative);
+        this.rootAbs = existsSync(distRoot) ? distRoot : srcRoot;
     }
 
     /**
