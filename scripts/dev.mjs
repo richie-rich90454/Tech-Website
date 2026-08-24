@@ -5,7 +5,7 @@
  * PURPOSE
  * `npm run dev` starts BOTH halves of the stack and restarts on change:
  *   1. tsx watch server.ts   -> the Node server (TypeScript executed directly)
- *   2. tsc + postcss watchers -> dist/public/{js,css}
+ *   2. asset sync + tsc/postcss watchers -> dist/public/{js,css} + passthrough
  *
  * WHY A SCRIPT INSTEAD OF CONCURRENTLY/NODEMON?
  * Two extra dev-only dependencies to do what node's child_process already does.
@@ -38,6 +38,12 @@ function run(name, singleCommand, color) {
 }
 
 console.log('dev: starting server + client + style watchers...');
+
+// Passthrough assets first: images/fonts must exist in dist/public even on a
+// fresh clone with no prior build. Compiler outputs (js/css) are untouched;
+// the watchers below own them from here on.
+run('assets', 'node scripts/sync-assets.mjs', '90');
+
 run('server', 'npx tsx watch server.ts', '36');
 // Client TS -> dist/public/js (ES5). Same config as production.
 run('client', 'npx tsc -p src/client --watch --preserveWatchOutput', '33');
