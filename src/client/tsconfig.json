@@ -6,6 +6,7 @@
         "rootDir": ".",
         "outDir": "../../dist/public/js",
         "strict": true,
+        "alwaysStrict": true,
         "noEmitOnError": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
