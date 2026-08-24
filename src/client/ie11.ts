@@ -38,8 +38,8 @@
 
     if (typeof proto.closest !== 'function') {
         proto.closest = function (this: Element, selectors: string): Element | null {
-            // Walk up the tree; `this` is rebound per call, so the alias is
-            // the loop cursor. (eslint-disable-next-line is scoped to it.)
+            // Walk up the tree; the this-value is rebound per call, so the
+            // alias below is the loop cursor. (eslint-disable-next-line is scoped to it.)
             let el: Element | null = this; // eslint-disable-line @typescript-eslint/no-this-alias
             while (el && el.nodeType === 1) {
                 if (proto.matches.call(el, selectors)) return el;
