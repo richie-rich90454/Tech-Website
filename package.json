@@ -29,7 +29,8 @@
     "setup": "tsx scripts/setup-admin.ts",
     "check:views": "tsx tests/views-smoke.ts",
     "db:migrate": "drizzle-kit generate --config=drizzle.main.config.ts && drizzle-kit generate --config=drizzle.web.config.ts",
-    "check:full": "npm run check && npm test && npm run check:views"
+    "check:full": "npm run check && npm test && npm run check:views && npm run check:hot",
+    "check:hot": "tsx tests/hot-reload.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
