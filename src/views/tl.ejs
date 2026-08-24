@@ -21,7 +21,12 @@
 
 <div id="all">
     <div class="techtip-wrap" id="results">
-        <p class="jump-menu"> Jump to: <a href="#tl-title">Top</a> · <a href="#filter">Filter</a><% config.strands.forEach(function (s) { %><span> · <a href="#<%= s.domainColumn %>"><%= s.label %></a></span><% }) %> · <a href="/#front">Home</a> · <a href="/search">Search</a> </p>
+        <p class="jump-menu">
+            Jump to: <a href="#tl-title">Top</a> · <a href="#filter">Filter</a><% config.strands.forEach(function (s) { %><span>
+            · <a href="#<%= s.domainColumn %>"><%= s.label %></a>
+            </span><% }) %>
+            · <a href="/#front">Home</a> · <a href="/search">Search</a>
+        </p>
 
         <% if (filtered.length === 0) { %>
         <div><h4>No results here match your filters.</h4></div>
