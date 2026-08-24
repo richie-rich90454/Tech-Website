@@ -11,7 +11,7 @@
     <% (locals.css || ['globals.css']).forEach(function (file) { %>
     <link rel="stylesheet" href="/css/<%= file %>" />
     <% }) %>
-    <% var allScripts = ['theme.js'].concat(locals.scripts || []); %>
+    <% var allScripts = ['theme.js', 'img-fallback.js', 'scroll-top.js'].concat(locals.scripts || []); %>
     <% allScripts.forEach(function (file) { %>
     <script src="/js/<%= file %>" defer></script>
     <% }) %>

@@ -96,15 +96,35 @@ export class Application {
         this.router.delete(path, handler, options);
     }
 
-    /** Boot the HTTP listener. Resolves once the port is bound. */
+    /** Boot the HTTP listener. Resolves once bound; rejects with a readable
+     *  message when binding fails (port busy, no permission) instead of
+     *  leaking an unhandled 'error' event stack. */
     listen(port: number): Promise<void> {
-        return new Promise((resolveListen) => {
+        return new Promise((resolveListen, rejectListen) => {
             this.server = createServer((req, res) => void this.handle(req, res));
             // nginx's default idle timeout is 60s; ours MUST be higher or the
             // proxy occasionally races the socket and serves random 502s.
             this.server.keepAliveTimeout = 65_000;
             this.server.headersTimeout = 66_000;
-            this.server.listen(port, () => resolveListen());
+            // One-shot: a listen failure must reject THIS promise, not crash
+            // the process from a stray 'error' event after we resolved.
+            const onError = (err: Error & { code?: string }): void => {
+                if (err.code === 'EADDRINUSE') {
+                    rejectListen(
+                        new Error(
+                            `Port ${port} is already in use. Stop the other process ` +
+                                `(or set PORT in .env) and try again.`
+                        )
+                    );
+                } else {
+                    rejectListen(err);
+                }
+            };
+            this.server.once('error', onError);
+            this.server.listen(port, () => {
+                this.server!.removeListener('error', onError);
+                resolveListen();
+            });
         });
     }
 

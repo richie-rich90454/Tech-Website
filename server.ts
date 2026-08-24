@@ -323,8 +323,9 @@ async function boot(): Promise<void> {
     process.on('SIGINT', () => void stop());
 }
 
-boot().catch((err) => {
-    console.error('Boot failed:', err);
+boot().catch((err: Error) => {
+    // Listen failures (port busy) arrive here with a human-readable message.
+    console.error(JSON.stringify({ level: 'error', msg: 'boot failed', reason: err.message }));
     process.exit(1);
 });
 refreshToolIndex();
