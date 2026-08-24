@@ -5,14 +5,18 @@
     var container = document.getElementById('superwheel');
     var button = document.querySelector('.btn.btn-danger.btn-lg.mt-4');
     if (!container || !button) return;
+    // Narrow once so closures below see non-null, immutable references.
+    var host = container;
+    var spinButton = button;
 
     var W = 400;
     var canvas = document.createElement('canvas');
     canvas.width = W;
     canvas.height = W;
-    container.appendChild(canvas);
+    host.appendChild(canvas);
     var ctx = canvas.getContext('2d');
     if (!ctx) return;
+    var g = ctx;
 
     var PRIZES = [10, 50, 0, 20, 100, 5, 15, 0];
     var COLORS = [
@@ -31,36 +35,36 @@
     var spinning = false;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function draw() {
-        ctx.clearRect(0, 0, W, W);
-        ctx.save();
-        ctx.translate(W / 2, W / 2);
-        ctx.rotate(currentRotation);
+    function draw(): void {
+        g.clearRect(0, 0, W, W);
+        g.save();
+        g.translate(W / 2, W / 2);
+        g.rotate(currentRotation);
         for (var i = 0; i < SEGMENTS; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.arc(0, 0, W / 2 - 2, i * ARC, (i + 1) * ARC);
-            ctx.closePath();
-            ctx.fillStyle = COLORS[i % COLORS.length];
-            ctx.fill();
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            g.beginPath();
+            g.moveTo(0, 0);
+            g.arc(0, 0, W / 2 - 2, i * ARC, (i + 1) * ARC);
+            g.closePath();
+            g.fillStyle = COLORS[i % COLORS.length];
+            g.fill();
+            g.strokeStyle = '#333';
+            g.lineWidth = 1;
+            g.stroke();
         }
         // Center hub
-        ctx.beginPath();
-        ctx.arc(0, 0, 30, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
-        ctx.restore();
+        g.beginPath();
+        g.arc(0, 0, 30, 0, Math.PI * 2);
+        g.fillStyle = '#fff';
+        g.fill();
+        g.restore();
     }
 
     draw();
 
-    button.addEventListener('click', function () {
+    spinButton.addEventListener('click', function () {
         if (spinning) return;
         spinning = true;
-        button.setAttribute('disabled', 'true');
+        spinButton.setAttribute('disabled', 'true');
 
         // XHR instead of fetch: IE11 compatibility.
         var xhr = new XMLHttpRequest();
@@ -69,12 +73,12 @@
             if (xhr.readyState !== 4) return;
             if (xhr.status < 200 || xhr.status >= 300) {
                 spinning = false;
-                button.removeAttribute('disabled');
+                spinButton.removeAttribute('disabled');
                 return;
             }
             var data: { prize?: number } = {};
             try {
-                data = JSON.parse(xhr.responseText);
+                data = JSON.parse(xhr.responseText) as { prize?: number };
             } catch (e) {
                 /* treat as prize 0 */
             }
@@ -90,21 +94,21 @@
         };
         xhr.onerror = function () {
             spinning = false;
-            button.removeAttribute('disabled');
+            spinButton.removeAttribute('disabled');
         };
         xhr.send();
 
-        function done() {
+        function done(): void {
             spinning = false;
-            button.removeAttribute('disabled');
+            spinButton.removeAttribute('disabled');
         }
     });
 
-    function animateTo(target, durationMs, cb) {
+    function animateTo(target: number, durationMs: number, cb: () => void): void {
         var start = performance.now();
         var from = currentRotation;
         requestAnimationFrame(step);
-        function step(now) {
+        function step(now: number): void {
             var t = Math.min((now - start) / durationMs, 1);
             var ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
             currentRotation = from + (target - from) * ease;
