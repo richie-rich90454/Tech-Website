@@ -300,11 +300,16 @@ footer a:hover {
 /* --- Homepage content --------------------------------- */
 .tl-section {
     padding: var(--space-3) var(--space-4);
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
     gap: var(--space-3);
     max-width: 1100px;
     margin: 0 auto;
+}
+.tl-section > a {
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 /* Anchor offset + typography for section headings so jumps land below the
@@ -1160,8 +1165,12 @@ footer a:hover {
     }
 
     .tl-section {
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .tl-section > a {
+        flex: 1 1 100%;
     }
     .tlhead {
         font-size: 1.05rem;
