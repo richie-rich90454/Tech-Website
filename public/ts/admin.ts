@@ -9,16 +9,26 @@
 (function () {
     'use strict';
 
-    function post(url, idList) {
-        // fetch() exists in all target browsers for admin use (internal tool).
-        return fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: idList }),
-        }).then(function (res) {
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            return res.json();
-        });
+    /**
+     * POST JSON via XHR - fetch() does not exist in IE11, and this panel is
+     * the one place that needs HTTP calls from the client.
+     */
+    function post(url: string, idList: string): void {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) return;
+            if (xhr.status >= 200 && xhr.status < 300) {
+                reload();
+            } else {
+                fail(new Error('HTTP ' + xhr.status));
+            }
+        };
+        xhr.onerror = function () {
+            fail(new Error('Network error'));
+        };
+        xhr.send(JSON.stringify({ id: idList }));
     }
 
     function reload() {
@@ -51,9 +61,9 @@
 
             if (action === '/api/admin/delete') {
                 if (!window.confirm('Delete submission #' + id + ' permanently?')) return;
-                post(action, id).then(reload, fail);
+                post(action, id);
             } else {
-                post(action, id).then(reload, fail);
+                post(action, id);
             }
         });
 
@@ -109,7 +119,7 @@
                     alert('Select at least one row first.');
                     return;
                 }
-                post('/api/admin/accept', ids).then(reload, fail);
+                post('/api/admin/accept', ids);
             });
             rejectBtn.addEventListener('click', function () {
                 var ids = selectedIds();
@@ -117,7 +127,7 @@
                     alert('Select at least one row first.');
                     return;
                 }
-                post('/api/admin/reject', ids).then(reload, fail);
+                post('/api/admin/reject', ids);
             });
 
             bar.appendChild(acceptBtn);
