@@ -20,6 +20,10 @@ function themeCurrent(): string {
 function themeFlip(): void {
     const next = themeCurrent() === "dark" ? "light" : "dark";
     themeApply(next);
+    // Persist via cookie: the SERVER reads this on the next request and
+    // server-renders data-theme on <html> (see Context.withServerTheme).
+    // localStorage mirrors it for redundancy on static-only views.
+    document.cookie = THEME_KEY + "=" + next + ";path=/;max-age=31536000;samesite=lax";
     try {
         localStorage.setItem(THEME_KEY, next);
     } catch (e) {
