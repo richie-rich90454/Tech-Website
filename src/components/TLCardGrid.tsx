@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 interface CardProps {
     href: string;
@@ -13,7 +13,7 @@ function TLCard({ href, title, strands, id }: CardProps): React.ReactElement {
             href={href}
             className="tlx"
             id={id}
-            style={id ? { scrollMarginTop: 'var(--nav-offset)' } : undefined}
+            style={id ? { scrollMarginTop: "var(--nav-offset)" } : undefined}
         >
             <div className="tlhead">{title}</div>
             <div className="tlx__strands-label">Includes the strands</div>
@@ -32,17 +32,17 @@ export default function TLCardGrid(): React.ReactElement {
             <div
                 className="tl-section"
                 id="domains"
-                style={{ scrollMarginTop: 'var(--nav-offset)' }}
+                style={{ scrollMarginTop: "var(--nav-offset)" }}
             >
                 <TLCard
                     href="/tl1"
                     title="TL1: Knowing Our Students"
                     id="tl1"
                     strands={[
-                        'Relationships',
-                        'Teacher planning',
-                        'Modify their teaching',
-                        'Achieve readiness',
+                        "Relationships",
+                        "Teacher planning",
+                        "Modify their teaching",
+                        "Achieve readiness",
                     ]}
                 />
                 <TLCard
@@ -50,11 +50,11 @@ export default function TLCardGrid(): React.ReactElement {
                     title="TL2: Strategies for Learning"
                     id="tl2"
                     strands={[
-                        'Understanding',
-                        'Multi-dimensional learning',
-                        'Reasoned arguments',
-                        'Repertoire of techniques',
-                        'Learning spaces',
+                        "Understanding",
+                        "Multi-dimensional learning",
+                        "Reasoned arguments",
+                        "Repertoire of techniques",
+                        "Learning spaces",
                     ]}
                 />
                 <TLCard
@@ -62,9 +62,9 @@ export default function TLCardGrid(): React.ReactElement {
                     title="TL3: Evidence for Learning"
                     id="tl3"
                     strands={[
-                        'Reflect on thinking',
-                        'Evidence of student learning',
-                        'Employ feedback',
+                        "Reflect on thinking",
+                        "Evidence of student learning",
+                        "Employ feedback",
                     ]}
                 />
                 <TLCard
@@ -72,19 +72,19 @@ export default function TLCardGrid(): React.ReactElement {
                     title="TL4: Crafting the Curriculum"
                     id="tl4"
                     strands={[
-                        'Risk-taking environment',
-                        'Deepening lines of inquiry',
-                        'Responsibility and aspects of citizenship',
+                        "Risk-taking environment",
+                        "Deepening lines of inquiry",
+                        "Responsibility and aspects of citizenship",
                     ]}
                 />
             </div>
             <p
                 className="tl-submit-cta"
                 id="submit-cta"
-                style={{ scrollMarginTop: 'var(--nav-offset)' }}
+                style={{ scrollMarginTop: "var(--nav-offset)" }}
             >
                 In addition, if you know of any tech tools not already on this site, you may submit
-                them here:{' '}
+                them here:{" "}
                 <Link href="/submission">
                     <button className="submit-link">Submit New Tech Tool</button>
                 </Link>

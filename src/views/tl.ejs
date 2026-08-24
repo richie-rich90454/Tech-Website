@@ -1,0 +1,58 @@
+<%- include('partials/head', { title: config.title + ' · BIBS·C Tech Tools', description: 'Filter and explore tech tools aligned with ' + config.title + ' strands.', scripts: ['filters.js'] }) %>
+<%- include('partials/navbar') %>
+
+<div id="subhead">
+    <h1 id="tl-title"><%= config.title %></h1>
+    <h3 id="filter">Filter by strand:</h3>
+    <form class="filters" action="/<%= tl %>" method="get">
+        <% config.strands.forEach(function (strand, i) { %>
+        <div class="label" id="<%= strand.domainColumn %>">
+            <input type="hidden" name="<%= strand.checkboxName %>" value="0"/>
+            <span class="<%= strand.cssClass %>"><%= strand.label %>
+                <input type="checkbox" class="checkf" name="<%= strand.checkboxName %>"<%- checked[i] ? ' checked=""' : '' %> value="1"/>
+            </span>
+            <div class="overlay"><% if (tl === 'tl3' && i === config.strands.length - 1) { %><%= strand.tooltip %><% } else { %> <%= strand.tooltip %> <% } %></div>
+        </div>
+        <% }) %>
+    </form>
+</div>
+
+<div id="bar">&nbsp;</div>
+
+<div id="all">
+    <div class="techtip-wrap" id="results">
+        <p class="jump-menu">
+            Jump to: <a href="#tl-title">Top</a> · <a href="#filter">Filter</a><% config.strands.forEach(function (s) { %><span>
+            · <a href="#<%= s.domainColumn %>"><%= s.label %></a>
+            </span><% }) %>
+            · <a href="/#front">Home</a> · <a href="/search">Search</a>
+        </p>
+
+        <% if (filtered.length === 0) { %>
+        <div><h4>No results here match your filters.</h4></div>
+        <% } else { filtered.forEach(function (tool) { %>
+        <div class="techtip" id="tool-<%= tool.id %>">
+            <div class="line" id="line-<%= tool.id %>"></div>
+            <h3 class="name"><%= tool.techname %></h3>
+            <div class="tags">
+                <% config.strands.forEach(function (strand) { if (tool.tags[strand.domainColumn]) { %>
+                <span class="<%= strand.cssClass %>"><%= strand.label %></span>
+                <% } }) %>
+            </div>
+            <div class="info">
+                <div class="img"><img src="/testuploads/<%= tool.id %>.png" alt="<%= tool.techname %>"/></div>
+                <div class="desc"><% if (tool.tight) { %><%= tool.desc %><% } else { %> <%= tool.desc %> <% } %></div>
+                <div class="link">
+                    <ul><li><a href="<%= tool.link %>" target="_blank" rel="noreferrer"><%= tool.displaytext %></a></li></ul>
+                </div>
+            </div>
+        </div>
+        <% }) } %>
+    </div>
+</div>
+
+<button id="topbutton" title="Go to top">Top</button>
+
+<%- include('partials/footer') %>
+</body>
+</html>

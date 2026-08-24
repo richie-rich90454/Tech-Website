@@ -1,0 +1,53 @@
+<%- include('partials/head', { title: 'Docs · BIBS·C Tech Tools' }) %>
+<%- include('partials/navbar') %>
+
+<div id="subhead"><h1 id="docs-heading">Project Docs</h1></div>
+<div id="bar">&nbsp;</div>
+<div id="all">
+    <div id="basicinfo">
+        <h2>Stack in one paragraph</h2>
+        <p>
+            No framework - just Node's <code>node:http</code> plus a small OOP core you can read
+            in an afternoon. Pages are EJS templates (plain HTML with
+            <code>&lt;%= variable %&gt;</code> holes) that compile once at boot and auto-escape
+            every interpolated value, so XSS-safe output is the default. Data lives in two SQLite
+            files accessed through Drizzle ORM with a Prisma-style query surface. Client scripts are
+            TypeScript compiled to ES5 so Chrome 49+/IE11 still work.
+        </p>
+
+        <h2>Where things live</h2>
+        <ul>
+            <li><b>server.ts</b> - boot + page routes; the only wiring file</li>
+            <li><b>src/core/</b> - the framework: application pipeline, router, context, sessions, cache, static server, security, errors, views</li>
+            <li><b>src/routes/</b> - API endpoints grouped by site area, all guarded + rate-limited</li>
+            <li><b>src/views/</b> - .ejs templates; shared chrome in partials/</li>
+            <li><b>src/lib/db/</b> - Drizzle schemas + query clients (main.db = tech tools, web.db = SaaS)</li>
+            <li><b>src/server/queries/</b> - data access used by routes</li>
+            <li><b>public/ts/</b> - client scripts, compiled to public/js at build</li>
+        </ul>
+
+        <h2>Commands</h2>
+        <ul>
+            <li><code>npm run dev</code> - watchers: TS server reload + client rebuild on save</li>
+            <li><code>npm run build</code> - everything lands in dist/ (server, views, assets)</li>
+            <li><code>npm start</code> - production serve from dist/</li>
+            <li><code>npm run check</code> - types + lint + audit</li>
+            <li><code>npm test</code> - unit tests</li>
+            <li><code>npm run check:views</code> - render every template with sample data</li>
+            <li><code>npm run parity</code> - diff rendered pages vs frozen legacy baselines</li>
+            <li><code>npm run db:migrate</code> - generate SQL migrations from schema changes</li>
+            <li><code>npm run db:reset</code> - recreate dev databases with seed data</li>
+        </ul>
+
+        <h2>Sessions &amp; auth</h2>
+        <p>
+            Cookies are HMAC-signed (<code>v1.payload.signature</code>) verified with
+            <code>timingSafeEqual</code>. Admin rank is re-read from the database per request -
+            editing your cookie's rank value changes nothing.
+        </p>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+</body>
+</html>

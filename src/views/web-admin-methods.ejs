@@ -1,0 +1,62 @@
+<%- include('partials/dash-head', { title: 'Method Management', crumb: 'Methods' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Method</h4>
+                    <form class="mt-4" action="/web/api/admin/methods" method="POST">
+                        <input type="hidden" name="action" value="create"/>
+                        <div class="form-group">
+                            <label class="text-white">Name</label>
+                            <input class="form-control" placeholder="UDP" required name="name"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Full Name</label>
+                            <input class="form-control" placeholder="UDP Flood" required name="fullname"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Type</label>
+                            <select class="form-control" name="type" required>
+                                <option value="layer4">Layer 4</option>
+                                <option value="layer7">Layer 7</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Command</label>
+                            <input class="form-control" placeholder="./udp {host} {port} {time}" required name="command"/>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Method</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">All Methods</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Name</th><th>Full Name</th><th>Type</th><th>Command</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                <% if (methods.length === 0) { %>
+                                    <tr><td colSpan="6" class="text-center text-muted">No methods added yet.</td></tr>
+                                <% } else { methods.forEach(function (m) { %>
+                                    <tr>
+                                        <td><%= m.id %></td>
+                                        <td><%= m.name %></td>
+                                        <td><%= m.fullname %></td>
+                                        <td><%= m.type %></td>
+                                        <td><%= m.command %></td>
+                                        <td class="text-center"><button type="button" data-action="/web/api/admin/methods" data-id="<%= m.id %>" class="btn btn-sm btn-danger">Delete</button></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

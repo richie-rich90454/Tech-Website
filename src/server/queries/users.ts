@@ -1,6 +1,6 @@
-import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { UserRow } from '@/types/db';
+import "server-only";
+import { webDb } from "../../lib/db/web";
+import type { UserRow } from "../../types/db";
 
 export interface CreateUserInput {
     username: string;
@@ -30,7 +30,7 @@ export async function getAllUsers(
     } = {}
 ): Promise<UserRow[]> {
     return webDb.users.findMany({
-        orderBy: { ID: 'desc' },
+        orderBy: { ID: "desc" },
         skip: options.skip ?? 0,
         take: options.take ?? 50,
     });
@@ -64,7 +64,7 @@ export async function createUser(data: CreateUserInput): Promise<UserRow> {
 
 export async function updateUser(
     id: number,
-    data: Partial<Omit<CreateUserInput, 'username'>>
+    data: Partial<Omit<CreateUserInput, "username">>
 ): Promise<UserRow> {
     return webDb.users.update({ where: { ID: id }, data });
 }

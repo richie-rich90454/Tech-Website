@@ -1,0 +1,69 @@
+<%- include('partials/head', { title: heading + ' · BIBS·C Tech Tools', description: 'Search tech tools by name, description, or strand tag.' }) %>
+<%- include('partials/navbar') %>
+
+<div id="search"></div>
+
+<div id="subhead">
+    <h1 id="search-results"><%= heading %></h1>
+    <form id="search-form" class="search-form" action="/search" method="get">
+        <input type="text" id="search-input" placeholder="Search tech tools by name, description, or tag…"
+               aria-label="Search tech tools" name="query" value="<%= q %>"/>
+        <button type="submit" id="search-submit">Search</button>
+    </form>
+    <% if (q) { %>
+    <p class="search-meta"><%= resultCount %> <%= resultCount === 1 ? 'result' : 'results' %></p>
+    <% } %>
+    <p class="jump-menu">
+        Jump to: <a href="#search-results">Results</a><% if (q && results.length > 0) {
+            results.slice(0, 5).forEach(function (item, i) { %>
+            · <a href="#tool-<%= item.id %>"><%= item.techname %></a><% }) } %>
+        · <a href="/#front">Home</a>
+    </p>
+</div>
+
+<div id="bar">&nbsp;</div>
+
+<div id="all">
+    <div class="techtip-wrap" id="results">
+        <% if (!q) { %>
+        <div><h4>Type a search term above to look up a tool.</h4></div>
+        <% } else if (results.length === 0) { %>
+        <div><h4>No tools match &ldquo;<%= q %>&rdquo;.</h4></div>
+        <% } else { results.forEach(function (item) {
+               var tags = item.activeTags;
+               var display = tags.slice(0, 5);
+               var hidden = tags.slice(5); %>
+        <div class="techtip" id="tool-<%= item.id %>">
+            <div class="line" id="line-<%= item.id %>"></div>
+            <h3 class="name"><%= item.techname %></h3>
+            <div class="tags">
+                <% display.forEach(function (t) { %>
+                <a href="/<%= t.tl %>#<%= t.col %>"><span class="<%= t.css %>"><%= t.label %></span></a>
+                <% }) %>
+                <% if (hidden.length > 0) { %>
+                <span class="tags-more">and <%= hidden.length %> more&hellip;</span>
+                <% } %>
+            </div>
+            <div class="info">
+                <div class="img"><img src="/testuploads/<%= item.id %>.png" alt="<%= item.techname %>"/></div>
+                <div class="desc">
+                    <% function hilite(text, label) { var t = String(text); var i = t.toLowerCase().indexOf(q.toLowerCase()); if (q && i >= 0) { %><p><b><%= label %>:</b> <%= t.slice(0, i) %><mark><%= t.slice(i, i + q.length) %></mark><%= t.slice(i + q.length) %></p><% } else if (t) { %><p><b><%= label %>:</b> <%= t %></p><% } } %>
+                    <% hilite(item.tl1_desc, 'TL1'); %>
+                    <% hilite(item.tl2_desc, 'TL2'); %>
+                    <% hilite(item.tl3_desc, 'TL3'); %>
+                    <% hilite(item.tl4_desc, 'TL4'); %>
+                    <div class="link">
+                        <ul><li><a href="<%= item.link %>" target="_blank" rel="noreferrer"><%= item.displaytext %></a></li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) } %>
+    </div>
+</div>
+
+<button id="topbutton" title="Go to top">Top</button>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Not Found</title>
+    <link rel="stylesheet" href="/css/globals.css" />
+</head>
+<body>
+<h1>404 - Page Not Found</h1>
+<p>That page doesn't exist. Did you mean one of these?</p>
+
+<% if (suggestions.length > 0) { %>
+<p>Tools matching your request:</p>
+<ul>
+    <% suggestions.forEach(function (s) { %>
+    <li><a href="/tool/<%= s.id %>"><%= s.techname %></a></li>
+    <% }) %>
+</ul>
+<% } %>
+
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/search">Search all tools</a></li>
+</ul>
+</body>
+</html>

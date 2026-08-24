@@ -1,10 +1,10 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 const links = [
-    { href: '/web', label: 'Home' },
-    { href: '/web#about', label: 'About' },
-    { href: '/web#plans', label: 'Plans' },
-    { href: '/web#faq', label: 'FAQ' },
+    { href: "/web", label: "Home" },
+    { href: "/web#about", label: "About" },
+    { href: "/web#plans", label: "Plans" },
+    { href: "/web#faq", label: "FAQ" },
 ] as const;
 
 export default function WebHeader(): React.ReactElement {

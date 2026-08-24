@@ -1,0 +1,79 @@
+<%- include('head', { title: title + ' · IPstress', css: ['webtheme.css', 'dash.css'], scripts: ['menu.js'] }) %>
+<%- include('web-header') %>
+<div class="preloader">
+    <div class="lds-ripple"><div class="spinner-grow" role="status"><span class="sr-only">Loading...</span></div></div>
+</div>
+<div id="main-wrapper" data-theme="dark" data-layout="vertical" data-navbarbg="skin6"
+     data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+    <header class="topbar" data-navbarbg="skin6">
+        <nav class="navbar top-navbar navbar-dark">
+            <div class="navbar-header" data-logobg="skin6">
+                <a class="nav-toggler waves-effect waves-dark d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+                <div class="navbar-brand">
+                    <b class="logo-icon text-center"><img src="/images/logo-icon.png" alt="homepage" class="dark-logo"/></b>
+                    <b class="text-center text-white" style="padding-top:3px;padding-right:50px">IPstress</b>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav float-left mr-auto ml-3 pl-1"></ul>
+                <ul class="navbar-nav float-right">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">
+                            <img src="/images/logo-icon.png" alt="homepage" class="dark-logo" width="29"/>
+                            <span class="ml-2 d-none d-lg-inline-block"><span class="text-dark">Hello, Admin!</span></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                            <a class="dropdown-item" href="/web/admin/tickets">Inbox</a>
+                            <a class="dropdown-item" href="/web/profile">Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/web/api/auth/logout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <aside class="left-sidebar" data-sidebarbg="skin6">
+        <div class="scroll-sidebar">
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <li class="nav-small-cap"><span class="hide-menu">Admin Panel</span></li>
+                    <% [
+                        { href: '/web/admin/dashboard',  icon: 'home',    label: 'Dashboard' },
+                        { href: '/web/admin/users',      icon: 'users',   label: 'Users' },
+                        { href: '/web/admin/plans',      icon: 'lock',    label: 'Plans' },
+                        { href: '/web/admin/tickets',    icon: 'mail',    label: 'Tickets' },
+                        { href: '/web/admin/attacklogs', icon: 'wifioff', label: 'Attack Logs' },
+                        { href: '/web/admin/loginlogs',  icon: 'user',    label: 'Login Logs' },
+                        { href: '/web/admin/news',       icon: 'plus',    label: 'News' },
+                        { href: '/web/admin/giftcards',  icon: 'plus',    label: 'Gift Cards' },
+                        { href: '/web/admin/settings',   icon: 'settings',label: 'Settings' },
+                        { href: '/web/admin/servers',    icon: 'shield',  label: 'API Servers' },
+                        { href: '/web/admin/methods',    icon: 'plus',    label: 'Methods' },
+                        { href: '/web/admin/hub',        icon: 'power',   label: 'Hub' },
+                    ].forEach(function (it) { %>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="<%= it.href %>">
+                                <%- include('feather', { name: it.icon }) %>
+                                <span class="hide-menu"><%= it.label %></span>
+                            </a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="d-flex align-items-center">
+                <h4 class="page-title text-truncate text-white font-weight-medium mb-0"> <%= title %> </h4>
+                <div class="ml-auto">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb m-0 p-0">
+                            <li class="breadcrumb-item text-sql">IPstress</li>
+                            <li class="breadcrumb-item text-muted"><%= crumb %></li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>

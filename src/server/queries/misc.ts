@@ -1,5 +1,5 @@
-import 'server-only';
-import { webDb } from '@/lib/db/web';
+import "server-only";
+import { webDb } from "../../lib/db/web";
 import type {
     NewsRow,
     GiftCardRow,
@@ -7,14 +7,14 @@ import type {
     MethodRow,
     SettingsRow,
     PaymentRow,
-} from '@/types/db';
+} from "../../types/db";
 
 export async function getSettings(): Promise<SettingsRow | null> {
     return webDb.settings.findFirst();
 }
 
 export async function updateSettings(
-    data: Partial<Omit<SettingsRow, 'sitename'>>
+    data: Partial<Omit<SettingsRow, "sitename">>
 ): Promise<SettingsRow> {
     const existing = await webDb.settings.findFirst();
     if (existing) {
@@ -26,7 +26,7 @@ export async function updateSettings(
 }
 
 export async function getAllNews(): Promise<NewsRow[]> {
-    return webDb.news.findMany({ orderBy: { ID: 'desc' } });
+    return webDb.news.findMany({ orderBy: { ID: "desc" } });
 }
 
 export async function createNews(data: {
@@ -42,7 +42,7 @@ export async function deleteNews(id: number): Promise<void> {
 }
 
 export async function getAllGiftCards(): Promise<GiftCardRow[]> {
-    return webDb.giftcards.findMany({ orderBy: { ID: 'desc' } });
+    return webDb.giftcards.findMany({ orderBy: { ID: "desc" } });
 }
 
 export async function getGiftCardByCode(code: string): Promise<GiftCardRow | null> {
@@ -77,15 +77,15 @@ export async function redeemGiftCard(
 }
 
 export async function getAllServers(): Promise<ServerRow[]> {
-    return webDb.api.findMany({ orderBy: { name: 'asc' } });
+    return webDb.api.findMany({ orderBy: { name: "asc" } });
 }
 
 export async function getAllMethods(): Promise<MethodRow[]> {
-    return webDb.methods.findMany({ orderBy: { name: 'asc' } });
+    return webDb.methods.findMany({ orderBy: { name: "asc" } });
 }
 
 export async function getAllPayments(): Promise<PaymentRow[]> {
-    return webDb.payments.findMany({ orderBy: { ID: 'desc' } });
+    return webDb.payments.findMany({ orderBy: { ID: "desc" } });
 }
 
 export async function getTotalRevenue(): Promise<number> {

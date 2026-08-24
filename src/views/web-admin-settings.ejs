@@ -1,0 +1,72 @@
+<%- include('partials/dash-head', { title: 'Settings', crumb: 'Settings' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">General Settings</h4>
+                    <form class="mt-4" action="/web/api/admin/settings" method="POST">
+                        <input type="hidden" name="action" value="update"/>
+                        <div class="form-group">
+                            <label class="text-white">Site Name</label>
+                            <input class="form-control" name="sitename" value="<%= s.sitename %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">URL</label>
+                            <input class="form-control" name="url" value="<%= s.url %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Description</label>
+                            <textarea class="form-control" name="description" rows="3"><%= s.description %></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Cooldown</label>
+                            <input class="form-control" type="number" name="cooldown" value="<%= s.cooldown %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Cooldown Time (seconds)</label>
+                            <input class="form-control" type="number" name="cooldownTime" value="<%= s.cooldownTime %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Max Attacks Per User</label>
+                            <input class="form-control" type="number" name="maxattacks" value="<%= s.maxattacks %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Test Boots</label>
+                            <input class="form-control" type="number" name="testboots" value="<%= s.testboots %>"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save General Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Payment Settings</h4>
+                    <form class="mt-4" action="/web/api/admin/settings" method="POST">
+                        <input type="hidden" name="action" value="update"/>
+                        <div class="form-group">
+                            <label class="text-white">PayPal Email</label>
+                            <input class="form-control" name="paypal" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Bitcoin Address</label>
+                            <input class="form-control" name="bitcoin" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Stripe Public Key</label>
+                            <input class="form-control" name="stripePubKey" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Stripe Secret Key</label>
+                            <input class="form-control" type="password" name="stripeSecretKey" value=""/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Payment Settings</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

@@ -1,0 +1,49 @@
+<%- include('partials/dash-head', { title: 'News Management', crumb: 'News' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Create Announcement</h4>
+                    <form class="mt-4" action="/web/api/admin/news" method="POST">
+                        <input type="hidden" name="action" value="create"/>
+                        <div class="form-group">
+                            <label class="text-white">Title</label>
+                            <input class="form-control" required name="title"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Content</label>
+                            <textarea class="form-control" name="content" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Publish</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">All Announcements</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Title</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                <% if (news.length === 0) { %>
+                                    <tr><td colSpan="4" class="text-center text-muted">No announcements yet.</td></tr>
+                                <% } else { news.forEach(function (n) { %>
+                                    <tr>
+                                        <td><%= n.ID %></td>
+                                        <td><%= n.title %></td>
+                                        <td><%= n.date %></td>
+                                        <td class="text-center"><button type="button" data-action="/web/api/admin/news" data-id="<%= n.ID %>" class="btn btn-sm btn-danger">Delete</button></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

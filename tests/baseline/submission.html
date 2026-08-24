@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+    <body>
+        <!--$-->
+        <div id="cover">
+            <div id="topbar"><h1>BIBS·C Tech Tools</h1></div>
+            <nav id="navbar" aria-label="Primary">
+                <ul id="nav">
+                    <li>
+                        <a href="/#front"
+                            ><span>Home</span><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                    <li>
+                        <a href="/tl1"
+                            ><span>Knowing (TL1)</span
+                            ><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                    <li>
+                        <a href="/tl2"
+                            ><span>Strategies (TL2)</span
+                            ><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                    <li>
+                        <a href="/tl3"
+                            ><span>Evidence (TL3)</span
+                            ><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                    <li>
+                        <a href="/tl4"
+                            ><span>Crafting (TL4)</span
+                            ><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                    <li>
+                        <a href="/search"
+                            ><span>Search</span
+                            ><span class="nav-underline" aria-hidden="true"></span
+                        ></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div id="subhead">
+            <h1 id="submission-heading">Submit A New Tech Tool</h1>
+            <p class="jump-menu">
+                Jump to: <a href="#tool-name">Tool Name</a> · <a href="#tool-link">Link</a> ·
+                <a href="#descriptions">Descriptions</a> · <a href="#domains">Domains</a> ·
+                <a href="#screenshot">Screenshot</a> · <a href="/#front">Home</a>
+            </p>
+        </div>
+        <div id="bar"> </div>
+        <div id="all">
+            <form id="form" action="/api/submission" enctype="multipart/form-data" method="post">
+                <h2 id="tool-name">Tool Name:</h2>
+                <input type="text" class="l" placeholder="Name of Tool" name="techname" />
+                <h2 id="tool-link">Link:</h2>
+                <input type="text" class="l" placeholder="Link" name="link" />
+                <h2>Display Text for Link:</h2>
+                <input type="text" class="l" placeholder="Display Text" name="displaytext" />
+                <h2 id="descriptions">TL1: Knowing Our Students Description:</h2>
+                <textarea
+                    name="tl1_desc"
+                    class="l"
+                    form="form"
+                    placeholder="TL1 Description..."
+                ></textarea>
+                <h2>TL2: Strategies for Learning Description:</h2>
+                <textarea
+                    name="tl2_desc"
+                    class="l"
+                    form="form"
+                    placeholder="TL2 Description..."
+                ></textarea>
+                <h2>TL3: Evidence for Learning Description:</h2>
+                <textarea
+                    name="tl3_desc"
+                    class="l"
+                    form="form"
+                    placeholder="TL3 Description..."
+                ></textarea>
+                <h2>TL4: Crafting the Curriculum Description:</h2>
+                <textarea
+                    name="tl4_desc"
+                    class="l"
+                    form="form"
+                    placeholder="TL4 Description..."
+                ></textarea>
+                <h2 id="domains">TL1 Domains:</h2>
+                <div class="domains">
+                    <label><input type="checkbox" name="R" value="true" />Relationships</label
+                    ><label><input type="checkbox" name="TP" value="true" />Teacher Planning</label
+                    ><label
+                        ><input type="checkbox" name="MT" value="true" />Modify their
+                        Teaching</label
+                    ><label
+                        ><input type="checkbox" name="AR" value="true" />Achieve Readiness</label
+                    >
+                </div>
+                <h2>TL2 Domains:</h2>
+                <div class="domains">
+                    <label><input type="checkbox" name="U" value="true" />Understanding</label
+                    ><label
+                        ><input type="checkbox" name="MDL" value="true" />Multi-dimensional
+                        Learning</label
+                    ><label
+                        ><input type="checkbox" name="RA" value="true" />Reasoned Arguments</label
+                    ><label
+                        ><input type="checkbox" name="RoTech" value="true" />Lifelong
+                        Learning*</label
+                    ><label><input type="checkbox" name="LS" value="true" />Learning Spaces</label>
+                </div>
+                <h2>TL3 Domains:</h2>
+                <div class="domains">
+                    <label
+                        ><input type="checkbox" name="RoThink" value="true" />Reflect on
+                        Thinking</label
+                    ><label
+                        ><input type="checkbox" name="EoST" value="true" />Evidence of Student
+                        Learning</label
+                    ><label><input type="checkbox" name="EF" value="true" />Employ Feedback</label>
+                </div>
+                <h2>TL4 Domains:</h2>
+                <div class="domains">
+                    <label
+                        ><input type="checkbox" name="RTE" value="true" />Risk-taking
+                        Environment</label
+                    ><label
+                        ><input type="checkbox" name="DLoI" value="true" />Deepening Lines of
+                        Inquiry</label
+                    ><label
+                        ><input type="checkbox" name="RaAoC" value="true" />Responsibility &amp;
+                        Aspects of Citizenship</label
+                    >
+                </div>
+                <h2>Your Name (optional):</h2>
+                <input type="text" class="l" placeholder="Your Name" name="username" />
+                <h2>Contact Email (optional):</h2>
+                <input type="text" class="l" placeholder="Contact Email" name="contact" />
+                <h2 id="screenshot">Upload screenshot:</h2>
+                <input type="file" accept="image/*" name="screenshot" /><input
+                    type="submit"
+                    class="submit-btn"
+                    value="Submit"
+                />
+            </form>
+        </div>
+        <footer id="footer" data-built-by="richie-rich90454">
+            <p id="footer-nav">
+                <a href="/tl1">Knowing (TL1)</a> · <a href="/tl2">Strategies (TL2)</a> ·
+                <a href="/tl3">Evidence (TL3)</a> · <a href="/tl4">Crafting (TL4)</a> ·
+                <a href="/search">Search</a>
+            </p>
+            <p id="footer-copy"><b>© 2026 BIBS·C Tech Tips</b></p>
+        </footer>
+        <!--/$-->
+    </body>
+</html>

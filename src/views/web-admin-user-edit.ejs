@@ -1,0 +1,47 @@
+<%- include('partials/dash-head', { title: 'Edit User', crumb: '<a href="/web/admin/users">Users</a> | ' + user.username }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Edit: <%= user.username %></h4>
+                    <form class="mt-4" action="/web/api/admin/users" method="POST">
+                        <input type="hidden" name="id" value="<%= user.ID %>"/>
+                        <input type="hidden" name="action" value="update"/>
+                        <div class="form-group">
+                            <label class="text-white">Username</label>
+                            <input class="form-control" required name="username" value="<%= user.username %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">New Password (leave blank to keep)</label>
+                            <input class="form-control" type="password" placeholder="Leave blank to keep current" name="password"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Rank</label>
+                            <select class="form-control" name="rank">
+                                <option value="0"<%- Number(user.rank) === 0 ? ' selected' : '' %>>User</option>
+                                <option value="1"<%- Number(user.rank) === 1 ? ' selected' : '' %>>Admin</option>
+                                <option value="2"<%- Number(user.rank) === 2 ? ' selected' : '' %>>Super Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Membership</label>
+                            <select class="form-control" name="membership">
+                                <option value="0"<%- !user.membership ? ' selected' : '' %>>None</option>
+                                <% plans.forEach(function (pl) { %>
+                                    <option value="<%= pl.ID %>"<%- Number(user.membership) === pl.ID ? ' selected' : '' %>><%= pl.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Expire (Unix timestamp)</label>
+                            <input class="form-control" type="number" name="expire" value="<%= user.expire %>"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

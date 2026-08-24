@@ -1,0 +1,54 @@
+<%- include('partials/dash-head', { title: 'Admin Hub', crumb: 'Admin Hub' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Admin Attack Launcher</h4>
+                    <p class="text-muted">No cooldown. No limits. Admin-only.</p>
+                    <form class="mt-4" action="/web/api/admin/hub" method="POST">
+                        <div class="form-group">
+                            <label class="text-white" for="host">Host</label>
+                            <input class="form-control" id="host" type="text"
+                                   placeholder="1.1.1.1 or http://link.com" required name="host"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="port">Port</label>
+                            <input class="form-control" id="port" type="text" placeholder="80" name="port" value="80"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="time">Time (Seconds)</label>
+                            <input class="form-control" id="time" type="number" placeholder="30" required name="time" value="30"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="method">Method</label>
+                            <select class="form-control" id="method" name="method" required>
+                                <optgroup label="Layer 4 Methods">
+                                    <% layer4.forEach(function (m) { %>
+                                        <option value="<%= m.name %>"><%= m.fullname || m.name %></option>
+                                    <% }) %>
+                                </optgroup>
+                                <optgroup label="Layer 7 Methods">
+                                    <% layer7.forEach(function (m) { %>
+                                        <option value="<%= m.name %>"><%= m.fullname || m.name %></option>
+                                    <% }) %>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white" for="server">Server</label>
+                            <select class="form-control" id="server" name="server">
+                                <option value="">Any available</option>
+                                <% servers.forEach(function (s) { %>
+                                    <option value="<%= s.name %>"><%= s.name %> (<%= s.slots %> slots)</option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-block btn-lg">Launch</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

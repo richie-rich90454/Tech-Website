@@ -1,0 +1,12 @@
+# Formatting exclusions — files that must never be machine-rewritten.
+
+# Frozen legacy DOM baselines: intentionally malformed/streaming artifacts
+# (React flight markers, implied end tags). Rewriting them would break the
+# parity gate's inputs, and they are never edited by humans.
+tests/baseline/
+
+# Vendored / third-party runtime asset served as-is.
+public/web/images/preloader.html
+
+# Narrative documents with deliberate prose line breaks.
+PR.md

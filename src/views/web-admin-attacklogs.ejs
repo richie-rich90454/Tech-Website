@@ -1,0 +1,36 @@
+<%- include('partials/dash-head', { title: 'Attack Logs', crumb: 'Attack Logs' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Attack Logs (<%= logs.length %>)</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead>
+                                <tr><th>ID</th><th>User</th><th>Target</th><th>Port</th><th>Method</th><th>Time</th><th>Date</th><th>Status</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <% if (logs.length === 0) { %>
+                                    <tr><td colSpan="9" class="text-center text-muted">No logs found.</td></tr>
+                                <% } else { logs.forEach(function (l) { %>
+                                    <tr>
+                                        <td><%= l.id %></td>
+                                        <td><%= l.user %></td>
+                                        <td><%= l.ip %></td>
+                                        <td><%= l.postdata %></td>
+                                        <td><%= l.method %></td>
+                                        <td><%= l.time %>s</td>
+                                        <td><%= l.chart %></td>
+                                        <td><%= l.stopped ? 'Stopped' : 'Running' %></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

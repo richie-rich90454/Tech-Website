@@ -1,0 +1,41 @@
+<%- include('partials/head', { title: tool.techname + ' · BIBS·C Tech Tools', description: String(tool.tl1_desc).slice(0, 150) }) %>
+<%- include('partials/navbar') %>
+
+<div id="subhead">
+    <h1 id="tool-heading"><%= tool.techname %></h1>
+    <p class="jump-menu"> Jump to: <% strands.forEach(function (t) { %><a href="/<%= t.tl %>">#<%= t.tl %></a> <% }) %> · <a href="/search">Search</a> · <a href="/">Home</a></p>
+</div>
+
+<div id="bar">&nbsp;</div>
+
+<div id="all">
+    <div class="techtip-wrap" id="results">
+        <div class="techtip" id="tool-<%= tool.id %>">
+            <div class="line" id="line-<%= tool.id %>"></div>
+            <h3 class="name"><%= tool.techname %></h3>
+            <div class="tags">
+                <% strands.forEach(function (t) { %>
+                <a href="/<%= t.tl %>#<%= t.col %>"><span class="<%= t.css %>"><%= t.label %></span></a>
+                <% }) %>
+            </div>
+            <div class="info">
+                <div class="img"><img src="/testuploads/<%= tool.id %>.png" alt="<%= tool.techname %>"/></div>
+                <div class="desc">
+                    <section id="tl1"><h2>TL1: Knowing Our Students</h2><p><%= tool.tl1_desc || 'Not documented for this strategy yet.' %></p></section>
+                    <section id="tl2"><h2>TL2: Strategies for Learning</h2><p><%= tool.tl2_desc || 'Not documented for this strategy yet.' %></p></section>
+                    <section id="tl3"><h2>TL3: Evidence for Learning</h2><p><%= tool.tl3_desc || 'Not documented for this strategy yet.' %></p></section>
+                    <section id="tl4"><h2>TL4: Crafting the Curriculum</h2><p><%= tool.tl4_desc || 'Not documented for this strategy yet.' %></p></section>
+                    <div class="link">
+                        <ul><li><a href="<%= tool.link %>" target="_blank" rel="noreferrer"><%= tool.displaytext %></a></li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="topbutton" title="Go to top">Top</button>
+
+<%- include('partials/footer') %>
+</body>
+</html>

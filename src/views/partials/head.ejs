@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <% if (locals.description) { %>
+    <meta name="description" content="<%= description %>" />
+    <% } %>
+    <link rel="icon" href="/images/favicon.png?v=<%= v %>" />
+    <% (locals.css || ['globals.css']).forEach(function (file) { %>
+    <link rel="stylesheet" href="/css/<%= file %>?v=<%= v %>" />
+    <% }) %>
+    <% var allScripts = ['theme.js', 'img-fallback.js', 'scroll-top.js'].concat(locals.scripts || []); %>
+    <!--[if IE]>
+    <script src="/js/vendor/ie11-custom-properties.js?v=<%= v %>"></script>
+    <script src="/js/ie11.js?v=<%= v %>"></script>
+    <link rel="stylesheet" href="/css/ie.css?v=<%= v %>" />
+    <![endif]-->
+    <% allScripts.forEach(function (file) { %>
+    <script src="/js/<%= file %>?v=<%= v %>" defer></script>
+    <% }) %>
+</head>
+<body>

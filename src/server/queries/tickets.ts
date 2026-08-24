@@ -1,6 +1,6 @@
-import 'server-only';
-import { webDb } from '@/lib/db/web';
-import type { TicketRow, MessageRow } from '@/types/db';
+import "server-only";
+import { webDb } from "../../lib/db/web";
+import type { TicketRow, MessageRow } from "../../types/db";
 
 export interface CreateTicketInput {
     subject: string;
@@ -24,14 +24,14 @@ export async function getAllTickets(
     } = {}
 ): Promise<TicketRow[]> {
     return webDb.tickets.findMany({
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
         skip: options.skip ?? 0,
         take: options.take ?? 50,
     });
 }
 
 export async function getTicketsByUser(username: string): Promise<TicketRow[]> {
-    return webDb.tickets.findMany({ where: { username }, orderBy: { id: 'desc' } });
+    return webDb.tickets.findMany({ where: { username }, orderBy: { id: "desc" } });
 }
 
 export async function getTicketById(id: number): Promise<TicketRow | null> {
@@ -54,7 +54,7 @@ export async function deleteTicket(id: number): Promise<void> {
 export async function getMessagesByTicket(ticketId: number): Promise<MessageRow[]> {
     return webDb.messages.findMany({
         where: { ticketid: ticketId },
-        orderBy: { date: 'asc' },
+        orderBy: { date: "asc" },
     });
 }
 
@@ -63,5 +63,5 @@ export async function createMessage(data: CreateMessageInput): Promise<MessageRo
 }
 
 export async function getWaitingTicketCount(): Promise<number> {
-    return webDb.tickets.count({ where: { status: 'Waiting for admin response' } });
+    return webDb.tickets.count({ where: { status: "Waiting for admin response" } });
 }
