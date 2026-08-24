@@ -1294,8 +1294,10 @@ footer a:hover {
 /* ==========================================================================
    THEME TOGGLE - sits at the right end of #topbar, styled like the site's
    existing pill/outline language. Icons are inline SVGs swapped by theme.
+   Selector matches #cover #topbar (0,2,0): the legacy display:block rule
+   higher up would otherwise out-rank a plain #topbar flex declaration.
    ========================================================================== */
-#topbar {
+#cover #topbar {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
