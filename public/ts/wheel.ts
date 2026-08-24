@@ -62,25 +62,37 @@
         spinning = true;
         button.setAttribute('disabled', 'true');
 
-        fetch('/web/api/wheel/spin', { method: 'POST' })
-            .then(function (r) {
-                return r.json();
-            })
-            .then(function (data) {
-                var prizeIndex = data.prize || 0;
-                var targetRotation = Math.PI * 2 * 5 + (SEGMENTS - prizeIndex) * ARC + ARC / 2;
-                if (reducedMotion) {
-                    currentRotation = targetRotation;
-                    draw();
-                    done();
-                    return;
-                }
-                animateTo(targetRotation, 3000, done);
-            })
-            .catch(function () {
+        // XHR instead of fetch: IE11 compatibility.
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/web/api/wheel/spin', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) return;
+            if (xhr.status < 200 || xhr.status >= 300) {
                 spinning = false;
                 button.removeAttribute('disabled');
-            });
+                return;
+            }
+            var data: { prize?: number } = {};
+            try {
+                data = JSON.parse(xhr.responseText);
+            } catch (e) {
+                /* treat as prize 0 */
+            }
+            var prizeIndex = data.prize || 0;
+            var targetRotation = Math.PI * 2 * 5 + (SEGMENTS - prizeIndex) * ARC + ARC / 2;
+            if (reducedMotion) {
+                currentRotation = targetRotation;
+                draw();
+                done();
+                return;
+            }
+            animateTo(targetRotation, 3000, done);
+        };
+        xhr.onerror = function () {
+            spinning = false;
+            button.removeAttribute('disabled');
+        };
+        xhr.send();
 
         function done() {
             spinning = false;
