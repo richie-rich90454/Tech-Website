@@ -12,7 +12,7 @@ Pages are EJS templates in `src/views/` — that's basically HTML with `<%= vari
 
 **The database:**
 
-Still SQLite (two files: `prisma/main.db` for tech tools, `prisma/web.db` for the SaaS panel) but Prisma got swapped for Drizzle ORM cuz it has zero CVEs and way less magic. The query style is almost identical so it's an easy swap. Schemas live in `src/lib/db/schema-main.ts` and `schema-web.ts`.
+Still SQLite (two files: `prisma/main.db` for tech tools, `prisma/web.db` for the SaaS panel) but Prisma got swapped for Drizzle ORM cuz it has zero CVEs and way less magic. The query style is almost identical so it's an easy swap. Schemas live in `src/lib/db/schema-main.ts` and `schema-web.ts`. The full dependency tree audits **0 vulnerabilities** (plain `npm audit`, dev deps included) — that's a release gate, not a hope.
 
 If u wanna reset the database, just run `npm run db:reset` and it'll wipe everything and re-seed it with test data.
 
@@ -27,7 +27,7 @@ There's no React. Pages come straight from the server as HTML (works without JS!
 
 The static file server serves from `dist/public` exclusively. If that folder is missing it refuses to boot with a "run npm run build" message — no silent fallbacks, cuz those caused real stale-content bugs during development.
 
-Dark/light mode swaps CSS variables only — look at `[data-theme='dark']` in globals.css, that's the whole feature.
+Dark/light mode is **server-rendered**: when u toggle it, a tiny `theme` cookie gets set, and on every later request the server stamps `data-theme="dark"` straight onto `<html>` before sending the page — so there's no flash of wrong theme, no inline script (keeps our CSP happy), and it even works with JavaScript disabled. The styling itself swaps CSS variables only — look at `[data-theme='dark']` in globals.css.
 
 **Install node.js & run the project:**
 
