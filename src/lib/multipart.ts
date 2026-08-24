@@ -20,8 +20,8 @@
  * block. Everything below is that sentence, plus safety rails.
  */
 
-import type { Context } from '../core/03-context';
-import { HttpError } from '../core/09-errors';
+import type { Context } from "../core/03-context";
+import { HttpError } from "../core/09-errors";
 
 export const MAX_UPLOAD_BYTES = 5_000_000; // 5 MB total body incl. file
 
@@ -48,12 +48,12 @@ function dispositionOf(headerBlock: string): {
     filename?: string;
     contentType: string;
 } {
-    let name = '';
+    let name = "";
     let filename: string | undefined = undefined;
-    let contentType = 'text/plain';
-    for (const line of headerBlock.split('\r\n')) {
-        const [key, ...rest] = line.split(':');
-        const value = rest.join(':').trim();
+    let contentType = "text/plain";
+    for (const line of headerBlock.split("\r\n")) {
+        const [key, ...rest] = line.split(":");
+        const value = rest.join(":").trim();
         if (/^content-disposition$/i.test(key)) {
             const nm = /name="([^"]*)"/i.exec(value);
             if (nm) name = nm[1];
@@ -71,15 +71,15 @@ function dispositionOf(headerBlock: string): {
  * Throws HttpError(400/413) on malformed or oversized input.
  */
 export async function readMultipart(ctx: Context): Promise<MultipartResult> {
-    const contentType = String(ctx.raw.headers['content-type'] ?? '');
+    const contentType = String(ctx.raw.headers["content-type"] ?? "");
     const boundary = boundaryOf(contentType);
-    if (!boundary) throw new HttpError(400, 'Expected multipart/form-data.');
+    if (!boundary) throw new HttpError(400, "Expected multipart/form-data.");
 
     const chunks: Buffer[] = [];
     let size = 0;
     for await (const chunk of ctx.raw) {
         size += (chunk as Buffer).length;
-        if (size > MAX_UPLOAD_BYTES) throw new HttpError(413, 'Upload too large.');
+        if (size > MAX_UPLOAD_BYTES) throw new HttpError(413, "Upload too large.");
         chunks.push(chunk as Buffer);
     }
     const body = Buffer.concat(chunks);
@@ -99,11 +99,11 @@ export async function readMultipart(ctx: Context): Promise<MultipartResult> {
         if (partEnd < partStart) partEnd = partStart;
 
         const part = body.slice(partStart, partEnd);
-        const headerEnd = part.indexOf('\r\n\r\n');
+        const headerEnd = part.indexOf("\r\n\r\n");
         if (headerEnd === -1 && part.length > 0) {
             // Tolerate parts without a blank line (empty files).
         }
-        const headerBlock = headerEnd === -1 ? '' : part.slice(0, headerEnd).toString('utf8');
+        const headerBlock = headerEnd === -1 ? "" : part.slice(0, headerEnd).toString("utf8");
         const data = headerEnd === -1 ? part : part.slice(headerEnd + 4);
 
         const disp = dispositionOf(headerBlock);
@@ -113,7 +113,7 @@ export async function readMultipart(ctx: Context): Promise<MultipartResult> {
                     result.file = { filename: disp.filename, contentType: disp.contentType, data };
                 }
             } else {
-                result.fields[disp.name] = data.toString('utf8');
+                result.fields[disp.name] = data.toString("utf8");
             }
         }
         pos = next;

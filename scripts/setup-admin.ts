@@ -1,7 +1,7 @@
-import 'dotenv/config';
-import bcrypt from 'bcryptjs';
-import { mainDb } from '../src/lib/db/main';
-import { webDb } from '../src/lib/db/web';
+import "dotenv/config";
+import bcrypt from "bcryptjs";
+import { mainDb } from "../src/lib/db/main";
+import { webDb } from "../src/lib/db/web";
 
 // Rotates or creates admin credentials for BOTH subprojects.
 // Usage: ADMIN_USERNAME=admin ADMIN_PASSWORD=<min 8 chars> npm run setup
@@ -11,11 +11,11 @@ async function main(): Promise<void> {
     const password = process.env.ADMIN_PASSWORD;
 
     if (!username || !password) {
-        console.error('ADMIN_USERNAME and ADMIN_PASSWORD env vars are required.');
+        console.error("ADMIN_USERNAME and ADMIN_PASSWORD env vars are required.");
         process.exit(1);
     }
     if (password.length < 8) {
-        console.error('ADMIN_PASSWORD must be at least 8 characters.');
+        console.error("ADMIN_PASSWORD must be at least 8 characters.");
         process.exit(1);
     }
 
@@ -42,7 +42,7 @@ async function main(): Promise<void> {
                 membership: 0,
                 expire: 9999999999,
                 status: 0,
-                referral: '',
+                referral: "",
                 referralbalance: 0,
                 testattack: 1,
                 activity: 0,
@@ -58,6 +58,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((e) => {
-    console.error('Setup failed:', e);
+    console.error("Setup failed:", e);
     process.exit(1);
 });

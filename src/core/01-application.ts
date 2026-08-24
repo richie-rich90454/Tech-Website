@@ -30,14 +30,14 @@
  * this file needs to change - that is the extension seam working as designed.
  */
 
-import { createServer, type Server } from 'node:http';
-import { Context } from './03-context';
-import { Router, type Handler, type RouteOptions } from './02-router';
-import { pageCache } from './06-cache'; // re-exported for route modules' convenience
-import { StaticFiles } from './07-static';
-import { applySecurityHeaders, csrfOriginCheck } from './08-security';
-import { rateLimit as rateLimitCheck } from '../lib/rate-limit';
-import { HttpError, logEvent, withErrorBoundary } from './09-errors';
+import { createServer, type Server } from "node:http";
+import { Context } from "./03-context";
+import { Router, type Handler, type RouteOptions } from "./02-router";
+import { pageCache } from "./06-cache"; // re-exported for route modules' convenience
+import { StaticFiles } from "./07-static";
+import { applySecurityHeaders, csrfOriginCheck } from "./08-security";
+import { rateLimit as rateLimitCheck } from "../lib/rate-limit";
+import { HttpError, logEvent, withErrorBoundary } from "./09-errors";
 
 export type { Handler, RouteOptions };
 export type Middleware = (ctx: Context, next: () => Promise<void>) => Promise<void>;
@@ -72,9 +72,9 @@ export class Application {
     private server?: Server;
 
     constructor(private readonly options: AppOptions) {
-        this.statics = new StaticFiles(options.staticRoot ?? 'dist/public');
+        this.statics = new StaticFiles(options.staticRoot ?? "dist/public");
         this.guards = options.guards ?? {};
-        this.isProd = options.isProd ?? process.env.NODE_ENV === 'production';
+        this.isProd = options.isProd ?? process.env.NODE_ENV === "production";
     }
 
     /** Register a global middleware (runs after CSRF, before routing). */
@@ -109,7 +109,7 @@ export class Application {
             // One-shot: a listen failure must reject THIS promise, not crash
             // the process from a stray 'error' event after we resolved.
             const onError = (err: Error & { code?: string }): void => {
-                if (err.code === 'EADDRINUSE') {
+                if (err.code === "EADDRINUSE") {
                     rejectListen(
                         new Error(
                             `Port ${port} is already in use. Stop the other process ` +
@@ -120,9 +120,9 @@ export class Application {
                     rejectListen(err);
                 }
             };
-            this.server.once('error', onError);
+            this.server.once("error", onError);
             this.server.listen(port, () => {
-                this.server!.removeListener('error', onError);
+                this.server!.removeListener("error", onError);
                 resolveListen();
             });
         });
@@ -136,8 +136,8 @@ export class Application {
 
     /** Entry point wired to node:http. Split from listen() so tests can call it. */
     async handle(
-        raw: import('node:http').IncomingMessage,
-        res: import('node:http').ServerResponse
+        raw: import("node:http").IncomingMessage,
+        res: import("node:http").ServerResponse
     ): Promise<void> {
         const startedAt = performance.now();
         const ctx = new Context(raw, res);
@@ -155,7 +155,7 @@ export class Application {
             ): unknown => {
                 if (!res.headersSent) {
                     res.setHeader(
-                        'X-Response-Time-Ms',
+                        "X-Response-Time-Ms",
                         String(Math.round(performance.now() - startedAt))
                     );
                 }
@@ -164,10 +164,10 @@ export class Application {
         }
 
         // Slow-request sentinel: pure logging AFTER the response completes.
-        res.on('finish', () => {
+        res.on("finish", () => {
             const ms = Math.round(performance.now() - startedAt);
             if (ms > PAGE_BUDGET_MS)
-                logEvent('warn', { slow: true, ms, path: ctx.path, method: ctx.method });
+                logEvent("warn", { slow: true, ms, path: ctx.path, method: ctx.method });
         });
 
         await withErrorBoundary(ctx, () => this.runPipeline(ctx), {
@@ -196,7 +196,7 @@ export class Application {
         if (this.statics.serve(ctx)) return; // assets short-circuit everything
 
         const match = this.router.dispatch(ctx.method, ctx.path, ctx);
-        if (!match) throw new HttpError(404, 'Page not found.');
+        if (!match) throw new HttpError(404, "Page not found.");
 
         const { handler, options } = match;
         if (options.guard) {
@@ -207,7 +207,7 @@ export class Application {
         if (options.limit) {
             const [max, windowMs] = options.limit;
             if (!rateLimitCheck(`${ctx.method} ${ctx.path}:${ctx.ip}`, max, windowMs)) {
-                ctx.json({ error: 'Rate limit exceeded.' }, 429);
+                ctx.json({ error: "Rate limit exceeded." }, 429);
                 return;
             }
         }

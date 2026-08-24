@@ -20,23 +20,23 @@
  * serious backend shop - learn it once, reuse it forever.
  */
 
-import { randomBytes } from 'node:crypto';
-import type { Context } from './03-context';
+import { randomBytes } from "node:crypto";
+import type { Context } from "./03-context";
 
 /** Thrown anywhere via ctx.throw(status, message). Carries an HTTP status. */
 export class HttpError extends Error {
     constructor(
         public readonly status: number,
-        message = 'Request failed.'
+        message = "Request failed."
     ) {
         super(message);
-        this.name = 'HttpError';
+        this.name = "HttpError";
     }
 }
 
 /** One structured log line to stdout - journald picks it up verbatim. */
-export function logEvent(level: 'info' | 'warn' | 'error', fields: Record<string, unknown>): void {
-    console[level === 'info' ? 'log' : level](
+export function logEvent(level: "info" | "warn" | "error", fields: Record<string, unknown>): void {
+    console[level === "info" ? "log" : level](
         JSON.stringify({ level, time: new Date().toISOString(), ...fields })
     );
 }
@@ -61,17 +61,17 @@ export async function withErrorBoundary(
             return;
         }
         const status = err instanceof HttpError ? err.status : 500;
-        const ref = randomBytes(4).toString('hex');
-        const isApi = ctx.path.startsWith('/api/') || ctx.path.startsWith('/web/api/');
+        const ref = randomBytes(4).toString("hex");
+        const isApi = ctx.path.startsWith("/api/") || ctx.path.startsWith("/web/api/");
         if (status >= 500) {
-            logEvent('error', {
+            logEvent("error", {
                 ref,
                 path: ctx.path,
                 method: ctx.method,
                 stack: err instanceof Error ? err.stack : String(err),
             });
         } else {
-            logEvent('warn', {
+            logEvent("warn", {
                 ref,
                 status,
                 path: ctx.path,
@@ -80,14 +80,14 @@ export async function withErrorBoundary(
         }
         if (isApi) {
             ctx.json(
-                { error: status === 404 ? 'Not found.' : 'Something went wrong.', ref },
+                { error: status === 404 ? "Not found." : "Something went wrong.", ref },
                 status
             );
             return;
         }
         if (status === 404) {
             const page =
-                typeof views.notFoundPage === 'function'
+                typeof views.notFoundPage === "function"
                     ? views.notFoundPage(ctx.path)
                     : views.notFoundPage;
             ctx.htmlRaw(page, 404);

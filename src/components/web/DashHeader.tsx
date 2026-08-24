@@ -1,13 +1,13 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 const links = [
-    { href: '/web/dashboard', label: 'Dashboard' },
-    { href: '/web/hub', label: 'Hub' },
-    { href: '/web/plan', label: 'Plans' },
-    { href: '/web/tickets', label: 'Tickets' },
-    { href: '/web/giftcards', label: 'Gift Cards' },
-    { href: '/web/affiliate', label: 'Affiliate' },
-    { href: '/web/wheel', label: 'Wheel' },
+    { href: "/web/dashboard", label: "Dashboard" },
+    { href: "/web/hub", label: "Hub" },
+    { href: "/web/plan", label: "Plans" },
+    { href: "/web/tickets", label: "Tickets" },
+    { href: "/web/giftcards", label: "Gift Cards" },
+    { href: "/web/affiliate", label: "Affiliate" },
+    { href: "/web/wheel", label: "Wheel" },
 ] as const;
 
 export default function DashHeader({ userName }: { userName: string }): React.ReactElement {

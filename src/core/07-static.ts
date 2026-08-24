@@ -26,28 +26,28 @@
  * (video scrubbing)? That belongs in a TODO(roadmap), not in v1 - no media here.
  */
 
-import { createReadStream, existsSync, statSync } from 'node:fs';
-import { extname, resolve, sep } from 'node:path';
-import type { Context } from './03-context';
+import { createReadStream, existsSync, statSync } from "node:fs";
+import { extname, resolve, sep } from "node:path";
+import type { Context } from "./03-context";
 
 const CONTENT_TYPES: Record<string, string> = {
-    '.css': 'text/css; charset=utf-8',
-    '.js': 'text/javascript; charset=utf-8',
-    '.mjs': 'text/javascript; charset=utf-8',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.gif': 'image/gif',
-    '.svg': 'image/svg+xml',
-    '.webp': 'image/webp',
-    '.ico': 'image/x-icon',
-    '.woff2': 'font/woff2',
-    '.woff': 'font/woff',
-    '.ttf': 'font/ttf',
-    '.eot': 'application/vnd.ms-fontobject',
-    '.json': 'application/json',
-    '.txt': 'text/plain; charset=utf-8',
-    '.html': 'text/html; charset=utf-8',
+    ".css": "text/css; charset=utf-8",
+    ".js": "text/javascript; charset=utf-8",
+    ".mjs": "text/javascript; charset=utf-8",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
+    ".webp": "image/webp",
+    ".ico": "image/x-icon",
+    ".woff2": "font/woff2",
+    ".woff": "font/woff",
+    ".ttf": "font/ttf",
+    ".eot": "application/vnd.ms-fontobject",
+    ".json": "application/json",
+    ".txt": "text/plain; charset=utf-8",
+    ".html": "text/html; charset=utf-8",
 };
 
 /** stat() memoization - cleared wholesale if it ever exceeds the cap. */
@@ -58,16 +58,14 @@ export class StaticFiles {
     /** Absolute root every request path must resolve inside (traversal guard). */
     private readonly rootAbs: string;
 
-    constructor(private readonly rootRelative = 'dist/public') {
+    constructor(private readonly rootRelative = "dist/public") {
         // Single source of truth: the BUILT tree. There is no dev/prod
         // dual-root anymore - `npm run build` (or any dev watcher) fills
         // dist/public, and this server only ever serves from there. A missing
         // tree is a boot-time configuration error, not a silent fallback.
         const root = resolve(process.cwd(), rootRelative);
         if (!existsSync(root)) {
-            throw new Error(
-                `Static assets not found at ${root}. Run "npm run build" first.`
-            );
+            throw new Error(`Static assets not found at ${root}. Run "npm run build" first.`);
         }
         this.rootAbs = root;
     }
@@ -77,7 +75,7 @@ export class StaticFiles {
      * the router can fall through to page routes (and eventually the 404 view).
      */
     serve(ctx: Context): boolean {
-        if (ctx.method !== 'GET' && ctx.method !== 'HEAD') return false;
+        if (ctx.method !== "GET" && ctx.method !== "HEAD") return false;
         const urlPath = decodeURIComponent(ctx.path);
         // ---- TRAVERSAL GUARD -------------------------------------------------
         // Resolve collapses "../" BEFORE we compare against the root, so an
@@ -90,15 +88,15 @@ export class StaticFiles {
         if (!stat) return false;
 
         const etag = `"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
-        ctx.res.setHeader('ETag', etag);
+        ctx.res.setHeader("ETag", etag);
         // CSS/JS URLs are NOT content-hashed (stable names like globals.css),
         // so they must revalidate on every load - otherwise a deploy's style
         // fixes stay invisible for as long as browsers honour max-age.
         // "no-cache" = store + conditional revalidation (304 when unchanged).
-        const revalidate = urlPath.startsWith('/js/') || urlPath.startsWith('/css/');
-        ctx.res.setHeader('Cache-Control', revalidate ? 'no-cache' : 'public, max-age=3600');
+        const revalidate = urlPath.startsWith("/js/") || urlPath.startsWith("/css/");
+        ctx.res.setHeader("Cache-Control", revalidate ? "no-cache" : "public, max-age=3600");
 
-        if (ctx.raw.headers['if-none-match'] === etag) {
+        if (ctx.raw.headers["if-none-match"] === etag) {
             ctx.res.statusCode = 304;
             ctx.res.end();
             return true;
@@ -106,15 +104,15 @@ export class StaticFiles {
 
         const contentType = CONTENT_TYPES[extname(absolute).toLowerCase()];
         if (!contentType) return false; // unknown extension: let 404 handle it
-        ctx.res.setHeader('Content-Type', contentType);
+        ctx.res.setHeader("Content-Type", contentType);
 
-        const accept = String(ctx.raw.headers['accept-encoding'] ?? '');
+        const accept = String(ctx.raw.headers["accept-encoding"] ?? "");
         const compressed = pickPrecompressed(absolute, accept);
         if (compressed) {
-            ctx.res.setHeader('Content-Encoding', compressed.encoding);
-            ctx.res.setHeader('Vary', 'Accept-Encoding');
-            ctx.res.setHeader('Content-Length', compressed.size);
-            if (ctx.method === 'HEAD') {
+            ctx.res.setHeader("Content-Encoding", compressed.encoding);
+            ctx.res.setHeader("Vary", "Accept-Encoding");
+            ctx.res.setHeader("Content-Length", compressed.size);
+            if (ctx.method === "HEAD") {
                 ctx.res.end();
                 return true;
             }
@@ -122,8 +120,8 @@ export class StaticFiles {
             return true;
         }
 
-        ctx.res.setHeader('Content-Length', stat.size);
-        if (ctx.method === 'HEAD') {
+        ctx.res.setHeader("Content-Length", stat.size);
+        if (ctx.method === "HEAD") {
             ctx.res.end();
             return true;
         }
@@ -157,13 +155,13 @@ function pickPrecompressed(
     absolute: string,
     accept: string
 ): { path: string; size: number; encoding: string } | null {
-    const wantsBr = accept.includes('br');
-    const wantsGzip = accept.includes('gzip');
+    const wantsBr = accept.includes("br");
+    const wantsGzip = accept.includes("gzip");
     if (wantsBr && existsSync(`${absolute}.br`)) {
-        return { path: `${absolute}.br`, size: statSync(`${absolute}.br`).size, encoding: 'br' };
+        return { path: `${absolute}.br`, size: statSync(`${absolute}.br`).size, encoding: "br" };
     }
     if (wantsGzip && existsSync(`${absolute}.gz`)) {
-        return { path: `${absolute}.gz`, size: statSync(`${absolute}.gz`).size, encoding: 'gzip' };
+        return { path: `${absolute}.gz`, size: statSync(`${absolute}.gz`).size, encoding: "gzip" };
     }
     return null;
 }

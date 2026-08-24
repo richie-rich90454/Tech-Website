@@ -1,6 +1,6 @@
-import 'server-only';
-import { webDb } from '../../lib/db/web';
-import type { LogRow, LoginLogRow } from '../../types/db';
+import "server-only";
+import { webDb } from "../../lib/db/web";
+import type { LogRow, LoginLogRow } from "../../types/db";
 
 export interface CreateLogInput {
     user: string;
@@ -29,21 +29,21 @@ export async function getAllLogs(
     } = {}
 ): Promise<LogRow[]> {
     return webDb.logs.findMany({
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
         skip: options.skip ?? 0,
         take: options.take ?? 50,
     });
 }
 
 export async function getLogsByUser(user: string): Promise<LogRow[]> {
-    return webDb.logs.findMany({ where: { user }, orderBy: { id: 'desc' } });
+    return webDb.logs.findMany({ where: { user }, orderBy: { id: "desc" } });
 }
 
 export async function getRunningLogs(): Promise<LogRow[]> {
     const now = Math.floor(Date.now() / 1000);
     return webDb.logs.findMany({
         where: { stopped: 0, date: { lte: now } },
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
     });
 }
 
@@ -51,7 +51,7 @@ export async function getRunningLogsByUser(user: string): Promise<LogRow[]> {
     const now = Math.floor(Date.now() / 1000);
     return webDb.logs.findMany({
         where: { user, stopped: 0, date: { lte: now } },
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
     });
 }
 
@@ -75,7 +75,7 @@ export async function getLoginLogs(
     } = {}
 ): Promise<LoginLogRow[]> {
     return webDb.loginlogs.findMany({
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
         skip: options.skip ?? 0,
         take: options.take ?? 50,
     });

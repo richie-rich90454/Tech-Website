@@ -23,9 +23,9 @@
  * function call that concatenates strings - nanoseconds.
  */
 
-import ejs from 'ejs';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import ejs from "ejs";
+import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 /**
  * Views live beside the entry point: src/views in dev, dist/views once the
@@ -33,12 +33,12 @@ import { join, resolve } from 'node:path';
  * production containers may not ship src/ at all, hence the fallback.
  */
 const VIEWS_DIR =
-    process.env.NODE_ENV === 'production' ? pickDir('dist', 'src') : pickDir('src', 'dist');
+    process.env.NODE_ENV === "production" ? pickDir("dist", "src") : pickDir("src", "dist");
 
 function pickDir(first: string, second: string): string {
-    const a = resolve(process.cwd(), first, 'views');
+    const a = resolve(process.cwd(), first, "views");
     if (existsSync(a)) return a;
-    const b = resolve(process.cwd(), second, 'views');
+    const b = resolve(process.cwd(), second, "views");
     if (existsSync(b)) return b;
     return a; // let loadViews() throw the familiar "not found"
 }
@@ -51,10 +51,10 @@ const cache = new Map<string, ejs.TemplateFunction>();
  * request so editing a .ejs file shows up on refresh (no reboot). Production
  * always uses the boot-time cache - zero disk reads per request.
  */
-const HOT = process.env.NODE_ENV !== 'production';
+const HOT = process.env.NODE_ENV !== "production";
 
 function compile(file: string): ejs.TemplateFunction {
-    const templateText = readFileSync(join(VIEWS_DIR, file), 'utf8');
+    const templateText = readFileSync(join(VIEWS_DIR, file), "utf8");
     return ejs.compile(templateText, {
         filename: join(VIEWS_DIR, file), // enables include() partials
         escape: escapeHtml,
@@ -69,21 +69,21 @@ export function loadViews(): void {
     if (!existsSync(VIEWS_DIR)) {
         throw new Error(`Views directory not found: ${VIEWS_DIR}`);
     }
-    const files = readdirSync(VIEWS_DIR).filter((f) => f.endsWith('.ejs'));
+    const files = readdirSync(VIEWS_DIR).filter((f) => f.endsWith(".ejs"));
     for (const file of files) {
-        cache.set(file.replace('.ejs', ''), compile(file));
+        cache.set(file.replace(".ejs", ""), compile(file));
     }
-    console.log(JSON.stringify({ level: 'info', msg: 'views loaded', count: files.length }));
+    console.log(JSON.stringify({ level: "info", msg: "views loaded", count: files.length }));
 }
 
 /** Escape HTML special characters (same rules as the old esc() function). */
 function escapeHtml(value: unknown): string {
     return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
 
 /**
@@ -108,12 +108,12 @@ export function render(viewName: string, data: Record<string, unknown> = {}): st
         if (!existsSync(join(VIEWS_DIR, file))) {
             throw new Error(`View "${file}" not found.`);
         }
-        return compile(file)({ ...data, YEN: '\u00a5', v: BUST });
+        return compile(file)({ ...data, YEN: "\u00a5", v: BUST });
     }
     const fn = cache.get(viewName);
     if (!fn) throw new Error(`View "${viewName}.ejs" not found. Did loadViews() run?`);
     // Always inject helpers available inside every .ejs template.
-    return fn({ ...data, YEN: '\u00a5', v: BUST });
+    return fn({ ...data, YEN: "\u00a5", v: BUST });
 }
 
 /** Check if a named view exists (used for testing / route validation). */

@@ -19,9 +19,9 @@
  * makes headlines, this file is usually the first place a countermeasure fits.
  */
 
-import type { Context } from './03-context';
-import type { Middleware } from './01-application';
-import { rateLimit } from '../lib/rate-limit';
+import type { Context } from "./03-context";
+import type { Middleware } from "./01-application";
+import { rateLimit } from "../lib/rate-limit";
 
 /**
  * The exact header set the previous framework served (parity constraint C1 -
@@ -33,13 +33,13 @@ import { rateLimit } from '../lib/rate-limit';
  */
 export function applySecurityHeaders(ctx: Context): void {
     const h = ctx.res.setHeader.bind(ctx.res);
-    h('X-Content-Type-Options', 'nosniff');
-    h('Referrer-Policy', 'strict-origin-when-cross-origin');
-    h('X-Frame-Options', 'DENY');
-    h('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-    h('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+    h("X-Content-Type-Options", "nosniff");
+    h("Referrer-Policy", "strict-origin-when-cross-origin");
+    h("X-Frame-Options", "DENY");
+    h("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    h("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
     h(
-        'Content-Security-Policy',
+        "Content-Security-Policy",
         [
             "default-src 'self'",
             "script-src 'self'",
@@ -49,7 +49,7 @@ export function applySecurityHeaders(ctx: Context): void {
             "connect-src 'self'",
             "frame-ancestors 'none'",
             "base-uri 'self'",
-        ].join('; ')
+        ].join("; ")
     );
 }
 
@@ -63,17 +63,17 @@ export function applySecurityHeaders(ctx: Context): void {
  * Two independent defenses, each covering the other's blind spot.
  */
 export async function csrfOriginCheck(ctx: Context, next: () => Promise<void>): Promise<void> {
-    const safe = ctx.method === 'GET' || ctx.method === 'HEAD' || ctx.method === 'OPTIONS';
+    const safe = ctx.method === "GET" || ctx.method === "HEAD" || ctx.method === "OPTIONS";
     if (!safe) {
         const origin = ctx.raw.headers.origin;
         if (origin) {
             try {
                 if (new URL(origin).host !== ctx.raw.headers.host) {
-                    ctx.text('Cross-origin request blocked', 403);
+                    ctx.text("Cross-origin request blocked", 403);
                     return;
                 }
             } catch {
-                ctx.text('Invalid Origin header', 403);
+                ctx.text("Invalid Origin header", 403);
                 return;
             }
         }
@@ -91,7 +91,7 @@ export async function csrfOriginCheck(ctx: Context, next: () => Promise<void>): 
 export function limitRequests(bucketName: string, max: number, windowMs: number): Middleware {
     return async (ctx, next) => {
         if (!rateLimit(`${bucketName}:${ctx.ip}`, max, windowMs)) {
-            ctx.json({ error: 'Rate limit exceeded.' }, 429);
+            ctx.json({ error: "Rate limit exceeded." }, 429);
             return;
         }
         await next();

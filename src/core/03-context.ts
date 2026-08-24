@@ -29,10 +29,10 @@
  * class juniors hit constantly in raw-Node code.
  */
 
-import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ZodType } from 'zod';
-import { renderToString, type Html } from './04-html';
-import { HttpError } from './09-errors';
+import type { IncomingMessage, ServerResponse } from "node:http";
+import type { ZodType } from "zod";
+import { renderToString, type Html } from "./04-html";
+import { HttpError } from "./09-errors";
 
 /** Hard ceiling on any request body. Blocks memory-exhaustion DoS attempts. */
 const MAX_BODY_BYTES = 1_000_000; // 1 MB - forms here are tiny; uploads use /api/submission's own path
@@ -52,11 +52,11 @@ export class Context {
     ) {
         // Host comes from our own trusted proxy front (nginx); pathname+query
         // are parsed once here and reused by every accessor below.
-        this.url = new URL(this.raw.url ?? '/', `http://${this.raw.headers.host ?? 'localhost'}`);
+        this.url = new URL(this.raw.url ?? "/", `http://${this.raw.headers.host ?? "localhost"}`);
         const rawCookie = this.raw.headers.cookie;
         if (rawCookie) {
-            for (const pair of rawCookie.split(';')) {
-                const eq = pair.indexOf('=');
+            for (const pair of rawCookie.split(";")) {
+                const eq = pair.indexOf("=");
                 if (eq === -1) continue;
                 this.cookieBag.set(pair.slice(0, eq).trim(), safeDecode(pair.slice(eq + 1).trim()));
             }
@@ -64,7 +64,7 @@ export class Context {
     }
 
     get method(): string {
-        return this.raw.method ?? 'GET';
+        return this.raw.method ?? "GET";
     }
 
     /** Pathname without query string, e.g. "/web/tickets". */
@@ -80,9 +80,9 @@ export class Context {
     /** Best-effort client IP: nginx sets X-Forwarded-For; fall back to the socket. */
     get ip(): string {
         return (
-            (this.raw.headers['x-forwarded-for'] as string | undefined)?.split(',')[0].trim() ||
+            (this.raw.headers["x-forwarded-for"] as string | undefined)?.split(",")[0].trim() ||
             this.raw.socket.remoteAddress ||
-            'unknown'
+            "unknown"
         );
     }
 
@@ -97,16 +97,16 @@ export class Context {
         opts: {
             httpOnly?: boolean;
             secure?: boolean;
-            sameSite?: 'Lax' | 'Strict';
+            sameSite?: "Lax" | "Strict";
             maxAge?: number;
         } = {}
     ): void {
         let c = `${name}=${value}; Path=/`;
-        if (opts.httpOnly) c += '; HttpOnly';
-        if (opts.secure) c += '; Secure';
+        if (opts.httpOnly) c += "; HttpOnly";
+        if (opts.secure) c += "; Secure";
         if (opts.sameSite) c += `; SameSite=${opts.sameSite}`;
         if (opts.maxAge !== undefined) c += `; Max-Age=${Math.floor(opts.maxAge)}`;
-        this.res.setHeader('Set-Cookie', [...normalize(this.res.getHeader('Set-Cookie')), c]);
+        this.res.setHeader("Set-Cookie", [...normalize(this.res.getHeader("Set-Cookie")), c]);
     }
 
     /**
@@ -120,17 +120,17 @@ export class Context {
         let size = 0;
         for await (const chunk of this.raw) {
             size += (chunk as Buffer).length;
-            if (size > MAX_BODY_BYTES) throw new HttpError(413, 'Request body too large.');
+            if (size > MAX_BODY_BYTES) throw new HttpError(413, "Request body too large.");
             chunks.push(chunk as Buffer);
         }
-        const rawText = Buffer.concat(chunks).toString('utf8');
-        const contentType = String(this.raw.headers['content-type'] ?? '');
+        const rawText = Buffer.concat(chunks).toString("utf8");
+        const contentType = String(this.raw.headers["content-type"] ?? "");
         let parsed: unknown;
-        if (contentType.includes('application/json')) {
+        if (contentType.includes("application/json")) {
             try {
-                parsed = JSON.parse(rawText || '{}');
+                parsed = JSON.parse(rawText || "{}");
             } catch {
-                throw new HttpError(400, 'Malformed JSON body.');
+                throw new HttpError(400, "Malformed JSON body.");
             }
         } else {
             parsed = Object.fromEntries(new URLSearchParams(rawText));
@@ -138,7 +138,7 @@ export class Context {
         if (!schema) return (this.cachedBody = parsed) as T;
         const result = schema.safeParse(parsed);
         if (!result.success) {
-            throw new HttpError(400, result.error.issues[0]?.message ?? 'Validation failed.');
+            throw new HttpError(400, result.error.issues[0]?.message ?? "Validation failed.");
         }
         return (this.cachedBody = result.data) as T;
     }
@@ -150,7 +150,7 @@ export class Context {
 
     /** Send a rendered page. Content-Type + charset are fixed for the whole site. */
     html(page: Html, status = 200): void {
-        this.send(renderToString(page), status, 'text/html; charset=utf-8');
+        this.send(renderToString(page), status, "text/html; charset=utf-8");
     }
 
     /**
@@ -159,17 +159,17 @@ export class Context {
      * the typed html() above so unescaped strings cannot sneak into responses.
      */
     htmlRaw(body: string, status = 200): void {
-        this.send(body, status, 'text/html; charset=utf-8');
+        this.send(body, status, "text/html; charset=utf-8");
     }
 
     /** Send a JSON payload (API routes). */
     json(data: unknown, status = 200): void {
-        this.send(JSON.stringify(data), status, 'application/json; charset=utf-8');
+        this.send(JSON.stringify(data), status, "application/json; charset=utf-8");
     }
 
     /** Plain-text reply (tiny utilities, health checks). */
     text(body: string, status = 200): void {
-        this.send(body, status, 'text/plain; charset=utf-8');
+        this.send(body, status, "text/plain; charset=utf-8");
     }
 
     /**
@@ -181,7 +181,7 @@ export class Context {
         if (this.finished) return;
         this.finished = true;
         this.res.statusCode = status;
-        this.res.setHeader('Location', location);
+        this.res.setHeader("Location", location);
         this.res.end();
     }
 
@@ -198,14 +198,14 @@ export class Context {
      * is sufficient here; no server state required.
      */
     flash(message: string): void {
-        this.setCookie('flash', encodeURIComponent(message), { httpOnly: true });
+        this.setCookie("flash", encodeURIComponent(message), { httpOnly: true });
     }
 
     /** Read-and-clear the pending flash message, if any. */
     takeFlash(): string | undefined {
-        const value = this.cookie('flash');
+        const value = this.cookie("flash");
         if (value === undefined) return undefined;
-        this.setCookie('flash', '', { maxAge: 0 });
+        this.setCookie("flash", "", { maxAge: 0 });
         const decoded = safeDecode(value);
         return decoded.length > 0 ? decoded : undefined;
     }
@@ -214,7 +214,7 @@ export class Context {
         if (this.finished) return; // one-response rule: see class docs
         this.finished = true;
         this.res.statusCode = status;
-        this.res.setHeader('Content-Type', contentType);
+        this.res.setHeader("Content-Type", contentType);
         this.res.end(text);
     }
 }

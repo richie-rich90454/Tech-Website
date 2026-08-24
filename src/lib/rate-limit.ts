@@ -22,6 +22,6 @@ function prune(now: number): void {
 }
 
 export function clientIp(req: Request): string {
-    const forwarded = req.headers.get('x-forwarded-for') ?? '';
-    return forwarded.split(',')[0].trim() || 'unknown';
+    const forwarded = req.headers.get("x-forwarded-for") ?? "";
+    return forwarded.split(",")[0].trim() || "unknown";
 }

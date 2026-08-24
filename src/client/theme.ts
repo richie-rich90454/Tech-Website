@@ -44,7 +44,7 @@ function themeReady(): void {
     if (btn) btn.addEventListener("click", themeFlip);
 
     // Keyboard shortcuts: Alt+T toggles theme, Alt+S focuses search.
-    document.addEventListener('keydown', function (ev: KeyboardEvent) {
+    document.addEventListener("keydown", function (ev: KeyboardEvent) {
         if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
         const k = String.fromCharCode(ev.keyCode);
         if (k === "T" || k === "t") {

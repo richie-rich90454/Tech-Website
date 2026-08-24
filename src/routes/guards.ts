@@ -17,20 +17,20 @@
  * user, their existing cookie loses power IMMEDIATELY - no waiting for expiry.
  */
 
-import type { Context } from '../core/03-context';
-import { SessionManager, type SessionData } from '../core/05-session';
-import { env } from '../config/env';
-import { webDb } from '../lib/db/web';
+import type { Context } from "../core/03-context";
+import { SessionManager, type SessionData } from "../core/05-session";
+import { env } from "../config/env";
+import { webDb } from "../lib/db/web";
 
 export const mainSessions = new SessionManager(
-    'main-session',
+    "main-session",
     env.sessionSecretMain,
     env.sessionTtlSeconds,
     env.isProd
 );
 
 export const webSessions = new SessionManager(
-    'web-session',
+    "web-session",
     env.sessionSecretWeb,
     env.sessionTtlSeconds,
     env.isProd
@@ -40,7 +40,7 @@ export const webSessions = new SessionManager(
 export async function requireMainAdmin(ctx: Context): Promise<void> {
     const session = mainSessions.load(ctx);
     if (session?.islogin) return;
-    ctx.throw(401, 'Unauthorized');
+    ctx.throw(401, "Unauthorized");
 }
 
 /**
@@ -49,7 +49,7 @@ export async function requireMainAdmin(ctx: Context): Promise<void> {
  */
 export async function requireWebUser(ctx: Context): Promise<SessionData> {
     const session = webSessions.load(ctx);
-    if (!session?.userId) ctx.throw(401, 'Not authenticated.');
+    if (!session?.userId) ctx.throw(401, "Not authenticated.");
     return session;
 }
 
@@ -60,7 +60,7 @@ export async function requireWebAdmin(ctx: Context): Promise<void> {
         where: { ID: session.userId! },
         select: { rank: true },
     });
-    if (!user || Number(user.rank) < 1) ctx.throw(403, 'Admin access required.');
+    if (!user || Number(user.rank) < 1) ctx.throw(403, "Admin access required.");
 }
 
 /** Map consumed by Application - names used in route options resolve here. */

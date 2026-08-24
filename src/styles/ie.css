@@ -18,7 +18,7 @@
 }
 
 /* --- Search form row ---------------------------------------------------- */
-.search-form input[type='text'] {
+.search-form input[type="text"] {
     margin-right: 8px;
 }
 
@@ -41,11 +41,11 @@
     display: block;
 }
 .row::after {
-    content: '';
+    content: "";
     display: table;
     clear: both;
 }
-.row > [class*='col-'] {
+.row > [class*="col-"] {
     float: left;
     box-sizing: border-box;
     padding-right: 9px;

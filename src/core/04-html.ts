@@ -47,11 +47,11 @@ export interface Html {
 
 /** The five characters that make text dangerous inside HTML, mapped to entities. */
 const ESCAPE_MAP: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
 };
 
 /**
@@ -82,7 +82,7 @@ export function unsafe(value: string): Html {
 
 /** Runtime type guard: does this value carry the safe-HTML envelope? */
 function isHtml(value: unknown): value is Html {
-    return typeof value === 'object' && value !== null && typeof (value as Html).value === 'string';
+    return typeof value === "object" && value !== null && typeof (value as Html).value === "string";
 }
 
 /**
@@ -94,9 +94,9 @@ type Interpolatable = Html | string | number | boolean | null | undefined;
 type Interpolation = Interpolatable | Interpolation[];
 
 function flatten(value: Interpolation): string {
-    if (value == null || value === false) return '';
-    if (value === true) return ''; // booleans are switches, never content
-    if (Array.isArray(value)) return value.map(flatten).join('');
+    if (value == null || value === false) return "";
+    if (value === true) return ""; // booleans are switches, never content
+    if (Array.isArray(value)) return value.map(flatten).join("");
     // The ONLY escape hatch is the Html envelope; every raw string/number is
     // escaped. This single branch is the security model of the view layer.
     return isHtml(value) ? value.value : esc(value);
@@ -111,7 +111,7 @@ function flatten(value: Interpolation): string {
  *   const table = html`<table>${rows.map(row)}</table>`;
  */
 export function markup(strings: TemplateStringsArray, ...values: Interpolation[]): Html {
-    let out = '';
+    let out = "";
     for (let i = 0; i < strings.length; i += 1) {
         out += strings[i];
         if (i < values.length) out += flatten(values[i]);

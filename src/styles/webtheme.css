@@ -481,7 +481,7 @@ body button:hover {
     background-image: -ms-linear-gradient(41deg, #0d0f2d 0, #101230 100%);
 }
 .banner_area:before {
-    content: '';
+    content: "";
     position: absolute;
     background: url(/web/images/banner/ban_shap1.png) no-repeat 0 100%;
     max-width: 982px;
@@ -529,7 +529,7 @@ body button:hover {
     overflow: hidden;
 }
 .ba_2:before {
-    content: '';
+    content: "";
     position: absolute;
     background: url(/web/images/banner/ban_shap2.png) no-repeat 0 100%;
     max-width: 1152px;
@@ -554,7 +554,7 @@ body button:hover {
     position: relative;
 }
 .our_mission_area .mission_text:before {
-    content: '';
+    content: "";
     background: url(/web/images/mission/mis_shap_bg1.png);
     position: absolute;
     left: 7px;
@@ -626,7 +626,7 @@ body button:hover {
     z-index: 6;
 }
 .start_mining_area .mining_text:before {
-    content: '';
+    content: "";
     position: absolute;
     background: url(/web/images/start/icon1.png) no-repeat;
     width: 36px;
@@ -712,7 +712,7 @@ body button:hover {
 .make_bitcoin:after,
 .make_bitcoin:before {
     position: absolute;
-    content: '';
+    content: "";
     width: 86px;
     height: 77px;
     z-index: 9;
@@ -827,7 +827,7 @@ body button:hover {
     overflow: hidden;
 }
 .our_roadmap_area:before {
-    content: '';
+    content: "";
     position: absolute;
     background: url(/web/images/road/dot_shape.png) no-repeat;
     left: 0;
@@ -848,7 +848,7 @@ body button:hover {
     padding-bottom: 108px;
 }
 .our_roadmap_area .road_text:before {
-    content: '';
+    content: "";
     position: absolute;
     border-radius: 50%;
     background-color: #373a6a;
@@ -859,7 +859,7 @@ body button:hover {
     z-index: 2;
 }
 .our_roadmap_area .road_text:after {
-    content: '';
+    content: "";
     position: absolute;
     background-color: rgba(242, 249, 255, 0.2);
     left: 8px;
@@ -963,7 +963,7 @@ body button:hover {
     position: relative;
 }
 .what_say_area .client_box .client_img .c_img:before {
-    content: '';
+    content: "";
     position: absolute;
     background: #007aff;
     width: 100%;
@@ -1063,7 +1063,7 @@ body button:hover {
 .faq_area:after,
 .faq_area:before {
     position: absolute;
-    content: '';
+    content: "";
     width: 74px;
     height: 74px;
     z-index: 9;
@@ -1164,7 +1164,7 @@ body button:hover {
 }
 .footer_area .footer_widget .fot_list li a:before {
     position: absolute;
-    content: '';
+    content: "";
     border: 1px dashed #4a7497;
     padding: 10px;
     line-height: 1;

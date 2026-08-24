@@ -7,8 +7,8 @@
  * lighter variant exists so `npm run dev` is self-sufficient on a fresh
  * clone - no prior build required for images and fonts to resolve.
  */
-import { cpSync, mkdirSync } from 'node:fs';
+import { cpSync, mkdirSync } from "node:fs";
 
-mkdirSync('dist/public', { recursive: true });
-cpSync('public', 'dist/public', { recursive: true });
-console.log('[assets] public -> dist/public synced (js/css untouched)');
+mkdirSync("dist/public", { recursive: true });
+cpSync("public", "dist/public", { recursive: true });
+console.log("[assets] public -> dist/public synced (js/css untouched)");

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function HeroSection(): React.ReactElement {
     return (
@@ -9,15 +9,15 @@ export default function HeroSection(): React.ReactElement {
                 fill
                 priority
                 sizes="100vw"
-                style={{ objectFit: 'cover', zIndex: 0 }}
+                style={{ objectFit: "cover", zIndex: 0 }}
             />
             <div
                 aria-hidden="true"
                 style={{
-                    position: 'absolute',
+                    position: "absolute",
                     inset: 0,
                     background:
-                        'linear-gradient(180deg, rgba(13,15,45,0.35) 0%, rgba(13,15,45,0.55) 100%)',
+                        "linear-gradient(180deg, rgba(13,15,45,0.35) 0%, rgba(13,15,45,0.55) 100%)",
                     zIndex: 1,
                 }}
             />

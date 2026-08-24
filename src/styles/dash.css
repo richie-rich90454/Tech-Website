@@ -9,10 +9,10 @@ body {
     background: #0a0e27;
     color: #e5f4ff;
     font-family:
-        'Noto Sans',
+        "Noto Sans",
         system-ui,
         -apple-system,
-        'Segoe UI',
+        "Segoe UI",
         Roboto,
         Arial,
         sans-serif;
@@ -288,7 +288,7 @@ a:hover {
     flex-wrap: wrap;
     gap: 18px;
 }
-.row > [class*='col-'] {
+.row > [class*="col-"] {
     min-width: 0;
 }
 .col-12 {

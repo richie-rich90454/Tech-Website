@@ -27,7 +27,7 @@
  * the full pattern: compile once, compare cheaply forever.
  */
 
-import type { Context } from './03-context';
+import type { Context } from "./03-context";
 
 /** What a route handler looks like. Async because data access awaits. */
 export type Handler = (ctx: Context) => Promise<void> | void;
@@ -38,7 +38,7 @@ export type Handler = (ctx: Context) => Promise<void> | void;
  */
 export interface RouteOptions {
     /** Auth gate applied before the handler runs (implemented in src/routes/guards.ts). */
-    guard?: 'mainAdmin' | 'webAdmin' | 'webUser';
+    guard?: "mainAdmin" | "webAdmin" | "webUser";
     /** Rate limit [maxRequests, windowMs] keyed by client IP (or API key for /web/api/external). */
     limit?: readonly [max: number, windowMs: number];
     /** Rendered-page cache key; GET-only, bust via core/06-cache on admin writes. */
@@ -66,21 +66,21 @@ export class Router {
     private readonly dynamicRoutes: CompiledRoute[] = [];
 
     get(path: string, handler: Handler, options: RouteOptions = {}): void {
-        this.register('GET', path, handler, options);
+        this.register("GET", path, handler, options);
     }
     post(path: string, handler: Handler, options: RouteOptions = {}): void {
-        this.register('POST', path, handler, options);
+        this.register("POST", path, handler, options);
     }
     put(path: string, handler: Handler, options: RouteOptions = {}): void {
-        this.register('PUT', path, handler, options);
+        this.register("PUT", path, handler, options);
     }
     delete(path: string, handler: Handler, options: RouteOptions = {}): void {
-        this.register('DELETE', path, handler, options);
+        this.register("DELETE", path, handler, options);
     }
 
     register(method: string, path: string, handler: Handler, options: RouteOptions = {}): void {
         const route: CompiledRoute = { method, segments: compilePattern(path), handler, options };
-        if (route.segments.some((s) => s.startsWith(':'))) {
+        if (route.segments.some((s) => s.startsWith(":"))) {
             this.dynamicRoutes.push(route);
         } else {
             // Normalize trailing slash so "/web/tickets" and "/web/tickets/" hit
@@ -97,7 +97,7 @@ export class Router {
         const staticHit = this.staticRoutes.get(`${method} ${normalizePath(pathname)}`);
         if (staticHit) return { handler: staticHit.handler, options: staticHit.options };
 
-        const parts = pathname.split('/').filter(Boolean);
+        const parts = pathname.split("/").filter(Boolean);
         for (const route of this.dynamicRoutes) {
             if (route.method !== method) continue;
             if (tryMatch(route.segments, parts)) {
@@ -116,7 +116,7 @@ export class Router {
         const staticHit = this.staticRoutes.get(`${method} ${normalizePath(pathname)}`);
         if (staticHit) return { handler: staticHit.handler, options: staticHit.options };
 
-        const parts = pathname.split('/').filter(Boolean);
+        const parts = pathname.split("/").filter(Boolean);
         for (const route of this.dynamicRoutes) {
             if (route.method !== method) continue;
             const params = tryMatch(route.segments, parts);
@@ -131,17 +131,17 @@ export class Router {
 
 /** Compile "/web/tickets/:id" into ["web", "tickets", ":id"] once, at startup. */
 function compilePattern(pattern: string): string[] {
-    return pattern.split('/').filter(Boolean).map(normalizeSegment);
+    return pattern.split("/").filter(Boolean).map(normalizeSegment);
 }
 
 function normalizeSegment(segment: string): string {
     // Trailing-slash tolerance without regex: strip one trailing '/' if present.
-    return segment.length > 1 && segment.endsWith('/') ? segment.slice(0, -1) : segment;
+    return segment.length > 1 && segment.endsWith("/") ? segment.slice(0, -1) : segment;
 }
 
 function normalizePath(path: string): string {
-    const trimmed = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
-    return trimmed || '/';
+    const trimmed = path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+    return trimmed || "/";
 }
 
 /**
@@ -153,7 +153,7 @@ function tryMatch(segments: string[], parts: string[]): Record<string, string> |
     const params: Record<string, string> = {};
     for (let i = 0; i < segments.length; i += 1) {
         const seg = segments[i];
-        if (seg.startsWith(':')) {
+        if (seg.startsWith(":")) {
             params[seg.slice(1)] = decodeURIComponent(parts[i]);
         } else if (seg !== parts[i]) {
             return null;

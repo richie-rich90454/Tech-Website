@@ -11,10 +11,10 @@
  * guesswork with extra steps.
  */
 
-import { request } from 'node:http';
+import { request } from "node:http";
 
-const BASE = new URL(process.env.BASE ?? 'http://localhost:3000');
-const PATH = process.env.PATH ?? '/';
+const BASE = new URL(process.env.BASE ?? "http://localhost:3000");
+const PATH = process.env.PATH ?? "/";
 const DURATION_S = Number(process.env.DURATION ?? 5);
 const CONCURRENCY = Number(process.env.CONCURRENCY ?? 20);
 
@@ -26,16 +26,16 @@ function once() {
     return new Promise((resolveOne) => {
         const started = performance.now();
         const req = request(
-            { hostname: BASE.hostname, port: BASE.port, path: PATH, method: 'GET' },
+            { hostname: BASE.hostname, port: BASE.port, path: PATH, method: "GET" },
             (res) => {
                 res.resume();
-                res.on('end', () => {
+                res.on("end", () => {
                     latencies.push(performance.now() - started);
                     resolveOne();
                 });
             }
         );
-        req.on('error', () => {
+        req.on("error", () => {
             errors += 1;
             resolveOne();
         });

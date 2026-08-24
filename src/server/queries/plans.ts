@@ -1,6 +1,6 @@
-import 'server-only';
-import { webDb } from '../../lib/db/web';
-import type { PlanRow } from '../../types/db';
+import "server-only";
+import { webDb } from "../../lib/db/web";
+import type { PlanRow } from "../../types/db";
 
 export interface CreatePlanInput {
     name: string;
@@ -14,7 +14,7 @@ export interface CreatePlanInput {
 }
 
 export async function getAllPlans(): Promise<PlanRow[]> {
-    return webDb.plans.findMany({ orderBy: { price: 'asc' } });
+    return webDb.plans.findMany({ orderBy: { price: "asc" } });
 }
 
 export async function getPlanById(id: number): Promise<PlanRow | null> {

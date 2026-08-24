@@ -12,17 +12,17 @@ import {
     ne,
     count as dcount,
     sum as dsum,
-} from 'drizzle-orm';
-import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
+} from "drizzle-orm";
+import type { BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
 
 type Db = BetterSQLite3Database<any>;
 type Where = Record<string, any> | undefined;
-type OrderBy = Record<string, 'asc' | 'desc'> | undefined;
+type OrderBy = Record<string, "asc" | "desc"> | undefined;
 type Select = Record<string, boolean> | undefined;
 
 function columnFor(table: any, field: string) {
     const col = table[field];
-    if (!col) throw new Error('Unknown column: ' + field);
+    if (!col) throw new Error("Unknown column: " + field);
     return col;
 }
 
@@ -30,22 +30,22 @@ function buildWhere(table: any, where?: Where) {
     if (!where || Object.keys(where).length === 0) return undefined;
     const conds = Object.entries(where).map(([field, cond]) => {
         const col = columnFor(table, field);
-        if (cond !== null && typeof cond === 'object' && !(cond instanceof Date)) {
+        if (cond !== null && typeof cond === "object" && !(cond instanceof Date)) {
             const inner = Object.entries(cond).map(([op, val]) => {
                 switch (op) {
-                    case 'not':
+                    case "not":
                         return ne(col, val);
-                    case 'gt':
+                    case "gt":
                         return gt(col, val);
-                    case 'gte':
+                    case "gte":
                         return gte(col, val);
-                    case 'lt':
+                    case "lt":
                         return lt(col, val);
-                    case 'lte':
+                    case "lte":
                         return lte(col, val);
-                    case 'contains':
-                        return like(col, '%' + String(val) + '%');
-                    case 'in':
+                    case "contains":
+                        return like(col, "%" + String(val) + "%");
+                    case "in":
                         return Array.isArray(val) ? inArray(col, val) : eq(col, val);
                     default:
                         return eq(col, val);
@@ -61,7 +61,7 @@ function buildWhere(table: any, where?: Where) {
 function buildOrderBy(table: any, orderBy?: OrderBy) {
     if (!orderBy) return undefined;
     return Object.entries(orderBy).map(([field, dir]) =>
-        dir === 'desc' ? desc(columnFor(table, field)) : asc(columnFor(table, field))
+        dir === "desc" ? desc(columnFor(table, field)) : asc(columnFor(table, field))
     );
 }
 
@@ -104,8 +104,8 @@ export function createModel(db: Db, table: any, opts: ModelOptions = {}) {
             if (w) q = q.where(w);
             const ob = buildOrderBy(table, args.orderBy);
             if (ob) q = q.orderBy(...ob);
-            if (typeof args.take === 'number') q = q.limit(args.take);
-            if (typeof args.skip === 'number') q = q.offset(args.skip);
+            if (typeof args.take === "number") q = q.limit(args.take);
+            if (typeof args.skip === "number") q = q.offset(args.skip);
             return q.all();
         },
         async create(args: { data: any }): Promise<any> {

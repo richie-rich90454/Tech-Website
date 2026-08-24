@@ -28,7 +28,7 @@ if (!process.env.SESSION_SECRET) {
     try {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        require('dotenv').config();
+        require("dotenv").config();
     } catch {
         // dotenv not installed in production; --env-file handles it there.
     }
@@ -37,7 +37,7 @@ if (!process.env.SESSION_SECRET) {
 function requiredString(name: string, minLength = 1): string {
     const value = process.env[name];
     if (!value || value.length < minLength) {
-        const suffix = minLength > 1 ? ` (min ${minLength} chars)` : '';
+        const suffix = minLength > 1 ? ` (min ${minLength} chars)` : "";
         throw new Error(
             `Missing environment variable ${name}${suffix}. Generate with: openssl rand -base64 32`
         );
@@ -59,11 +59,11 @@ function optionalNumber(name: string, fallback: number): number {
  * ship. The old code threw only when NODE_ENV=production; that gap is closed.
  */
 export const env = Object.freeze({
-    isProd: process.env.NODE_ENV === 'production',
-    port: optionalNumber('PORT', 3000),
+    isProd: process.env.NODE_ENV === "production",
+    port: optionalNumber("PORT", 3000),
 
-    sessionSecretMain: requiredString('SESSION_SECRET', 32),
-    sessionSecretWeb: requiredString('SESSION_SECRET_WEB', 32),
+    sessionSecretMain: requiredString("SESSION_SECRET", 32),
+    sessionSecretWeb: requiredString("SESSION_SECRET_WEB", 32),
     /** Cookie lifetime in seconds - parity with the previous site (30 min). */
-    sessionTtlSeconds: optionalNumber('SESSION_TTL_SECONDS', 1800),
+    sessionTtlSeconds: optionalNumber("SESSION_TTL_SECONDS", 1800),
 });

@@ -86,7 +86,7 @@ export class TtlCache<V> {
     bust(keyOrPattern: string | string[]): void {
         const patterns = Array.isArray(keyOrPattern) ? keyOrPattern : [keyOrPattern];
         for (const pattern of patterns) {
-            if (pattern.endsWith('*')) {
+            if (pattern.endsWith("*")) {
                 const prefix = pattern.slice(0, -1);
                 for (const key of this.map.keys()) {
                     if (key.startsWith(prefix)) this.map.delete(key);

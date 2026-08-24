@@ -8,20 +8,20 @@
  *
  * rmSync first so deleted sources never linger as stale build output.
  */
-import { cpSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { cpSync, mkdirSync, copyFileSync, rmSync } from "node:fs";
 
-rmSync('dist/public', { recursive: true, force: true });
-cpSync('src/views', 'dist/views', { recursive: true });
-cpSync('public', 'dist/public', { recursive: true });
+rmSync("dist/public", { recursive: true, force: true });
+cpSync("src/views", "dist/views", { recursive: true });
+cpSync("public", "dist/public", { recursive: true });
 
 // Vendored third-party browser polyfill (IE11 custom properties).
-mkdirSync('dist/public/js/vendor', { recursive: true });
+mkdirSync("dist/public/js/vendor", { recursive: true });
 copyFileSync(
-    'node_modules/ie11-custom-properties/ie11CustomProperties.js',
-    'dist/public/js/vendor/ie11-custom-properties.js'
+    "node_modules/ie11-custom-properties/ie11CustomProperties.js",
+    "dist/public/js/vendor/ie11-custom-properties.js"
 );
 
 // Compiled CSS lands in the same tree the server serves.
-cpSync('src/styles', 'dist/public/css', { recursive: true });
+cpSync("src/styles", "dist/public/css", { recursive: true });
 
-console.log('dist assets synced');
+console.log("dist assets synced");

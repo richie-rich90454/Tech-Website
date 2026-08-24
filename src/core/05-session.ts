@@ -31,8 +31,8 @@
  * microseconds and closes the entire attack class.
  */
 
-import { createHmac, timingSafeEqual } from 'node:crypto';
-import type { Context } from './03-context';
+import { createHmac, timingSafeEqual } from "node:crypto";
+import type { Context } from "./03-context";
 
 /** Everything the site stores about one logged-in browser. Keep it tiny. */
 export interface SessionData {
@@ -56,15 +56,15 @@ export class SessionManager {
     load(ctx: Context): SessionData | null {
         const raw = ctx.cookie(this.cookieName);
         if (!raw) return null;
-        const parts = raw.split('.');
-        if (parts.length !== 3 || parts[0] !== 'v1') return null;
+        const parts = raw.split(".");
+        if (parts.length !== 3 || parts[0] !== "v1") return null;
         const [, payloadB64, signatureB64] = parts;
         if (!safeEquals(b64url(hmac(`v1.${payloadB64}`, this.secret)), signatureB64)) return null;
         try {
             const data = JSON.parse(
-                Buffer.from(payloadB64, 'base64url').toString('utf8')
+                Buffer.from(payloadB64, "base64url").toString("utf8")
             ) as SessionData & { e?: number };
-            if (typeof data.e !== 'number' || Date.now() / 1000 > data.e) return null; // expired
+            if (typeof data.e !== "number" || Date.now() / 1000 > data.e) return null; // expired
             return data;
         } catch {
             return null; // malformed payload = anonymous, not a 500
@@ -74,7 +74,7 @@ export class SessionManager {
     /** Sign + write the cookie. Call after mutating a loaded session object. */
     save(ctx: Context, data: SessionData): void {
         const withExpiry = { ...data, e: Math.floor(Date.now() / 1000) + this.ttlSeconds };
-        const payload = Buffer.from(JSON.stringify(withExpiry)).toString('base64url');
+        const payload = Buffer.from(JSON.stringify(withExpiry)).toString("base64url");
         const signature = b64url(hmac(`v1.${payload}`, this.secret));
         ctx.setCookie(this.cookieName, `v1.${payload}.${signature}`, {
             httpOnly: true,
@@ -85,7 +85,7 @@ export class SessionManager {
 
     /** Log out: overwrite with an immediately-expiring empty cookie. */
     destroy(ctx: Context): void {
-        ctx.setCookie(this.cookieName, '', {
+        ctx.setCookie(this.cookieName, "", {
             httpOnly: true,
             secure: this.secureCookies,
             maxAge: 0,
@@ -94,11 +94,11 @@ export class SessionManager {
 }
 
 function hmac(data: string, secret: string): Buffer {
-    return createHmac('sha256', secret).update(data).digest();
+    return createHmac("sha256", secret).update(data).digest();
 }
 
 function b64url(buffer: Buffer): string {
-    return buffer.toString('base64url');
+    return buffer.toString("base64url");
 }
 
 /**

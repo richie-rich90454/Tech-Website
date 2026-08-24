@@ -2,7 +2,7 @@
 body {
     --color-deep: #1a237e;
 }
-[data-theme='dark'] body {
+[data-theme="dark"] body {
     --color-deep: #141c52;
 }
 
@@ -69,13 +69,13 @@ body {
     line-height: 1.5;
 }
 
-#form input[type='file'] {
+#form input[type="file"] {
     font-family: var(--font-sans);
     font-size: 0.9rem;
     color: var(--color-muted);
 }
 
-#form input[type='file']::file-selector-button {
+#form input[type="file"]::file-selector-button {
     margin-right: 12px;
     padding: 8px 14px;
     border: 1px solid var(--color-border);
@@ -91,7 +91,7 @@ body {
         border-color 200ms ease;
 }
 
-#form input[type='file']::file-selector-button:hover {
+#form input[type="file"]::file-selector-button:hover {
     background: var(--color-accent-soft);
     border-color: var(--color-accent);
 }
@@ -125,7 +125,7 @@ body {
     border-color: var(--color-accent);
 }
 
-#form .domains input[type='checkbox'] {
+#form .domains input[type="checkbox"] {
     accent-color: var(--color-accent-strong);
     width: 16px;
     height: 16px;
@@ -180,21 +180,21 @@ body {
 }
 
 /* --- Dark mode (token-scoped; light values above are untouched) --------- */
-[data-theme='dark'] body {
+[data-theme="dark"] body {
     background: var(--color-bg);
 }
-[data-theme='dark'] form,
-[data-theme='dark'] .form-card {
+[data-theme="dark"] form,
+[data-theme="dark"] .form-card {
     background: var(--color-panel);
 }
-[data-theme='dark'] input[type='text'],
-[data-theme='dark'] textarea.l {
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] textarea.l {
     background: var(--color-input-bg);
     color: var(--color-ink);
     border-color: var(--color-input-border);
 }
-[data-theme='dark'] input[type='submit'],
-[data-theme='dark'] button[type='submit'] {
+[data-theme="dark"] input[type="submit"],
+[data-theme="dark"] button[type="submit"] {
     background: var(--color-accent-strong);
     color: var(--color-ink-on-accent);
     border-color: transparent;

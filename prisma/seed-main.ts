@@ -1,29 +1,29 @@
-﻿import 'dotenv/config';
-import { mainDb as prisma } from '../src/lib/db/main';
-import * as bcrypt from 'bcryptjs';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+﻿import "dotenv/config";
+import { mainDb as prisma } from "../src/lib/db/main";
+import * as bcrypt from "bcryptjs";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 const PROJECT_ROOT = process.cwd();
 
 // 15 strand columns on the domains table, in the same order the workbooks
 // emit them. Each row is the boolean tag for one tool.
 const DOMAIN_FIELDS = [
-    'R',
-    'TP',
-    'MT',
-    'AR',
-    'U',
-    'MDL',
-    'RA',
-    'RoTech',
-    'LS',
-    'RoThink',
-    'EoST',
-    'EF',
-    'RTE',
-    'DLoI',
-    'RaAoC',
+    "R",
+    "TP",
+    "MT",
+    "AR",
+    "U",
+    "MDL",
+    "RA",
+    "RoTech",
+    "LS",
+    "RoThink",
+    "EoST",
+    "EF",
+    "RTE",
+    "DLoI",
+    "RaAoC",
 ] as const;
 
 type DomainField = (typeof DOMAIN_FIELDS)[number];
@@ -42,12 +42,12 @@ interface ParsedTool {
 
 function parseBool(raw: string): boolean {
     const v = raw.trim().toLowerCase();
-    return v === '1' || v === 'true' || v === 'yes' || v === 'y';
+    return v === "1" || v === "true" || v === "yes" || v === "y";
 }
 
 function loadTools(): ParsedTool[] {
-    const toolsPath = resolve(PROJECT_ROOT, 'tools.txt');
-    const raw = readFileSync(toolsPath, 'utf8');
+    const toolsPath = resolve(PROJECT_ROOT, "tools.txt");
+    const raw = readFileSync(toolsPath, "utf8");
 
     // tools.txt may contain two sections: one from tools2.xlsx and one from
     // tools3_beardwood_edit.xlsx. The first line of each section is a label
@@ -56,18 +56,18 @@ function loadTools(): ParsedTool[] {
     // entries override tools2 entries with the same name.
     const blocks: string[] = [];
     let current: string[] = [];
-    for (const line of raw.split('\n')) {
+    for (const line of raw.split("\n")) {
         if (/^tools\d/i.test(line.trim())) {
-            if (current.length > 0) blocks.push(current.join('\n'));
+            if (current.length > 0) blocks.push(current.join("\n"));
             current = [line];
         } else if (current.length > 0) {
             current.push(line);
         }
     }
-    if (current.length > 0) blocks.push(current.join('\n'));
+    if (current.length > 0) blocks.push(current.join("\n"));
 
     if (blocks.length === 0) {
-        console.log('  (no tool sections found in tools.txt)');
+        console.log("  (no tool sections found in tools.txt)");
         return [];
     }
 
@@ -91,14 +91,14 @@ function loadTools(): ParsedTool[] {
  */
 function splitSection(block: string): ParsedTool[] {
     const lines = block
-        .split('\n')
-        .map((l) => l.replace(/\r$/, ''))
+        .split("\n")
+        .map((l) => l.replace(/\r$/, ""))
         .filter((l) => l.length > 0);
     if (lines.length < 2) return [];
     const rows = lines.slice(2);
     const tools: ParsedTool[] = [];
     for (const row of rows) {
-        const cols = row.split('\t');
+        const cols = row.split("\t");
         if (cols.length < 8) continue;
         const [
             techname,
@@ -113,20 +113,20 @@ function splitSection(block: string): ParsedTool[] {
         ] = cols;
         if (!techname || !techname.trim()) continue;
         // Defensive: skip a column header that landed in the data section
-        if (techname.trim().toLowerCase() === 'techname') continue;
+        if (techname.trim().toLowerCase() === "techname") continue;
         const domains = {} as Record<DomainField, boolean>;
         for (let i = 0; i < DOMAIN_FIELDS.length; i += 1) {
-            domains[DOMAIN_FIELDS[i]] = parseBool((rest[i] ?? '0').trim());
+            domains[DOMAIN_FIELDS[i]] = parseBool((rest[i] ?? "0").trim());
         }
         tools.push({
             techname: techname.trim(),
-            tl1_desc: (tl1_desc ?? '').trim(),
-            tl2_desc: (tl2_desc ?? '').trim(),
-            tl3_desc: (tl3_desc ?? '').trim(),
-            tl4_desc: (tl4_desc ?? '').trim(),
-            link: (link ?? '').trim(),
-            displaytext: (displaytext ?? '').trim() || techname.trim(),
-            accepted: parseBool((accepted ?? '0').trim()),
+            tl1_desc: (tl1_desc ?? "").trim(),
+            tl2_desc: (tl2_desc ?? "").trim(),
+            tl3_desc: (tl3_desc ?? "").trim(),
+            tl4_desc: (tl4_desc ?? "").trim(),
+            link: (link ?? "").trim(),
+            displaytext: (displaytext ?? "").trim() || techname.trim(),
+            accepted: parseBool((accepted ?? "0").trim()),
             domains,
         });
     }
@@ -134,15 +134,15 @@ function splitSection(block: string): ParsedTool[] {
 }
 
 async function main(): Promise<void> {
-    console.log('Seeding main database...');
+    console.log("Seeding main database...");
 
-    const hashedPW = await bcrypt.hash('admin123', 10);
+    const hashedPW = await bcrypt.hash("admin123", 10);
     await prisma.login.upsert({
-        where: { User: 'admin' },
+        where: { User: "admin" },
         update: { PW: hashedPW },
-        create: { User: 'admin', PW: hashedPW },
+        create: { User: "admin", PW: hashedPW },
     });
-    console.log('  ✓ Admin login (admin / admin123)');
+    console.log("  ✓ Admin login (admin / admin123)");
 
     // Per-tool upsert. We assign a stable, sequential id (1, 2, 3, …) so the
     // /testuploads/<id>.png filenames line up with the rows.
@@ -167,8 +167,8 @@ async function main(): Promise<void> {
             link: tool.link,
             displaytext: tool.displaytext,
             accepted: tool.accepted,
-            username: 'seed',
-            contact: 'seed@bibs-c.local',
+            username: "seed",
+            contact: "seed@bibs-c.local",
         };
         await prisma.submission.upsert({
             where: { id: i },
@@ -184,12 +184,12 @@ async function main(): Promise<void> {
     }
 
     console.log(`  ✓ ${tools.length} submissions + domains populated`);
-    console.log('Main database seeded successfully!');
+    console.log("Main database seeded successfully!");
 }
 
 main()
     .catch((e) => {
-        console.error('Seed error:', e);
+        console.error("Seed error:", e);
         process.exit(1);
     })
     .finally(async () => {

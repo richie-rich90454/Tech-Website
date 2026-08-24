@@ -11,11 +11,11 @@
  * wastes bytes and time, so they are skipped on purpose.
  */
 
-import { brotliCompressSync, constants as zlibConstants, gzipSync } from 'node:zlib';
-import { readFileSync, readdirSync, writeFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { brotliCompressSync, constants as zlibConstants, gzipSync } from "node:zlib";
+import { readFileSync, readdirSync, writeFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 
-const COMPRESSIBLE = new Set(['.css', '.js', '.svg', '.json', '.txt', '.html']);
+const COMPRESSIBLE = new Set([".css", ".js", ".svg", ".json", ".txt", ".html"]);
 const MAX_BYTES = 2_000_000; // skip absurd files; nothing here is close
 
 let count = 0;
@@ -43,12 +43,12 @@ function walk(dir) {
 }
 
 function extOf(name) {
-    const dot = name.lastIndexOf('.');
-    return dot === -1 ? '' : name.slice(dot).toLowerCase();
+    const dot = name.lastIndexOf(".");
+    return dot === -1 ? "" : name.slice(dot).toLowerCase();
 }
 
 // Target dir defaults to the dev tree; production build passes dist/public
 // so the compressed siblings live next to the files actually served.
-const ROOT = process.argv[2] || 'public';
+const ROOT = process.argv[2] || "public";
 walk(ROOT);
 console.log(`precompress: wrote .gz/.br siblings for ${count} assets`);

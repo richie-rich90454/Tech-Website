@@ -9,8 +9,8 @@
  */
 module.exports = {
     plugins: [
-        require('autoprefixer')({
-            overrideBrowserslist: ['ie 11', '> 0.5%', 'not dead'],
+        require("autoprefixer")({
+            overrideBrowserslist: ["ie 11", "> 0.5%", "not dead"],
             grid: false, // grids are hand-converted to flex in source; -ms-grid is a trap
         }),
     ],

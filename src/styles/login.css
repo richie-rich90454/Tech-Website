@@ -2,7 +2,7 @@
 body {
     --color-deep: #1a237e;
 }
-[data-theme='dark'] body {
+[data-theme="dark"] body {
     --color-deep: #141c52;
 }
 
@@ -139,18 +139,18 @@ body {
 }
 
 /* --- Dark mode (token-scoped) ------------------------------------------- */
-[data-theme='dark'] body {
+[data-theme="dark"] body {
     background: var(--color-bg);
 }
-[data-theme='dark'] #login {
+[data-theme="dark"] #login {
     background: var(--color-panel);
 }
-[data-theme='dark'] #login-form input[type='text'],
-[data-theme='dark'] #login-form input[type='password'] {
+[data-theme="dark"] #login-form input[type="text"],
+[data-theme="dark"] #login-form input[type="password"] {
     background: var(--color-input-bg);
     color: var(--color-ink);
 }
-[data-theme='dark'] #login-form button[type='submit'] {
+[data-theme="dark"] #login-form button[type="submit"] {
     background: var(--color-accent-strong);
     color: var(--color-ink-on-accent);
 }

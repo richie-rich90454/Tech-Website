@@ -20,25 +20,25 @@
  * Measure before adding lower-level caches - you usually don't need them.
  */
 
-import { mainDb } from '../../lib/db/main';
-import { pageCache } from '../../core/06-cache';
-import type { SubmissionRow, DomainRow } from '../../types/db';
+import { mainDb } from "../../lib/db/main";
+import { pageCache } from "../../core/06-cache";
+import type { SubmissionRow, DomainRow } from "../../types/db";
 
 /** Bust every page that displays tool data. Called after ANY admin mutation. */
 function invalidateToolPages(): void {
-    pageCache.bust(['home', 'tl:*']);
+    pageCache.bust(["home", "tl:*"]);
 }
 
 export async function getAcceptedSubmissions(): Promise<SubmissionRow[]> {
-    return mainDb.submission.findMany({ where: { accepted: true }, orderBy: { id: 'asc' } });
+    return mainDb.submission.findMany({ where: { accepted: true }, orderBy: { id: "asc" } });
 }
 
 export async function getAllSubmissions(): Promise<SubmissionRow[]> {
-    return mainDb.submission.findMany({ orderBy: { id: 'desc' } });
+    return mainDb.submission.findMany({ orderBy: { id: "desc" } });
 }
 
 export async function getAllDomains(): Promise<DomainRow[]> {
-    return mainDb.domains.findMany({ orderBy: { id: 'asc' } });
+    return mainDb.domains.findMany({ orderBy: { id: "asc" } });
 }
 
 /**
@@ -147,7 +147,7 @@ export async function createDomain(data: CreateDomainInput): Promise<DomainRow> 
 
 export async function updateDomain(
     id: number,
-    data: Partial<Omit<CreateDomainInput, 'id'>>
+    data: Partial<Omit<CreateDomainInput, "id">>
 ): Promise<DomainRow> {
     const row = await mainDb.domains.update({ where: { id }, data });
     invalidateToolPages();
@@ -166,7 +166,7 @@ export async function deleteDomain(id: number): Promise<void> {
  */
 export async function getNextSubmissionId(): Promise<number> {
     const last = await mainDb.submission.findFirst({
-        orderBy: { id: 'desc' },
+        orderBy: { id: "desc" },
         select: { id: true },
     });
     return (last?.id ?? 0) + 1;
