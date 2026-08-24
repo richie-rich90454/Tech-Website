@@ -14,7 +14,7 @@
      * the one place that needs HTTP calls from the client.
      */
     function post(url: string, idList: string): void {
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.open('POST', url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function (): void {
@@ -40,22 +40,22 @@
     }
 
     function ready(): void {
-        var table = document.querySelector<HTMLTableElement>('.AdminTable_table__3iS2Y');
+        const table = document.querySelector<HTMLTableElement>('.AdminTable_table__3iS2Y');
         if (!table) return;
 
         // ---- single-row actions ------------------------------------------
         table.addEventListener('click', function (ev: Event) {
-            var target = ev.target as HTMLElement | null;
+            const target = ev.target as HTMLElement | null;
             if (!target || target.nodeType !== 1) return;
 
-            var editId = target.getAttribute('data-edit');
+            const editId = target.getAttribute('data-edit');
             if (editId) {
                 window.location.href = '/admin/edit/' + encodeURIComponent(editId);
                 return;
             }
 
-            var action = target.getAttribute('data-action');
-            var id = target.getAttribute('data-id');
+            const action = target.getAttribute('data-action');
+            const id = target.getAttribute('data-id');
             if (!action || !id) return;
             ev.preventDefault();
 
@@ -66,23 +66,23 @@
         });
 
         // ---- bulk selection column ---------------------------------------
-        var headRow = table.tHead && table.tHead.rows[0];
-        var body = table.tBodies[0];
+        const headRow = table.tHead && table.tHead.rows[0];
+        const body = table.tBodies[0];
         if (!headRow || !body || body.rows.length === 0) return;
         // Skip when the checkbox column is already present.
         if (headRow.cells[0].getAttribute('data-bulk') === 'on') return;
 
-        var th = document.createElement('th');
+        const th = document.createElement('th');
         th.setAttribute('data-bulk', 'on');
-        var all = document.createElement('input');
+        const all = document.createElement('input');
         all.type = 'checkbox';
         all.setAttribute('aria-label', 'Select all rows');
         th.appendChild(all);
         headRow.insertBefore(th, headRow.cells[0]);
 
         Array.prototype.forEach.call(body.rows, function (row: HTMLTableRowElement) {
-            var td = document.createElement('td');
-            var box = document.createElement('input');
+            const td = document.createElement('td');
+            const box = document.createElement('input');
             box.type = 'checkbox';
             box.className = 'bulk-row';
             td.appendChild(box);
@@ -99,26 +99,26 @@
         });
 
         // ---- bulk action bar ---------------------------------------------
-        var nav = document.getElementById('adminNav');
+        const nav = document.getElementById('adminNav');
         if (!nav || !nav.parentElement) return;
-        var host = nav.parentElement;
+        const host = nav.parentElement;
 
-        var bar = document.createElement('div');
+        const bar = document.createElement('div');
         bar.style.margin = '12px 0';
 
-        var mkButton = function (label: string): HTMLButtonElement {
-            var b = document.createElement('button');
+        const mkButton = function (label: string): HTMLButtonElement {
+            const b = document.createElement('button');
             b.type = 'button';
             b.textContent = label;
             b.style.marginRight = '8px';
             return b;
         };
 
-        var acceptBtn = mkButton('Accept selected');
-        var rejectBtn = mkButton('Reject selected');
+        const acceptBtn = mkButton('Accept selected');
+        const rejectBtn = mkButton('Reject selected');
 
         acceptBtn.addEventListener('click', function () {
-            var ids = selectedIds();
+            const ids = selectedIds();
             if (!ids) {
                 alert('Select at least one row first.');
                 return;
@@ -126,7 +126,7 @@
             post('/api/admin/accept', ids);
         });
         rejectBtn.addEventListener('click', function () {
-            var ids = selectedIds();
+            const ids = selectedIds();
             if (!ids) {
                 alert('Select at least one row first.');
                 return;
@@ -137,7 +137,7 @@
         bar.appendChild(acceptBtn);
         bar.appendChild(rejectBtn);
 
-        var csv = document.createElement('a');
+        const csv = document.createElement('a');
         csv.href = '/admin/export.csv';
         csv.textContent = 'Export CSV';
         csv.style.marginLeft = '8px';
@@ -146,7 +146,7 @@
         host.insertBefore(bar, nav.nextSibling);
 
         function selectedIds(): string {
-            var picked: number[] = [];
+            const picked: number[] = [];
             Array.prototype.forEach.call(
                 document.querySelectorAll<HTMLInputElement>('.bulk-row'),
                 function (box: HTMLInputElement, i: number) {
@@ -155,9 +155,9 @@
             );
             return picked
                 .map(function (i) {
-                    var row = body.rows[i];
+                    const row = body.rows[i];
                     // After the checkbox column insert: 0=box, 1=the id cell.
-                    var cell = row && row.cells[1];
+                    const cell = row && row.cells[1];
                     return cell ? cell.textContent!.trim() : '';
                 })
                 .filter(function (idText) {
