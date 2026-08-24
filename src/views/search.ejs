@@ -13,7 +13,12 @@
     <% if (q) { %>
     <p class="search-meta"><%= resultCount %> <%= resultCount === 1 ? 'result' : 'results' %></p>
     <% } %>
-    <p class="jump-menu"> Jump to: <a href="#search-results">Results</a><% if (q && results.length > 0) { results.slice(0, 5).forEach(function (item, i) { %> · <a href="#tool-<%= item.id %>"><%= item.techname %></a><% }) } %> · <a href="/#front">Home</a></p>
+    <p class="jump-menu">
+        Jump to: <a href="#search-results">Results</a><% if (q && results.length > 0) {
+            results.slice(0, 5).forEach(function (item, i) { %>
+            · <a href="#tool-<%= item.id %>"><%= item.techname %></a><% }) } %>
+        · <a href="/#front">Home</a>
+    </p>
 </div>
 
 <div id="bar">&nbsp;</div>
