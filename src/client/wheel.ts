@@ -2,24 +2,24 @@
 // Lucky Wheel: canvas spinner + API round-trip.
 // Server decides the prize; this only draws and animates.
 (function () {
-    var container = document.getElementById('superwheel');
-    var button = document.querySelector('.btn.btn-danger.btn-lg.mt-4');
+    const container = document.getElementById('superwheel');
+    const button = document.querySelector('.btn.btn-danger.btn-lg.mt-4');
     if (!container || !button) return;
     // Narrow once so closures below see non-null, immutable references.
-    var host = container;
-    var spinButton = button;
+    const host = container;
+    const spinButton = button;
 
-    var W = 400;
-    var canvas = document.createElement('canvas');
+    const W = 400;
+    const canvas = document.createElement('canvas');
     canvas.width = W;
     canvas.height = W;
     host.appendChild(canvas);
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    var g = ctx;
+    const g = ctx;
 
-    var PRIZES = [10, 50, 0, 20, 100, 5, 15, 0];
-    var COLORS = [
+    const PRIZES = [10, 50, 0, 20, 100, 5, 15, 0];
+    const COLORS = [
         '#17d984',
         '#0a0e27',
         '#22ca80',
@@ -29,18 +29,18 @@
         '#22ca80',
         '#1a1f3d',
     ];
-    var SEGMENTS = PRIZES.length;
-    var ARC = (Math.PI * 2) / SEGMENTS;
-    var currentRotation = 0;
-    var spinning = false;
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SEGMENTS = PRIZES.length;
+    const ARC = (Math.PI * 2) / SEGMENTS;
+    let currentRotation = 0;
+    let spinning = false;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function draw(): void {
         g.clearRect(0, 0, W, W);
         g.save();
         g.translate(W / 2, W / 2);
         g.rotate(currentRotation);
-        for (var i = 0; i < SEGMENTS; i++) {
+        for (let i = 0; i < SEGMENTS; i++) {
             g.beginPath();
             g.moveTo(0, 0);
             g.arc(0, 0, W / 2 - 2, i * ARC, (i + 1) * ARC);
@@ -67,7 +67,7 @@
         spinButton.setAttribute('disabled', 'true');
 
         // XHR instead of fetch: IE11 compatibility.
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.open('POST', '/web/api/wheel/spin', true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState !== 4) return;
@@ -76,14 +76,14 @@
                 spinButton.removeAttribute('disabled');
                 return;
             }
-            var data: { prize?: number } = {};
+            let data: { prize?: number } = {};
             try {
                 data = JSON.parse(xhr.responseText) as { prize?: number };
             } catch (e) {
                 /* treat as prize 0 */
             }
-            var prizeIndex = data.prize || 0;
-            var targetRotation = Math.PI * 2 * 5 + (SEGMENTS - prizeIndex) * ARC + ARC / 2;
+            const prizeIndex = data.prize || 0;
+            const targetRotation = Math.PI * 2 * 5 + (SEGMENTS - prizeIndex) * ARC + ARC / 2;
             if (reducedMotion) {
                 currentRotation = targetRotation;
                 draw();
@@ -105,12 +105,12 @@
     });
 
     function animateTo(target: number, durationMs: number, cb: () => void): void {
-        var start = performance.now();
-        var from = currentRotation;
+        const start = performance.now();
+        const from = currentRotation;
         requestAnimationFrame(step);
         function step(now: number): void {
-            var t = Math.min((now - start) / durationMs, 1);
-            var ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
+            const t = Math.min((now - start) / durationMs, 1);
+            const ease = 1 - Math.pow(1 - t, 3); // cubic ease-out
             currentRotation = from + (target - from) * ease;
             draw();
             if (t < 1) requestAnimationFrame(step);
