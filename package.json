@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "tsc -p tsconfig.build.json && tsc -p src/client && node scripts/sync-dist.mjs && postcss dist/public/css/*.css --config postcss.config.cjs -r && node scripts/precompress.mjs dist/public",
+    "build": "tsc -p tsconfig.build.json && node scripts/sync-dist.mjs && postcss src/styles/*.css --config postcss.config.cjs -d dist/public/css && tsc -p src/client && node scripts/precompress.mjs dist/public",
     "start": "node --env-file=.env dist/server.js",
     "check": "tsc -p tsconfig.json && eslint src server.ts scripts --ext .ts,.tsx,.mjs && npm audit --omit=dev --audit-level=moderate",
     "test": "node --import tsx --test tests/unit/*.test.ts",
