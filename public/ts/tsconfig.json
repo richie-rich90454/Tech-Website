@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "es5"],
+        "module": "none",
+        "rootDir": ".",
+        "outDir": "../js",
+        "strict": true,
+        "noEmitOnError": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "removeComments": false,
+        "sourceMap": false
+    },
+    "include": ["./*.ts"]
+}
