@@ -29,12 +29,21 @@ import { join, resolve } from 'node:path';
 
 /**
  * Views live beside the entry point: src/views in dev, dist/views once the
- * build has copied them. Picking by existence keeps both layouts working
- * with zero configuration.
+ * build has copied them. Dev prefers SOURCE so edits show up immediately;
+ * production containers may not ship src/ at all, hence the fallback.
  */
-const VIEWS_DIR = existsSync(resolve(process.cwd(), 'dist', 'views'))
-    ? resolve(process.cwd(), 'dist', 'views')
-    : resolve(process.cwd(), 'src', 'views');
+const VIEWS_DIR =
+    process.env.NODE_ENV === 'production'
+        ? pickDir('dist', 'src')
+        : pickDir('src', 'dist');
+
+function pickDir(first: string, second: string): string {
+    const a = resolve(process.cwd(), first, 'views');
+    if (existsSync(a)) return a;
+    const b = resolve(process.cwd(), second, 'views');
+    if (existsSync(b)) return b;
+    return a; // let loadViews() throw the familiar "not found"
+}
 
 /** Cache of compiled template functions, keyed by filename without extension. */
 const cache = new Map<string, ejs.TemplateFunction>();
