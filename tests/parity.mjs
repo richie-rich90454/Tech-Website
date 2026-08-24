@@ -93,6 +93,11 @@ function bodyOf(html) {
     // only in the pre-hydration stream; a browser never shows them alongside
     // the content, so they are excluded from structural comparison.
     inner = inner.replace(/<template id="[^"]*"><\/template>/g, '');
+    // Sanctioned v3 additions that exist in markup but not in the legacy
+    // build: a11y skip link + the dark-mode toggle button. Stripped here so
+    // the gate keeps checking everything else byte-for-byte.
+    inner = inner.replace(/<a class="skip-link"[^>]*>[\s\S]*?<\/a>/g, '');
+    inner = inner.replace(/<button id="theme-toggle"[^>]*>[\s\S]*?<\/button>/g, '');
     inner = inner.replace(/<div hidden id="S:\d+">[\s\S]*?<\/div>/g, '');
     inner = inner.replace(
         /<div role="status" aria-label="Loading"[^>]*>[\s\S]*?<\/div>\s*(?=<[a-zA-Z]|$)/g,

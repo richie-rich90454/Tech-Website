@@ -751,7 +751,9 @@ footer a:hover {
     top: 0px;
     width: 5px;
     height: 10px;
-    border: solid var(--color-ink-strong);
+    /* Tick sits on a WHITE fill in both themes -> must stay dark. Using the
+       ink text token here flipped white in dark mode = invisible tick. */
+    border: solid var(--color-nav-bg);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
