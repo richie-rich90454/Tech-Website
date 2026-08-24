@@ -47,5 +47,8 @@ function extOf(name) {
     return dot === -1 ? '' : name.slice(dot).toLowerCase();
 }
 
-walk('public');
+// Target dir defaults to the dev tree; production build passes dist/public
+// so the compressed siblings live next to the files actually served.
+const ROOT = process.argv[2] || 'public';
+walk(ROOT);
 console.log(`precompress: wrote .gz/.br siblings for ${count} assets`);
