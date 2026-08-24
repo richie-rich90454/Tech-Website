@@ -1,0 +1,43 @@
+<%- include('partials/head', { title: 'Edit Submission #' + id + ' · BIBS·C Tech Tools' }) %>
+<%- include('partials/navbar') %>
+<div id="adminTopbar"><h1>Edit Submission #<%= id %></h1></div>
+<div id="adminNav">
+    <ul>
+        <li><a href="/admin">&#8592; Back to Admin</a></li>
+    </ul>
+</div>
+<form method="post" action="/api/admin/edit">
+    <table>
+        <thead>
+            <tr>
+                <th>Tool ID</th><th>Tool Name</th><th>TL1 Description</th><th>TL2 Description</th>
+                <th>TL3 Description</th><th>TL4 Description</th><th>Link</th><th>Display Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= id %></td>
+                <td><textarea name="Techname"><%= sub.techname %></textarea></td>
+                <td><textarea name="description"><%= sub.tl1_desc %></textarea></td>
+                <td><textarea name="description2"><%= sub.tl2_desc %></textarea></td>
+                <td><textarea name="description3"><%= sub.tl3_desc %></textarea></td>
+                <td><textarea name="description4"><%= sub.tl4_desc %></textarea></td>
+                <td><textarea name="Link"><%= sub.link %></textarea></td>
+                <td><textarea name="display"><%= sub.displaytext %></textarea></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="hidden" name="id1" value="<%= id %>"/>
+    <h3>Strands</h3>
+    <ul>
+        <% strands.forEach(function (s) { %>
+            <li>
+                <input type="checkbox" name="<%= s.name %>"<%- s.checked ? ' checked=""' : '' %>/>
+                <span><%= s.label %></span>
+            </li>
+        <% }) %>
+    </ul>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

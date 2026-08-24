@@ -1,0 +1,33 @@
+<%- include('partials/dash-head', { title: 'Users', crumb: 'Users' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">All Users (<%= users.length %>)</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead>
+                                <tr><th>ID</th><th>Username</th><th>Rank</th><th>Membership</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <% if (users.length === 0) { %>
+                                    <tr><td colSpan="5" class="text-center text-muted">No users found.</td></tr>
+                                <% } else { users.forEach(function (u) { %>
+                                    <tr>
+                                        <td class="text-center"><%= u.ID %></td>
+                                        <td><%= u.username %></td>
+                                        <td><%= Number(u.rank) >= 1 ? 'Admin' : 'User' %></td>
+                                        <td><%= Number(u.membership) || 'None' %></td>
+                                        <td class="text-center"><a href="/web/admin/users/<%= u.ID %>" class="btn btn-sm btn-primary">Edit</a></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

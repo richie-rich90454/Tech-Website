@@ -1,0 +1,55 @@
+<%- include('partials/dash-head', { title: 'Gift Cards', crumb: 'Gift Cards' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Generate Codes</h4>
+                    <form class="mt-4" action="/web/api/admin/giftcards" method="POST">
+                        <input type="hidden" name="action" value="generate"/>
+                        <div class="form-group">
+                            <label class="text-white">Plan</label>
+                            <select class="form-control" name="planID" required>
+                                <option value="">Select a plan...</option>
+                                <% plans.forEach(function (pl) { %>
+                                    <option value="<%= pl.ID %>"><%= pl.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Number of codes</label>
+                            <input class="form-control" type="number" min="1" max="100" required name="count" value="1"/>
+                        </div>
+                        <button type="submit" class="btn btn-success">Generate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">All Gift Cards</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Code</th><th>Plan</th><th>Claimed By</th><th>Created</th><th>Claimed</th></tr></thead>
+                            <tbody>
+                                <% if (cards.length === 0) { %>
+                                    <tr><td colSpan="5" class="text-center text-muted">No gift cards yet.</td></tr>
+                                <% } else { cards.forEach(function (c) { %>
+                                    <tr>
+                                        <td><%= c.ID %></td>
+                                        <td><%= c.code %></td>
+                                        <td><%= c.planID %></td>
+                                        <td><%= c.claimedby || '-' %></td>
+                                        <td><%= new Date(c.date * 1000).toLocaleDateString('en-US') %></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

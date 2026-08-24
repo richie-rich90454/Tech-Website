@@ -1,0 +1,89 @@
+<%- include('partials/head', { title: 'Profile · IPstress', css: ['webtheme.css'] }) %>
+<%- include('partials/web-header') %>
+<div class="page-breadcrumb">
+    <div class="d-flex align-items-center">
+        <h4 class="page-title text-truncate text-white font-weight-medium mb-0">Profile</h4>
+        <div class="ml-auto">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item text-sql active" aria-current="page"> IPstress </li>
+                    <li class="breadcrumb-item text-muted" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Account Info</h4>
+                    <div class="mt-4 activity">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr><td>ID</td><td><%= user.ID %></td></tr>
+                                    <tr><td>Username</td><td><%= user.username %></td></tr>
+                                    <tr><td>Membership</td><td><%= plan ? plan.name : 'No membership' %></td></tr>
+                                    <tr><td>Max Attack Time</td><td><%= plan ? plan.mbt + 's' : 'No membership' %></td></tr>
+                                    <tr><td>Max Concurrents</td><td><%= plan ? String(plan.concurrents) : 'No membership' %></td></tr>
+                                    <tr><td>Expiry</td><td><%= expiry %></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Referral</h4>
+                    <div class="mt-4 activity">
+                        <div class="form-group">
+                            <label class="text-white">Referral Link</label>
+                            <input class="form-control" type="text" readonly value="<%= refLink %>"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white">Referral Balance</label>
+                            <p class="text-white font-weight-medium"><%= user.referralbalance %>¥</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Change Password</h4>
+                    <div class="mt-2 activity">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form action="/web/api/profile/password" method="post">
+                                    <div class="form-group">
+                                        <label class="text-white" for="old">Current Password</label>
+                                        <input class="form-control" id="old" type="password" required name="old"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white" for="new">New Password</label>
+                                        <input class="form-control" id="new" type="password" required name="new"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white" for="rnew">Repeat New Password</label>
+                                        <input class="form-control" id="rnew" type="password" required name="rnew"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <button value="change" type="submit" class="btn btn-primary" name="update"> Change Password </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

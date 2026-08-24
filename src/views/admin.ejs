@@ -1,0 +1,55 @@
+<%- include('partials/head', { title: 'Admin Panel · BIBS·C Tech Tools', css: ['admintable.css'], scripts: ['admin.js'] }) %>
+<%- include('partials/navbar') %>
+<div id="adminTopbar"><h1 id="admin-heading">Admin Panel</h1></div>
+<div id="adminNav">
+    <ul>
+        <li><b>Admin Panel</b></li>
+        <li><a href="/admin#submissions">All Submissions</a></li>
+        <li><a href="/api/import">Import Excel Data</a></li>
+        <li><a href="/api/auth/logout">Logout</a></li>
+    </ul>
+</div>
+<section id="submissions" style="scroll-margin-top:var(--nav-offset)">
+    <div class="AdminTable_wrap__1AlVX">
+        <table class="AdminTable_table__3iS2Y">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Link</th><th>Display</th><th>TL1</th>
+                    <th>TL2</th><th>TL3</th><th>TL4</th><th>Status</th><th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% subs.forEach(function (sub) { %>
+                    <tr>
+                        <td class="AdminTable_mono__EqBH0"><%= sub.id %></td>
+                        <td class="AdminTable_name__ZKSIb"><%= sub.techname %></td>
+                        <td><a href="<%= sub.link %>" target="_blank" rel="noreferrer" class="AdminTable_link__lOs5j"><%= sub.link %></a></td>
+                        <td><%= sub.displaytext %></td>
+                        <td class="AdminTable_desc__CgL_8"><%= String(sub.tl1_desc).slice(0, 90) %></td>
+                        <td class="AdminTable_desc__CgL_8"><%= String(sub.tl2_desc).slice(0, 90) %></td>
+                        <td class="AdminTable_desc__CgL_8"><%= String(sub.tl3_desc).slice(0, 90) %></td>
+                        <td class="AdminTable_desc__CgL_8"><%= String(sub.tl4_desc).slice(0, 90) %></td>
+                        <td>
+                            <% if (sub.accepted) { %>
+                                <span class="AdminTable_badgeOk__o19q_">Accepted</span>
+                            <% } else { %>
+                                <span class="AdminTable_badgePending__XpYWw">Pending</span>
+                            <% } %>
+                        </td>
+                        <td class="AdminTable_actions__k8lIU">
+                            <% if (sub.accepted) { %>
+                                <button type="button" data-action="/api/admin/reject" data-id="<%= sub.id %>" class="AdminTable_btnReject__w9wZ7">Reject</button>
+                            <% } else { %>
+                                <button type="button" data-action="/api/admin/accept" data-id="<%= sub.id %>" class="AdminTable_btnAccept__MJt7Z">Accept</button>
+                            <% } %>
+                            <button type="button" data-edit="<%= sub.id %>" class="AdminTable_btnEdit__zHqfB">Edit</button>
+                            <button type="button" data-action="/api/admin/delete" data-id="<%= sub.id %>" class="AdminTable_btnDelete__KFKXJ">Delete</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

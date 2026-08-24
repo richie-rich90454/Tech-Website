@@ -1,0 +1,40 @@
+<%- include('partials/dash-head', { title: 'Tickets', crumb: 'Tickets' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="card-title mb-0">All Tickets (<%= tickets.length %>)</h4>
+                        <div class="ml-auto">
+                            <a href="/web/admin/tickets" class="btn btn-sm btn-primary mr-1">All</a>
+                            <a href="/web/admin/tickets?status=open" class="btn btn-sm btn-secondary mr-1">Open</a>
+                            <a href="/web/admin/tickets?status=user" class="btn btn-sm btn-secondary mr-1">User Reply</a>
+                            <a href="/web/admin/tickets?status=closed" class="btn btn-sm btn-secondary">Closed</a>
+                        </div>
+                    </div>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Subject</th><th>User</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody>
+                                <% if (tickets.length === 0) { %>
+                                    <tr><td colSpan="6" class="text-center text-muted">No tickets found.</td></tr>
+                                <% } else { tickets.forEach(function (tk) { %>
+                                    <tr>
+                                        <td><%= tk.id %></td>
+                                        <td><%= tk.subject %></td>
+                                        <td><%= tk.username %></td>
+                                        <td><%= tk.status %></td>
+                                        <td><%= new Date(tk.date * 1000).toLocaleDateString('en-US') %></td>
+                                        <td class="text-center"><a href="/web/admin/tickets/<%= tk.id %>" class="btn btn-sm btn-primary">View</a></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

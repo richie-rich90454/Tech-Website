@@ -6,7 +6,7 @@
 import { Application } from '../core/01-application';
 import { HttpError } from '../core/09-errors';
 import { mainSessions } from './guards';
-import { adminView, adminEditView } from '../views/admin';
+import { render } from '../core/views';
 import {
     getAllSubmissions,
     getSubmissionById,
@@ -37,12 +37,31 @@ const DOMAIN_FIELDS = [
     'RaAoC',
 ] as const;
 
+/** Strand labels for the edit form use THEIR OWN casing - baseline verbatim. */
+const EDIT_STRANDS: ReadonlyArray<{ name: string; label: string }> = [
+    { name: 'R', label: 'Relationship' },
+    { name: 'TP', label: 'Teacher Planning' },
+    { name: 'MT', label: 'Modify Their Teaching' },
+    { name: 'AR', label: 'Achieve Readiness' },
+    { name: 'U', label: 'Understanding' },
+    { name: 'MDL', label: 'Multi-Dimensional Learning' },
+    { name: 'RA', label: 'Reasoned Arguments' },
+    { name: 'RoTech', label: 'Repertoire of Techniques' },
+    { name: 'LS', label: 'Learning Spaces' },
+    { name: 'RoThink', label: 'Reflect on Thinking' },
+    { name: 'EoST', label: 'Evidence of Student Learning' },
+    { name: 'EF', label: 'Employ Feedback' },
+    { name: 'RTE', label: 'Risk Taking Environment' },
+    { name: 'DLoI', label: 'Deepening Lines of Inquiry' },
+    { name: 'RaAoC', label: 'Responsibility and Aspects of Citizenship' },
+];
+
 export function registerAdminRoutes(app: Application): void {
     app.get(
         '/admin',
         async (ctx) => {
             const subs = await getAllSubmissions();
-            ctx.htmlRaw(adminView(subs));
+            ctx.htmlRaw(render('admin', { subs }));
         },
         { guard: 'mainAdmin' }
     );
@@ -57,7 +76,13 @@ export function registerAdminRoutes(app: Application): void {
                 ctx.throw(404, 'Submission not found.');
                 return; // unreachable - kept for null-flow narrowing
             }
-            ctx.htmlRaw(adminEditView(id, sub, domain));
+            const flags = (domain ?? {}) as unknown as Record<string, boolean>;
+            const strands = EDIT_STRANDS.map(({ name, label }) => ({
+                name,
+                label,
+                checked: flags[name] === true,
+            }));
+            ctx.htmlRaw(render('admin-edit', { id, sub, strands }));
         },
         { guard: 'mainAdmin' }
     );

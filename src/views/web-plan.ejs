@@ -1,0 +1,53 @@
+<%- include('partials/head', { title: 'Plans · IPstress', css: ['webtheme.css'] }) %>
+<%- include('partials/web-header') %>
+<div class="page-breadcrumb">
+    <div class="d-flex align-items-center">
+        <h4 class="page-title text-truncate text-white font-weight-medium mb-0">Plans</h4>
+        <div class="ml-auto">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item text-sql" aria-current="page">IPstress</li>
+                    <li class="breadcrumb-item text-muted" aria-current="page">Plans</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <% plans.forEach(function (p) { %>
+            <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center text-uppercase mt-3 mb-4"><%= p.name %></h5>
+                        <h3 class="text-center font-weight-light"><%= p.price %>¥</h3>
+                        <p class="text-muted text-center mb-4 font-weight-light"> Duration: <%= p.length %> day<%= p.length === 1 ? '' : 's' %> </p>
+                        <div class="d-flex align-items-center mb-2">
+                            <p> <i class="fa fa-minus" aria-hidden="true"></i> Max Attack Time: <b><%= p.mbt %>s</b> </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <p> <i class="fa fa-minus" aria-hidden="true"></i> Concurrents: <b><%= p.concurrents %></b> </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <p> <i class="fa fa-minus" aria-hidden="true"></i> <b>Unlimited Attacks</b> </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <p> <i class="fa fa-minus" aria-hidden="true"></i> VIP:
+                                <% if (Number(p.vip)) { %>
+                                    <span style="color: #22ca80; font-weight: bold" class="fa fa-check"></span>
+                                <% } else { %>
+                                    <span style="color: #da4453; font-weight: bold" class="fa fa-times"></span>
+                                <% } %>
+                            </p>
+                        </div>
+                        <a class="link-effect" href="https://t.me/UsdtNL_bot" target="_blank" rel="noopener noreferrer">
+                            <button class="btn btn-success btn-border btn-lg w-100 fw-bold mb-3" type="button"> Buy Now </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+</body>
+</html>

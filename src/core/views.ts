@@ -34,6 +34,21 @@ const VIEWS_DIR = resolve(process.cwd(), 'src', 'views');
 const cache = new Map<string, ejs.TemplateFunction>();
 
 /**
+ * Dev convenience: when not in production, templates recompile on every
+ * request so editing a .ejs file shows up on refresh (no reboot). Production
+ * always uses the boot-time cache - zero disk reads per request.
+ */
+const HOT = process.env.NODE_ENV !== 'production';
+
+function compile(file: string): ejs.TemplateFunction {
+    const templateText = readFileSync(join(VIEWS_DIR, file), 'utf8');
+    return ejs.compile(templateText, {
+        filename: join(VIEWS_DIR, file), // enables include() partials
+        escape: escapeHtml,
+    });
+}
+
+/**
  * Load and compile all .ejs files from src/views/ (non-recursive).
  * Called once at boot by server.ts before listen().
  */
@@ -43,15 +58,7 @@ export function loadViews(): void {
     }
     const files = readdirSync(VIEWS_DIR).filter((f) => f.endsWith('.ejs'));
     for (const file of files) {
-        const name = file.replace('.ejs', '');
-        const templateText = readFileSync(join(VIEWS_DIR, file), 'utf8');
-        cache.set(
-            name,
-            ejs.compile(templateText, {
-                filename: join(VIEWS_DIR, file), // enables include() partials
-                escape: escapeHtml,
-            })
-        );
+        cache.set(file.replace('.ejs', ''), compile(file));
     }
     console.log(JSON.stringify({ level: 'info', msg: 'views loaded', count: files.length }));
 }
@@ -74,6 +81,13 @@ function escapeHtml(value: unknown): string {
  *   ctx.htmlRaw(html);
  */
 export function render(viewName: string, data: Record<string, unknown> = {}): string {
+    if (HOT) {
+        const file = `${viewName}.ejs`;
+        if (!existsSync(join(VIEWS_DIR, file))) {
+            throw new Error(`View "${file}" not found.`);
+        }
+        return compile(file)({ ...data, YEN: '\u00a5' });
+    }
     const fn = cache.get(viewName);
     if (!fn) throw new Error(`View "${viewName}.ejs" not found. Did loadViews() run?`);
     // Always inject helpers available inside every .ejs template.

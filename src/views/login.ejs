@@ -1,5 +1,19 @@
 <%- include('partials/head', { title: 'Login · BIBS·C Tech Tools', css: ['login.css'] }) %>
 <%- include('partials/navbar') %>
-<div id="main"><div id="big"><h1 id="login-heading">Login</h1><div id="login"><h2 id="login-info">You have reached an admin-only access site.<br/>If you&#39;re an admin, log in with your credentials.</h2><form id="login-form" method="post" action="/api/auth/login"><p><input type="text" placeholder="Username" required name="username"/></p><p><input type="password" placeholder="Password" required name="password"/></p><button type="submit">Login</button></form></div></div></div>
+
+<div id="main">
+    <div id="big">
+        <h1 id="login-heading">Login</h1>
+        <div id="login">
+            <h2 id="login-info"> You have reached an admin-only access site.<br/>If you&#39;re an admin, log in with your credentials. </h2>
+            <form id="login-form" method="post" action="/api/auth/login">
+                <p><input type="text" placeholder="Username" required name="username"/></p>
+                <p><input type="password" placeholder="Password" required name="password"/></p>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

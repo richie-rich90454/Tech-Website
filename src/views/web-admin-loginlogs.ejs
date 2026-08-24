@@ -1,0 +1,31 @@
+<%- include('partials/dash-head', { title: 'Login Logs', crumb: 'Login Logs' }) %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Login History (<%= logs.length %>)</h4>
+                    <div class="table-responsive mt-4">
+                        <table class="table">
+                            <thead><tr><th>ID</th><th>Username</th><th>IP Address</th><th>Country</th><th>Date</th></tr></thead>
+                            <tbody>
+                                <% if (logs.length === 0) { %>
+                                    <tr><td colSpan="5" class="text-center text-muted">No login logs found.</td></tr>
+                                <% } else { logs.forEach(function (l) { %>
+                                    <tr>
+                                        <td><%= l.id %></td>
+                                        <td><%= l.username %></td>
+                                        <td><%= l.ip %></td>
+                                        <td><%= l.country %></td>
+                                        <td><%= new Date(l.date * 1000).toLocaleString('en-US') %></td>
+                                    </tr>
+                                <% }) } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include('partials/dash-foot') %>

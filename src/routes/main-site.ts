@@ -13,7 +13,7 @@ import { Application } from '../core/01-application';
 import { Context } from '../core/03-context';
 import { HttpError } from '../core/09-errors';
 import { mainSessions } from './guards';
-import { loginView, submissionView } from '../views/submission';
+import { render } from '../core/views';
 import { loginSchema } from '../lib/validations/admin-auth';
 import { submissionSchema } from '../lib/validations/submission';
 import { rateLimit } from '../lib/rate-limit';
@@ -31,7 +31,7 @@ import bcrypt from 'bcryptjs';
 
 export function registerMainSiteRoutes(app: Application): void {
     app.get('/login', async (ctx) => {
-        ctx.htmlRaw(loginView());
+        ctx.htmlRaw(render('login', {}));
     });
 
     app.post(
@@ -58,7 +58,7 @@ export function registerMainSiteRoutes(app: Application): void {
     });
 
     app.get('/submission', async (ctx) => {
-        ctx.htmlRaw(submissionView());
+        ctx.htmlRaw(render('submission', {}));
     });
 
     app.post('/api/submission', async (ctx: Context) => {

@@ -1,0 +1,63 @@
+<%- include('partials/head', { title: 'Affiliate · IPstress', css: ['webtheme.css'] }) %>
+<%- include('partials/web-header') %>
+<div class="page-breadcrumb">
+    <div class="d-flex align-items-center">
+        <h4 class="page-title text-truncate text-white font-weight-medium mb-0"> Affiliate </h4>
+        <div class="ml-auto">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item text-sql" aria-current="page">IPstress</li>
+                    <li class="breadcrumb-item text-muted" aria-current="page"> Affiliate </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Affiliate Stats</h4>
+                    <div class="mt-4 activity">
+                        <p class="text-muted">Loading stats...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Withdraw Balance</h4>
+                    <div class="mt-4 activity">
+                        <form action="/web/api/affiliate/withdraw" method="post">
+                            <div class="form-group">
+                                <label class="text-white" for="paymentMethod">Payment Method</label>
+                                <select class="form-control" id="paymentMethod" required name="paymentMethod">
+                                    <option value="" selected>Select method...</option>
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="LTC">Litecoin (LTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="PayPal">PayPal</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-white" for="paymentAddress">Payment Address</label>
+                                <input class="form-control" id="paymentAddress" type="text"
+                                       placeholder="Enter your wallet address or email" required value="" name="paymentAddress"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-white" for="amount">Amount (¥)</label>
+                                <input class="form-control" id="amount" type="number"
+                                       placeholder="Enter amount to withdraw" min="1" required value="" name="amount"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block"> Request Withdrawal </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

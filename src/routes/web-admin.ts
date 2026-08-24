@@ -7,18 +7,8 @@
 import { Application } from '../core/01-application';
 import { HttpError } from '../core/09-errors';
 import { webDb } from '../lib/db/web';
+import { render } from '../core/views';
 import bcrypt from 'bcryptjs';
-import { adminDashboardView, usersAdminView, userEditView } from '../views/web-admin';
-import { plansAdminView, methodsAdminView } from '../views/web-admin2';
-import { newsAdminView, serversAdminView, giftcardsAdminView } from '../views/web-admin3';
-import {
-    ticketsAdminView,
-    attackLogsView,
-    loginLogsView,
-    hubAdminView,
-    settingsView,
-} from '../views/web-admin4';
-import type { PlanRow } from '../types/db';
 
 type Body = Record<string, unknown>;
 
@@ -42,12 +32,8 @@ export function registerWebAdminRoutes(app: Application): void {
                     webDb.tickets.count({ where: { status: 'Waiting for admin response' } }),
                 ]);
             ctx.htmlRaw(
-                adminDashboardView({
-                    totalUsers,
-                    activeUsers,
-                    totalAttacks,
-                    runningAttacks,
-                    waitingTickets,
+                render('web-admin-dashboard', {
+                    s: { totalUsers, activeUsers, totalAttacks, runningAttacks, waitingTickets },
                 })
             );
         },
@@ -58,7 +44,7 @@ export function registerWebAdminRoutes(app: Application): void {
         '/web/admin/users',
         async (ctx) => {
             const users = await webDb.users.findMany();
-            ctx.htmlRaw(usersAdminView(users));
+            ctx.htmlRaw(render('web-admin-users', { users }));
         },
         { guard: 'webAdmin' }
     );
@@ -72,7 +58,7 @@ export function registerWebAdminRoutes(app: Application): void {
                 webDb.plans.findMany({ select: { ID: true, name: true } }),
             ]);
             if (!user) ctx.throw(404, 'User not found');
-            ctx.htmlRaw(userEditView(user as never, plans as unknown as PlanRow[]));
+            ctx.htmlRaw(render('web-admin-user-edit', { user, plans }));
         },
         { guard: 'webAdmin' }
     );
@@ -105,7 +91,8 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/plans',
         async (ctx) => {
-            ctx.htmlRaw(plansAdminView(await webDb.plans.findMany({ orderBy: { price: 'asc' } })));
+            const plans = await webDb.plans.findMany({ orderBy: { price: 'asc' } });
+            ctx.htmlRaw(render('web-admin-plans', { plans }));
         },
         { guard: 'webAdmin' }
     );
@@ -139,11 +126,8 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/methods',
         async (ctx) => {
-            ctx.htmlRaw(
-                methodsAdminView(
-                    (await webDb.methods.findMany({ orderBy: { type: 'asc' } })) as never[]
-                )
-            );
+            const methods = await webDb.methods.findMany({ orderBy: { type: 'asc' } });
+            ctx.htmlRaw(render('web-admin-methods', { methods }));
         },
         { guard: 'webAdmin' }
     );
@@ -173,9 +157,8 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/news',
         async (ctx) => {
-            ctx.htmlRaw(
-                newsAdminView((await webDb.news.findMany({ orderBy: { ID: 'desc' } })) as never[])
-            );
+            const news = await webDb.news.findMany({ orderBy: { ID: 'desc' } });
+            ctx.htmlRaw(render('web-admin-news', { news }));
         },
         { guard: 'webAdmin' }
     );
@@ -204,11 +187,8 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/servers',
         async (ctx) => {
-            ctx.htmlRaw(
-                serversAdminView(
-                    (await webDb.api.findMany({ orderBy: { name: 'asc' } })) as never[]
-                )
-            );
+            const servers = await webDb.api.findMany({ orderBy: { name: 'asc' } });
+            ctx.htmlRaw(render('web-admin-servers', { servers }));
         },
         { guard: 'webAdmin' }
     );
@@ -245,7 +225,7 @@ export function registerWebAdminRoutes(app: Application): void {
                 webDb.giftcards.findMany({ orderBy: { ID: 'desc' } }),
                 webDb.plans.findMany({ select: { ID: true, name: true } }),
             ]);
-            ctx.htmlRaw(giftcardsAdminView(cards as unknown[], plans as unknown as PlanRow[]));
+            ctx.htmlRaw(render('web-admin-giftcards', { cards, plans }));
         },
         { guard: 'webAdmin' }
     );
@@ -280,9 +260,8 @@ export function registerWebAdminRoutes(app: Application): void {
     app.get(
         '/web/admin/tickets',
         async (ctx) => {
-            ctx.htmlRaw(
-                ticketsAdminView(await webDb.tickets.findMany({ orderBy: { date: 'desc' } }))
-            );
+            const tickets = await webDb.tickets.findMany({ orderBy: { date: 'desc' } });
+            ctx.htmlRaw(render('web-admin-tickets', { tickets }));
         },
         { guard: 'webAdmin' }
     );
@@ -291,7 +270,7 @@ export function registerWebAdminRoutes(app: Application): void {
         '/web/admin/attacklogs',
         async (ctx) => {
             const logs = await webDb.logs.findMany({ orderBy: { date: 'desc' } });
-            ctx.htmlRaw(attackLogsView(logs.slice(0, 200)));
+            ctx.htmlRaw(render('web-admin-attacklogs', { logs: logs.slice(0, 200) }));
         },
         { guard: 'webAdmin' }
     );
@@ -300,7 +279,7 @@ export function registerWebAdminRoutes(app: Application): void {
         '/web/admin/loginlogs',
         async (ctx) => {
             const logs = await webDb.loginlogs.findMany({ orderBy: { date: 'desc' } });
-            ctx.htmlRaw(loginLogsView(logs.slice(0, 200)));
+            ctx.htmlRaw(render('web-admin-loginlogs', { logs: logs.slice(0, 200) }));
         },
         { guard: 'webAdmin' }
     );
@@ -311,11 +290,11 @@ export function registerWebAdminRoutes(app: Application): void {
             const methods = await webDb.methods.findMany({ orderBy: { name: 'asc' } });
             const typed = methods as Array<{ name: string; fullname: string; type: string }>;
             ctx.htmlRaw(
-                hubAdminView(
-                    typed.filter((m) => m.type === 'layer4'),
-                    typed.filter((m) => m.type === 'layer7'),
-                    await webDb.api.findMany({ select: { name: true, slots: true } })
-                )
+                render('web-admin-hub', {
+                    layer4: typed.filter((m) => m.type === 'layer4'),
+                    layer7: typed.filter((m) => m.type === 'layer7'),
+                    servers: await webDb.api.findMany({ select: { name: true, slots: true } }),
+                })
             );
         },
         { guard: 'webAdmin' }
@@ -420,14 +399,16 @@ export function registerWebAdminRoutes(app: Application): void {
         async (ctx) => {
             const s = await webDb.settings.findFirst();
             ctx.htmlRaw(
-                settingsView({
-                    sitename: s?.sitename ?? 'IPstress',
-                    url: s?.url ?? '',
-                    description: s?.description ?? '',
-                    cooldown: s?.cooldown ?? 60,
-                    cooldownTime: s?.cooldownTime ?? 300,
-                    maxattacks: s?.maxattacks ?? 5,
-                    testboots: s?.testboots ?? 1,
+                render('web-admin-settings', {
+                    s: {
+                        sitename: s?.sitename ?? 'IPstress',
+                        url: s?.url ?? '',
+                        description: s?.description ?? '',
+                        cooldown: s?.cooldown ?? 60,
+                        cooldownTime: s?.cooldownTime ?? 300,
+                        maxattacks: s?.maxattacks ?? 5,
+                        testboots: s?.testboots ?? 1,
+                    },
                 })
             );
         },

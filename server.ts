@@ -20,63 +20,136 @@
  */
 
 import { env } from './src/config/env';
-import { loadViews } from './src/core/views';
+import { loadViews, render } from './src/core/views';
 import { Application, pageCache } from './src/core/01-application';
-import { markup, renderToString } from './src/core/04-html';
 import { guards } from './src/routes/guards';
-import { homeView } from './src/views/home';
-import { tlView } from './src/views/tl';
 import { tlConfigs } from './src/lib/tl-config';
-import { searchView } from './src/views/search';
 import { registerMainSiteRoutes } from './src/routes/main-site';
 import { registerAdminRoutes } from './src/routes/admin';
-import { webLoginView, webRegisterView } from './src/views/web-public';
-import { webLandingView } from './src/views/web-landing';
 import { registerWebRoutes } from './src/routes/web';
 import { registerWebAdminRoutes } from './src/routes/web-admin';
 import { registerPaymentRoutes } from './src/routes/payments';
-import { maintenanceView } from './src/views/web-pages';
-import {
-    planView,
-    ticketsView,
-    ticketNewView,
-    giftcardsView,
-    affiliateView,
-    wheelView,
-} from './src/views/web-user';
+import { getAcceptedSubmissions, getDomainsByColumns } from './src/server/queries/submissions';
 import { mainDb } from './src/lib/db/main';
 import { webDb } from './src/lib/db/web';
 
 // ---------------------------------------------------------------------------
+// Page data assembly - the DB/fetch part of each dynamic page, feeding render().
+// ---------------------------------------------------------------------------
+
+/** Tag-pill metadata in the fixed display order inherited from the legacy page. */
+const DOM_TAGS: ReadonlyArray<{ col: string; label: string; tl: string; css: string }> = [
+    { col: 'R', label: 'Relationships', tl: 'tl1', css: 'n1' },
+    { col: 'TP', label: 'Teacher Planning', tl: 'tl1', css: 'n2' },
+    { col: 'MT', label: 'Modify Teaching', tl: 'tl1', css: 'n3' },
+    { col: 'AR', label: 'Achieve Readiness', tl: 'tl1', css: 'n4' },
+    { col: 'U', label: 'Understanding', tl: 'tl2', css: 'n1' },
+    { col: 'MDL', label: 'Multi-dimensional', tl: 'tl2', css: 'n2' },
+    { col: 'RA', label: 'Reasoned Arguments', tl: 'tl2', css: 'n3' },
+    { col: 'RoTech', label: 'Repertoire', tl: 'tl2', css: 'n4' },
+    { col: 'LS', label: 'Learning Spaces', tl: 'tl2', css: 'n5' },
+    { col: 'RoThink', label: 'Reflect on Thinking', tl: 'tl3', css: 'n1' },
+    { col: 'EoST', label: 'Evidence of Learning', tl: 'tl3', css: 'n2' },
+    { col: 'EF', label: 'Employ Feedback', tl: 'tl3', css: 'n3' },
+    { col: 'RTE', label: 'Risk-taking', tl: 'tl4', css: 'n1' },
+    { col: 'DLoI', label: 'Deepening Inquiry', tl: 'tl4', css: 'n2' },
+    { col: 'RaAoC', label: 'Responsibility', tl: 'tl4', css: 'n3' },
+];
+
+/**
+ * Tools whose legacy description rendered WITHOUT the surrounding whitespace
+ * every other card has (source formatting variance in the old build). Frozen
+ * from tests/baseline - do not edit by hand.
+ */
+const TIGHT_DESC = new Set(['tl2:14', 'tl2:21', 'tl3:20', 'tl3:21']);
+
+async function searchRender(query: string): Promise<string> {
+    const q = query.trim();
+    const all = await getAcceptedSubmissions();
+    const needle = q.toLowerCase();
+    const results = q
+        ? all.filter((s) =>
+              [s.techname, s.tl1_desc, s.tl2_desc, s.tl3_desc, s.tl4_desc, s.displaytext].some(
+                  (f) => String(f).toLowerCase().includes(needle)
+              )
+          )
+        : [];
+
+    const domainTags = new Map<number, Record<string, boolean>>();
+    if (results.length > 0) {
+        for (const d of await mainDb.domains.findMany()) {
+            const { id, ...tags } = d as unknown as { id: number } & Record<string, boolean>;
+            domainTags.set(id, tags);
+        }
+    }
+
+    return render('search', {
+        heading: q ? `Results for: ${q}` : 'Search Tech Tools',
+        q,
+        resultCount: results.length,
+        results: results.map((item) => ({ ...item, activeTags: DOM_TAGS.filter((dt) => (domainTags.get(item.id) ?? {})[dt.col]) })),
+    });
+}
+
+/** Absence or "1" means checked; explicit "0" means unchecked (legacy rule). */
+async function tlRender(tl: string, query: Record<string, string>): Promise<string | null> {
+    const config = tlConfigs[tl];
+    if (!config) return null;
+
+    const checked = config.strands.map((s) => query[s.checkboxName] !== '0');
+    const [subs, domains] = await Promise.all([
+        getAcceptedSubmissions(),
+        getDomainsByColumns(config.domainColumns),
+    ]);
+    const domainById = new Map<number, Record<string, unknown>>(
+        domains.map((d) => [d.id, d as unknown as Record<string, unknown>])
+    );
+
+    const filtered = subs
+        .filter((sub) => {
+            const entry = domainById.get(sub.id);
+            if (!entry) return false;
+            return config.strands.some(
+                (strand, i) => checked[i] && entry[strand.domainColumn] === true
+            );
+        })
+        .map((sub) => ({
+            id: sub.id,
+            techname: sub.techname,
+            link: sub.link,
+            displaytext: sub.displaytext,
+            desc:
+                (sub as unknown as Record<string, string>)[`${tl}_desc`] ?? '',
+            tight: TIGHT_DESC.has(`${tl}:${sub.id}`),
+            tags: Object.fromEntries(
+                config.strands.map((s) => [
+                    s.domainColumn,
+                    (domainById.get(sub.id)?.[s.domainColumn] as boolean) === true,
+                ])
+            ),
+        }));
+
+    return render('tl', {
+        tl,
+        config,
+        checked,
+        filtered,
+    });
+}
+
+// ---------------------------------------------------------------------------
 // Placeholder system views - replaced by real ports in Phase B (parity-gated).
 // ---------------------------------------------------------------------------
-const notFoundPage = renderToString(markup`
-    <!doctype html>
-    <html lang="en">
-        <head>
-            <meta charset="utf-8" />
-            <title>Not Found</title>
-        </head>
-        <body>
-            <h1>404 - Page Not Found</h1>
-        </body>
-    </html>
-`);
+const notFoundPage = [
+    '<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Not Found</title></head>',
+    '<body><h1>404 - Page Not Found</h1></body></html>',
+].join('');
 
 const errorPage = (ref: string): string =>
-    renderToString(markup`
-        <!doctype html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8" />
-                <title>Server Error</title>
-            </head>
-            <body>
-                <h1>Something went wrong</h1>
-                <p>Reference: ${ref}</p>
-            </body>
-        </html>
-    `);
+    [
+        '<!doctype html><html lang="en"><head><meta charset="utf-8"/><title>Server Error</title></head>',
+        `<body><h1>Something went wrong</h1><p>Reference: ${ref}</p></body></html>`,
+    ].join('');
 
 // ---------------------------------------------------------------------------
 // Application assembly
@@ -96,8 +169,16 @@ app.get('/api/health', async (ctx) => {
 
 // Home page: cached as finished HTML; bust via pageCache.bust(['home']) on
 // admin writes (see server/queries/submissions.ts invalidateToolPages).
+const TL_CARDS = Object.entries(tlConfigs).map(([id, c]) => ({
+    id,
+    href: '/' + id,
+    title: c.title,
+    strands: c.strands.map((s) => s.label),
+}));
 app.get('/', async (ctx) => {
-    const cached = await pageCache.remember('home', async () => homeView());
+    const cached = await pageCache.remember('home', async () =>
+        render('home', { cards: TL_CARDS })
+    );
     ctx.htmlRaw(cached);
 });
 
@@ -106,49 +187,52 @@ registerAdminRoutes(app);
 registerWebRoutes(app);
 registerWebAdminRoutes(app);
 registerPaymentRoutes(app);
+
 // Web public pages.
 // Maintenance gate: reads settings.maintaince flag.
 // Web user pages.
 app.get('/web/plan', async (ctx) => {
     const plans = await webDb.plans.findMany({ orderBy: { price: 'asc' } });
-    ctx.htmlRaw(planView(plans as never[]));
+    ctx.htmlRaw(render('web-plan', { plans }));
 });
 app.get('/web/tickets', async (ctx) => {
-    ctx.htmlRaw(ticketsView());
+    ctx.htmlRaw(render('web-tickets', {}));
 });
 app.get('/web/tickets/new', async (ctx) => {
-    ctx.htmlRaw(ticketNewView());
+    ctx.htmlRaw(render('web-tickets-new', {}));
 });
 app.get('/web/giftcards', async (ctx) => {
-    ctx.htmlRaw(giftcardsView());
+    ctx.htmlRaw(render('web-giftcards', {}));
 });
 app.get('/web/affiliate', async (ctx) => {
-    ctx.htmlRaw(affiliateView());
+    ctx.htmlRaw(render('web-affiliate', {}));
 });
 app.get('/web/wheel', async (ctx) => {
-    ctx.htmlRaw(wheelView());
+    ctx.htmlRaw(render('web-wheel', {}));
 });
 app.get('/web/maintenance', async (ctx) => {
     const settings = await webDb.settings.findFirst({ select: { description: true } });
-    ctx.htmlRaw(maintenanceView(settings?.description ?? 'Premium IP stress testing service'));
+    ctx.htmlRaw(
+        render('web-maintenance', { description: settings?.description ?? 'Premium IP stress testing service' })
+    );
 });
 app.get('/web', async (ctx) => {
     const body =
         pageCache.get('web-home') ??
-        (pageCache.set('web-home', webLandingView()), pageCache.get('web-home'));
+        (pageCache.set('web-home', render('web-landing', {})), pageCache.get('web-home'));
     ctx.htmlRaw(body!);
 });
 app.get('/web/login', async (ctx) => {
-    ctx.htmlRaw(webLoginView());
+    ctx.htmlRaw(render('web-login', {}));
 });
 app.get('/web/register', async (ctx) => {
-    ctx.htmlRaw(webRegisterView());
+    ctx.htmlRaw(render('web-register', {}));
 });
 
 // Search: dynamic per query - never cached (result sets are personal to input).
 app.get('/search', async (ctx) => {
-    const body = await searchView(ctx.query.get('query') ?? '');
-    ctx.htmlRaw(body);
+    const q = ctx.query.get('query') ?? '';
+    ctx.htmlRaw(await searchRender(q));
 });
 // TL listing pages: cache key includes the filter state (every combination of
 // checked strands is its own shareable URL). Admin writes bust 'tl:*'.
@@ -165,7 +249,7 @@ app.get('/:tl', async (ctx) => {
     const cacheKey = `tl:${ctx.params.tl}:${bits}`;
     let body: string | undefined = pageCache.get(cacheKey);
     if (body === undefined) {
-        const rendered = await tlView({ tl: ctx.params.tl, query });
+        const rendered = await tlRender(ctx.params.tl, query);
         if (rendered === null) {
             ctx.throw(404, 'Page not found.');
             return; // unreachable - throw() ends the request; kept for type flow

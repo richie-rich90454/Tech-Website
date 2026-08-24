@@ -14,8 +14,8 @@ import { features } from '../config/features';
 import { rateLimit } from '../lib/rate-limit';
 import { webDb } from '../lib/db/web';
 import { webLoginSchema, webRegisterSchema } from '../lib/validations/web-auth';
+import { render } from '../core/views';
 import bcrypt from 'bcryptjs';
-import { dashboardView, hubView, profileView } from '../views/web-pages';
 
 type Body = Record<string, unknown>;
 
@@ -121,15 +121,14 @@ export function registerWebRoutes(app: Application): void {
             const maxConc = String(plan?.concurrents ?? '-');
             const exp = new Date(user.expire * 1000).toLocaleDateString('en-US');
             ctx.htmlRaw(
-                dashboardView(
-                    user.username,
+                render('web-dashboard', {
                     planName,
                     maxTime,
-                    maxConc,
-                    exp,
+                    maxConcurrents: maxConc,
+                    expiry: exp,
                     runningAttacks,
-                    totalAttacks
-                )
+                    totalAttacks,
+                })
             );
         },
         { guard: 'webUser' }
@@ -150,7 +149,9 @@ export function registerWebRoutes(app: Application): void {
                     orderBy: { name: 'asc' },
                 }),
             ]);
-            ctx.htmlRaw(hubView(methods as never[], servers as never[]));
+            ctx.htmlRaw(
+                render('web-hub', { methods: methods as never[], servers: servers as never[] })
+            );
         },
         { guard: 'webUser' }
     );
@@ -345,7 +346,16 @@ export function registerWebRoutes(app: Application): void {
             const plan = user.membership
                 ? await webDb.plans.findUnique({ where: { ID: user.membership } })
                 : null;
-            ctx.htmlRaw(profileView(user, plan));
+            ctx.htmlRaw(
+                render('web-profile', {
+                    user,
+                    plan,
+                    expiry: new Date(user.expire * 1000).toLocaleDateString('en-US'),
+                    refLink: user.referral
+                        ? `https://ipstress.com/web/register?ref=${user.referral}`
+                        : 'N/A',
+                })
+            );
         },
         { guard: 'webUser' }
     );
