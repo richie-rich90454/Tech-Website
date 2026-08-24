@@ -2,66 +2,63 @@
  * THEME - applies the saved (or OS-preferred) theme and wires the toggle
  * button that lives in the markup (partials/navbar.ejs). This file creates
  * NO elements; it only flips [data-theme] on <html> and persists the choice.
- * Plain ES5 for Chrome 49+/IE11.
+ * The emitted ES5 targets Chrome 49+/IE11.
  */
-(function () {
-    'use strict';
 
-    const KEY = 'theme';
+const THEME_KEY = "theme";
 
-    function apply(theme: string) {
-        document.documentElement.setAttribute('data-theme', theme);
-        const btn = document.getElementById('theme-toggle');
-        if (btn) btn.setAttribute('aria-pressed', String(theme === 'dark'));
+function themeApply(theme: string): void {
+    document.documentElement.setAttribute("data-theme", theme);
+    const btn = document.getElementById("theme-toggle");
+    if (btn) btn.setAttribute("aria-pressed", String(theme === "dark"));
+}
+
+function themeCurrent(): string {
+    return document.documentElement.getAttribute("data-theme") || "light";
+}
+
+function themeFlip(): void {
+    const next = themeCurrent() === "dark" ? "light" : "dark";
+    themeApply(next);
+    try {
+        localStorage.setItem(THEME_KEY, next);
+    } catch (e) {
+        /* toggle still works for this page view without persistence */
     }
+}
 
-    function current() {
-        return document.documentElement.getAttribute('data-theme') || 'light';
-    }
-
+function themeReady(): void {
     // Saved choice wins; first visit follows the OS preference.
     let saved: string | null = null;
     try {
-        saved = localStorage.getItem(KEY);
+        saved = localStorage.getItem(THEME_KEY);
     } catch (e) {
         /* storage blocked - fall through to OS preference */
     }
     if (!saved && window.matchMedia) {
-        saved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        saved = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
-    apply(saved === 'dark' ? 'dark' : 'light');
+    themeApply(saved === "dark" ? "dark" : "light");
 
-    function flip() {
-        const next = current() === 'dark' ? 'light' : 'dark';
-        apply(next);
-        try {
-            localStorage.setItem(KEY, next);
-        } catch (e) {
-            /* toggle still works for this page view without persistence */
-        }
-    }
+    const btn = document.getElementById("theme-toggle");
+    if (btn) btn.addEventListener("click", themeFlip);
 
-    function ready() {
-        const btn = document.getElementById('theme-toggle');
-        if (btn) btn.addEventListener('click', flip);
-
-        // Keyboard shortcuts: Alt+T toggles theme, Alt+S focuses search.
-        document.addEventListener('keydown', function (ev) {
-            if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
-            const k = String.fromCharCode(ev.keyCode);
-            if (k === 'T' || k === 't') {
+    // Keyboard shortcuts: Alt+T toggles theme, Alt+S focuses search.
+    document.addEventListener('keydown', function (ev: KeyboardEvent) {
+        if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
+        const k = String.fromCharCode(ev.keyCode);
+        if (k === "T" || k === "t") {
+            ev.preventDefault();
+            themeFlip();
+        } else if (k === "S" || k === "s") {
+            const input = document.getElementById("search-input");
+            if (input) {
                 ev.preventDefault();
-                flip();
-            } else if (k === 'S' || k === 's') {
-                const input = document.getElementById('search-input');
-                if (input) {
-                    ev.preventDefault();
-                    input.focus();
-                }
+                input.focus();
             }
-        });
-    }
+        }
+    });
+}
 
-    if (document.readyState !== 'loading') ready();
-    else document.addEventListener('DOMContentLoaded', ready);
-})();
+if (document.readyState !== "loading") themeReady();
+else document.addEventListener("DOMContentLoaded", themeReady);
