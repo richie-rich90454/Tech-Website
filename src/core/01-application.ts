@@ -72,7 +72,7 @@ export class Application {
     private server?: Server;
 
     constructor(private readonly options: AppOptions) {
-        this.statics = new StaticFiles(options.staticRoot ?? 'public');
+        this.statics = new StaticFiles(options.staticRoot ?? 'dist/public');
         this.guards = options.guards ?? {};
         this.isProd = options.isProd ?? process.env.NODE_ENV === 'production';
     }
