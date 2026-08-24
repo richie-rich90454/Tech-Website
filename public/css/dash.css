@@ -296,28 +296,23 @@ a:hover {
     max-width: 100%;
 }
 .col-md-4 {
-    grid-column: span 4;
-    flex: 0 0 33.3333%;
+    flex: 0 0 calc(33.3333% - 18px);
     max-width: 33.3333%;
 }
 .col-md-5 {
-    grid-column: span 5;
-    flex: 0 0 41.6666%;
+    flex: 0 0 calc(41.6666% - 18px);
     max-width: 41.6666%;
 }
 .col-md-6 {
-    grid-column: span 6;
-    flex: 0 0 50%;
+    flex: 0 0 calc(50% - 18px);
     max-width: 50%;
 }
 .col-md-7 {
-    grid-column: span 7;
-    flex: 0 0 58.3333%;
+    flex: 0 0 calc(58.3333% - 18px);
     max-width: 58.3333%;
 }
 .col-md-8 {
-    grid-column: span 8;
-    flex: 0 0 66.6666%;
+    flex: 0 0 calc(66.6666% - 18px);
     max-width: 66.6666%;
 }
 @media (max-width: 900px) {
@@ -326,7 +321,8 @@ a:hover {
     .col-md-6,
     .col-md-7,
     .col-md-8 {
-        grid-column: span 12;
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 }
 
