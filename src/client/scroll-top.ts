@@ -1,14 +1,14 @@
 'use strict';
 // Scroll-to-top button show/hide + smooth scroll.
 (function () {
-    var btn = document.getElementById('topbutton');
-    var bar = document.getElementById('bar');
+    const btn = document.getElementById('topbutton');
+    const bar = document.getElementById('bar');
     if (!btn || !bar) return;
-    var topButton = btn;
-    var marker = bar;
+    const topButton = btn;
+    const marker = bar;
 
     window.addEventListener('scroll', function () {
-        var y =
+        const y =
             document.body.scrollTop ||
             (document.documentElement.scrollTop || 0);
         topButton.style.display = y > marker.offsetTop ? 'block' : 'none';
