@@ -187,8 +187,12 @@ app.get('/api/health', async (ctx) => {
     ctx.json({ status: 'ok', time: new Date().toISOString() });
 });
 
-// Home page: cached as finished HTML; bust via pageCache.bust(['home']) on
-// admin writes (see server/queries/submissions.ts invalidateToolPages).
+// Home page: cached as finished HTML in production (bust via
+// pageCache.bust(['home']) on admin writes). In development the cache is
+// bypassed entirely so every template save is visible on refresh - this is
+// what makes `npm run dev` behave like a hot-reloading bundler.
+const HTML_CACHE = env.isProd;
+
 const TL_CARDS = Object.entries(tlConfigs).map(([id, c]) => ({
     id,
     href: '/' + id,
@@ -196,9 +200,9 @@ const TL_CARDS = Object.entries(tlConfigs).map(([id, c]) => ({
     strands: c.strands.map((s) => s.label),
 }));
 app.get('/', async (ctx) => {
-    const cached = await pageCache.remember('home', async () =>
-        render('home', { cards: TL_CARDS })
-    );
+    const cached = HTML_CACHE
+        ? await pageCache.remember('home', async () => render('home', { cards: TL_CARDS }))
+        : render('home', { cards: TL_CARDS });
     ctx.htmlRaw(cached);
 });
 
@@ -239,9 +243,10 @@ app.get('/web/maintenance', async (ctx) => {
     );
 });
 app.get('/web', async (ctx) => {
-    const body =
-        pageCache.get('web-home') ??
-        (pageCache.set('web-home', render('web-landing', {})), pageCache.get('web-home'));
+    const body = HTML_CACHE
+        ? pageCache.get('web-home') ??
+          (pageCache.set('web-home', render('web-landing', {})), pageCache.get('web-home'))
+        : render('web-landing', {});
     ctx.htmlRaw(body!);
 });
 app.get('/web/login', async (ctx) => {
@@ -291,7 +296,7 @@ app.get('/:tl', async (ctx) => {
     if (config)
         bits = config.strands.map((s) => (query[s.checkboxName] !== '0' ? '1' : '0')).join('');
     const cacheKey = `tl:${ctx.params.tl}:${bits}`;
-    let body: string | undefined = pageCache.get(cacheKey);
+    let body: string | undefined = HTML_CACHE ? pageCache.get(cacheKey) : undefined;
     if (body === undefined) {
         const rendered = await tlRender(ctx.params.tl, query);
         if (rendered === null) {
@@ -299,7 +304,7 @@ app.get('/:tl', async (ctx) => {
             return; // unreachable - throw() ends the request; kept for type flow
         }
         body = rendered;
-        pageCache.set(cacheKey, body);
+        if (HTML_CACHE) pageCache.set(cacheKey, body);
     }
     ctx.htmlRaw(body);
 });
