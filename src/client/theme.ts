@@ -7,11 +7,11 @@
 (function () {
     'use strict';
 
-    var KEY = 'theme';
+    const KEY = 'theme';
 
     function apply(theme: string) {
         document.documentElement.setAttribute('data-theme', theme);
-        var btn = document.getElementById('theme-toggle');
+        const btn = document.getElementById('theme-toggle');
         if (btn) btn.setAttribute('aria-pressed', String(theme === 'dark'));
     }
 
@@ -20,7 +20,7 @@
     }
 
     // Saved choice wins; first visit follows the OS preference.
-    var saved = null;
+    let saved: string | null = null;
     try {
         saved = localStorage.getItem(KEY);
     } catch (e) {
@@ -32,7 +32,7 @@
     apply(saved === 'dark' ? 'dark' : 'light');
 
     function flip() {
-        var next = current() === 'dark' ? 'light' : 'dark';
+        const next = current() === 'dark' ? 'light' : 'dark';
         apply(next);
         try {
             localStorage.setItem(KEY, next);
@@ -42,18 +42,18 @@
     }
 
     function ready() {
-        var btn = document.getElementById('theme-toggle');
+        const btn = document.getElementById('theme-toggle');
         if (btn) btn.addEventListener('click', flip);
 
         // Keyboard shortcuts: Alt+T toggles theme, Alt+S focuses search.
         document.addEventListener('keydown', function (ev) {
             if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
-            var k = String.fromCharCode(ev.keyCode);
+            const k = String.fromCharCode(ev.keyCode);
             if (k === 'T' || k === 't') {
                 ev.preventDefault();
                 flip();
             } else if (k === 'S' || k === 's') {
-                var input = document.getElementById('search-input');
+                const input = document.getElementById('search-input');
                 if (input) {
                     ev.preventDefault();
                     input.focus();
