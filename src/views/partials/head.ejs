@@ -7,13 +7,13 @@
     <% if (locals.description) { %>
     <meta name="description" content="<%= description %>" />
     <% } %>
-    <link rel="icon" href="/images/favicon.png" />
+    <link rel="icon" href="/images/favicon.png?v=<%= v %>" />
     <% (locals.css || ['globals.css']).forEach(function (file) { %>
-    <link rel="stylesheet" href="/css/<%= file %>" />
+    <link rel="stylesheet" href="/css/<%= file %>?v=<%= v %>" />
     <% }) %>
     <% var allScripts = ['theme.js', 'img-fallback.js', 'scroll-top.js'].concat(locals.scripts || []); %>
     <% allScripts.forEach(function (file) { %>
-    <script src="/js/<%= file %>" defer></script>
+    <script src="/js/<%= file %>?v=<%= v %>" defer></script>
     <% }) %>
 </head>
 <body>
