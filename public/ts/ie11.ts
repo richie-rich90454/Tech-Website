@@ -46,4 +46,11 @@
             return null;
         };
     }
+
+    // querySelectorAll results lack forEach in IE11 - borrow the Array one so
+    // no future call site can crash on it.
+    var nodeListProto = window.NodeList as unknown as { prototype: Record<string, unknown> };
+    if (nodeListProto && typeof nodeListProto.prototype.forEach !== 'function') {
+        nodeListProto.prototype.forEach = Array.prototype.forEach;
+    }
 })();
