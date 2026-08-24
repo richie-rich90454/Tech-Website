@@ -85,10 +85,14 @@ export class StaticFiles {
 
         const etag = `"${stat.size.toString(16)}-${Math.floor(stat.mtimeMs).toString(16)}"`;
         ctx.res.setHeader('ETag', etag);
-        const immutable = urlPath.startsWith('/js/') || urlPath.startsWith('/css/');
+        // CSS/JS URLs are NOT content-hashed (stable names like globals.css),
+        // so they must revalidate on every load - otherwise a deploy's style
+        // fixes stay invisible for as long as browsers honour max-age.
+        // "no-cache" = store + conditional revalidation (304 when unchanged).
+        const revalidate = urlPath.startsWith('/js/') || urlPath.startsWith('/css/');
         ctx.res.setHeader(
             'Cache-Control',
-            immutable ? 'public, max-age=31536000, immutable' : 'public, max-age=3600'
+            revalidate ? 'no-cache' : 'public, max-age=3600'
         );
 
         if (ctx.raw.headers['if-none-match'] === etag) {

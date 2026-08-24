@@ -1282,9 +1282,15 @@ footer a:hover {
    ========================================================================== */
 #topbar {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
+}
+#topbar h1 {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-right: auto;
 }
 #theme-toggle {
     flex-shrink: 0;
