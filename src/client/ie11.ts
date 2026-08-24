@@ -11,24 +11,24 @@
 (function () {
     'use strict';
 
-    var proto = Element.prototype as any;
+    const proto = Element.prototype as any;
 
     function matchesByClass(el: Element, selector: string): boolean {
         // Supports ".class", "tag", and "tag.class" - all we use.
-        var dotAt = selector.indexOf('.');
+        const dotAt = selector.indexOf('.');
         if (dotAt === -1) {
             return el.tagName.toLowerCase() === selector.toLowerCase();
         }
-        var tag = dotAt === 0 ? '' : selector.slice(0, dotAt);
-        var className = selector.slice(dotAt + 1);
-        var tagOk =
+        const tag = dotAt === 0 ? '' : selector.slice(0, dotAt);
+        const className = selector.slice(dotAt + 1);
+        const tagOk =
             tag === '' || el.tagName.toLowerCase() === tag.toLowerCase();
         return tagOk && el.classList.contains(className);
     }
 
     if (typeof proto.matches !== 'function') {
         proto.matches = function (selectors: string): boolean {
-            var native =
+            const native =
                 (this as any).msMatchesSelector ||
                 (this as any).webkitMatchesSelector;
             if (typeof native === 'function') return native.call(this, selectors);
@@ -37,8 +37,10 @@
     }
 
     if (typeof proto.closest !== 'function') {
-        proto.closest = function (selectors: string): Element | null {
-            var el: Element | null = this;
+        proto.closest = function (this: Element, selectors: string): Element | null {
+            // Walk up the tree; `this` is rebound per call, so the alias is
+            // the loop cursor. (eslint-disable-next-line is scoped to it.)
+            let el: Element | null = this; // eslint-disable-line @typescript-eslint/no-this-alias
             while (el && el.nodeType === 1) {
                 if (proto.matches.call(el, selectors)) return el;
                 el = el.parentElement;
@@ -49,7 +51,7 @@
 
     // querySelectorAll results lack forEach in IE11 - borrow the Array one so
     // no future call site can crash on it.
-    var nodeListProto = window.NodeList as unknown as { prototype: Record<string, unknown> };
+    const nodeListProto = window.NodeList as unknown as { prototype: Record<string, unknown> };
     if (nodeListProto && typeof nodeListProto.prototype.forEach !== 'function') {
         nodeListProto.prototype.forEach = Array.prototype.forEach;
     }
