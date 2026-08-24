@@ -4,7 +4,7 @@
         "lib": ["dom", "es5"],
         "module": "none",
         "rootDir": ".",
-        "outDir": "../js",
+        "outDir": "../../dist/public/js",
         "strict": true,
         "noEmitOnError": true,
         "skipLibCheck": true,
