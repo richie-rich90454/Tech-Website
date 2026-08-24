@@ -5,7 +5,7 @@
  * PURPOSE
  * `npm run dev` starts BOTH halves of the stack and restarts on change:
  *   1. tsx watch server.ts   -> the Node server (TypeScript executed directly)
- *   2. esbuild --watch       -> public/ts/*.ts compiled to ES5 in public/js/
+ *   2. tsc -p public/ts --watch -> public/ts/*.ts compiled to ES5 in public/js/
  *
  * WHY A SCRIPT INSTEAD OF CONCURRENTLY/NODEMON?
  * Two extra dev-only dependencies to do what node's child_process already does.
@@ -37,17 +37,11 @@ function run(name, singleCommand, color) {
     return child;
 }
 
-console.log('dev: starting server watcher + client bundler watcher...');
-const CLIENT_TS_FILES = [
-    'public/ts/filters.ts',
-    'public/ts/menu.ts',
-    'public/ts/tabs.ts',
-    'public/ts/img-fallback.ts',
-    'public/ts/scroll-top.ts',
-    'public/ts/wheel.ts',
-].join(' ');
+console.log('dev: starting server watcher + client compiler watcher...');
 run('server', 'npx tsx watch server.ts', '36');
-run('client', `npx esbuild ${CLIENT_TS_FILES} --outdir=public/js --target=ie11 --watch`, '33');
+// tsc --watch recompiles public/ts -> public/js (ES5) on every save using
+// the same config as production builds - one compiler everywhere.
+run('client', 'npx tsc -p public/ts --watch --preserveWatchOutput', '33');
 
 function shutdown() {
     for (const child of children) child.kill();
