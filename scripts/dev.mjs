@@ -5,7 +5,7 @@
  * PURPOSE
  * `npm run dev` starts BOTH halves of the stack and restarts on change:
  *   1. tsx watch server.ts   -> the Node server (TypeScript executed directly)
- *   2. tsc -p public/ts --watch -> public/ts/*.ts compiled to ES5 in public/js/
+ *   2. tsc + postcss watchers -> dist/public/{js,css}
  *
  * WHY A SCRIPT INSTEAD OF CONCURRENTLY/NODEMON?
  * Two extra dev-only dependencies to do what node's child_process already does.
@@ -37,11 +37,12 @@ function run(name, singleCommand, color) {
     return child;
 }
 
-console.log('dev: starting server watcher + client compiler watcher...');
+console.log('dev: starting server + client + style watchers...');
 run('server', 'npx tsx watch server.ts', '36');
-// tsc --watch recompiles public/ts -> public/js (ES5) on every save using
-// the same config as production builds - one compiler everywhere.
-run('client', 'npx tsc -p public/ts --watch --preserveWatchOutput', '33');
+// Client TS -> dist/public/js (ES5). Same config as production.
+run('client', 'npx tsc -p src/client --watch --preserveWatchOutput', '33');
+// Authored CSS -> autoprefixed into dist/public/css.
+run('styles', 'npx postcss "src/styles/*.css" --config postcss.config.cjs -d dist/public/css --watch', '35');
 
 function shutdown() {
     for (const child of children) child.kill();
