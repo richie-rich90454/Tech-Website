@@ -300,9 +300,8 @@ footer a:hover {
 /* --- Homepage content --------------------------------- */
 .tl-section {
     padding: var(--space-3) var(--space-4);
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-3);
     max-width: 1100px;
     margin: 0 auto;
@@ -361,7 +360,7 @@ footer a:hover {
 
 .tlx {
     width: 100%;
-    max-width: 260px;
+    max-width: none;
     height: 100%;
     padding: var(--space-4);
     border: 1px solid var(--color-border);
@@ -450,7 +449,7 @@ footer a:hover {
 
 #all #basicinfo {
     padding: var(--space-3);
-    background: #fff;
+    background: var(--color-panel);
 }
 #basicinfo h1 {
     margin-bottom: 0;
@@ -700,7 +699,7 @@ footer a:hover {
     height: 0;
     padding: 0;
     overflow: hidden;
-    background: #fff;
+    background: var(--color-input-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-2);
@@ -934,7 +933,7 @@ footer a:hover {
     font-style: normal;
 }
 #adminNav {
-    background: #fff;
+    background: var(--color-panel);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: var(--space-2) var(--space-3);
@@ -983,7 +982,7 @@ footer a:hover {
 #wrap table {
     width: 100%;
     border-collapse: collapse;
-    background: #fff;
+    background: var(--color-panel);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -1015,8 +1014,8 @@ footer a:hover {
     border-radius: var(--radius-sm);
     font-family: var(--font-sans);
     font-size: 0.9rem;
-    color: var(--color-ink-strong);
-    background: #fff;
+    color: var(--color-ink);
+    background: var(--color-input-bg);
     resize: vertical;
     transition:
         border-color 150ms ease,
@@ -1159,9 +1158,8 @@ footer a:hover {
     }
 
     .tl-section {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr;
     }
     .tlhead {
         font-size: 1.05rem;
