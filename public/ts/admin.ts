@@ -82,12 +82,9 @@
         });
 
         all.addEventListener('change', function () {
-            Array.prototype.forEach.call(
-                document.querySelectorAll('.bulk-row'),
-                function (box) {
-                    box.checked = all.checked;
-                }
-            );
+            Array.prototype.forEach.call(document.querySelectorAll('.bulk-row'), function (box) {
+                box.checked = all.checked;
+            });
         });
 
         // ---- bulk action bar ---------------------------------------------

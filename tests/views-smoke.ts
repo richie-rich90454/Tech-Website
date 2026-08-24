@@ -149,12 +149,27 @@ const SAMPLES: Record<string, Record<string, unknown>> = {
     },
     'web-admin-tickets': {
         tickets: [
-            { id: 1, subject: 'Help', username: 'tester', status: 'Waiting for admin response', date: 1800000000 },
+            {
+                id: 1,
+                subject: 'Help',
+                username: 'tester',
+                status: 'Waiting for admin response',
+                date: 1800000000,
+            },
         ],
     },
     'web-admin-attacklogs': {
         logs: [
-            { id: 1, user: 't', ip: '1.1.1.1:80', postdata: '{}', method: 'UDP', time: 30, chart: '-', stopped: 0 },
+            {
+                id: 1,
+                user: 't',
+                ip: '1.1.1.1:80',
+                postdata: '{}',
+                method: 'UDP',
+                time: 30,
+                chart: '-',
+                stopped: 0,
+            },
         ],
     },
     'web-admin-loginlogs': {

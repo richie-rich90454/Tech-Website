@@ -33,9 +33,7 @@ import { join, resolve } from 'node:path';
  * production containers may not ship src/ at all, hence the fallback.
  */
 const VIEWS_DIR =
-    process.env.NODE_ENV === 'production'
-        ? pickDir('dist', 'src')
-        : pickDir('src', 'dist');
+    process.env.NODE_ENV === 'production' ? pickDir('dist', 'src') : pickDir('src', 'dist');
 
 function pickDir(first: string, second: string): string {
     const a = resolve(process.cwd(), first, 'views');

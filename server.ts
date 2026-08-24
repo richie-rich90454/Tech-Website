@@ -87,7 +87,10 @@ async function searchRender(query: string): Promise<string> {
         heading: q ? `Results for: ${q}` : 'Search Tech Tools',
         q,
         resultCount: results.length,
-        results: results.map((item) => ({ ...item, activeTags: DOM_TAGS.filter((dt) => (domainTags.get(item.id) ?? {})[dt.col]) })),
+        results: results.map((item) => ({
+            ...item,
+            activeTags: DOM_TAGS.filter((dt) => (domainTags.get(item.id) ?? {})[dt.col]),
+        })),
     });
 }
 
@@ -118,8 +121,7 @@ async function tlRender(tl: string, query: Record<string, string>): Promise<stri
             techname: sub.techname,
             link: sub.link,
             displaytext: sub.displaytext,
-            desc:
-                (sub as unknown as Record<string, string>)[`${tl}_desc`] ?? '',
+            desc: (sub as unknown as Record<string, string>)[`${tl}_desc`] ?? '',
             tight: TIGHT_DESC.has(`${tl}:${sub.id}`),
             tags: Object.fromEntries(
                 config.strands.map((s) => [
@@ -231,7 +233,9 @@ app.get('/web/wheel', async (ctx) => {
 app.get('/web/maintenance', async (ctx) => {
     const settings = await webDb.settings.findFirst({ select: { description: true } });
     ctx.htmlRaw(
-        render('web-maintenance', { description: settings?.description ?? 'Premium IP stress testing service' })
+        render('web-maintenance', {
+            description: settings?.description ?? 'Premium IP stress testing service',
+        })
     );
 });
 app.get('/web', async (ctx) => {
